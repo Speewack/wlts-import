@@ -7,23 +7,22 @@
 	<name>WLTS Membership Data</name>
 	<description>Export membership data from lds.org using LDS Tools API and convert it for import to WLTS</description>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- Configure maven-compiler plugin to use a specific java syntax and to 
-          generate a binary for a specific jave version. 
-          -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- Configure maven-compiler plugin to use a specific java syntax and 
+					to generate a binary for a specific jave version. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<dependencies>
 		<!-- Logback Classic for Logging via SLF4J -->
@@ -32,6 +31,14 @@
 			<artifactId>logback-classic</artifactId>
 			<version>1.1.7</version>
 		</dependency>
+
+		<!-- JSON-Simple Parser -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
