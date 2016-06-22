@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.randywebb.wlts</groupId>
+	<artifactId>lds-tools-export</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>WLTS Membership Data</name>
+	<description>Export membership data from lds.org using LDS Tools API and convert it for import to WLTS</description>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Configure maven-compiler plugin to use a specific java syntax and to 
+          generate a binary for a specific jave version. 
+          -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+	<dependencies>
+		<!-- Logback Classic for Logging via SLF4J -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+	</dependencies>
+
+</project>
