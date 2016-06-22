@@ -9,7 +9,7 @@
   </appender>
 
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <file>lds-tools-export.log</file>
+    <file>logs/lds-tools-export.log</file>
 
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
@@ -17,11 +17,10 @@
     </encoder>
   </appender>
 
-  <logger name="org.randywebb" level="error">
+  <logger name="org.randywebb" level="debug">
+    <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </logger>
 
-  <root level="off">
-    <appender-ref ref="FILE" />
-  </root>
+ 
 </configuration>

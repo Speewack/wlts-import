@@ -5,3 +5,5 @@
 
 *.prefs
 /target/
+
+*.log
