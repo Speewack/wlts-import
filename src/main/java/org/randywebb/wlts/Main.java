@@ -3,7 +3,11 @@
  */
 package org.randywebb.wlts;
 
-import org.randywebb.wlts.util.AppConfig;
+import java.io.IOException;
+import java.util.Properties;
+
+import org.apache.http.client.ClientProtocolException;
+import org.randywebb.wlts.ldstools.rest.ApiCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,14 +20,19 @@ public class Main {
 	private static Logger log = LoggerFactory.getLogger(Main.class);
 	/**
 	 * @param args
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static void main(String[] args) {
-		AppConfig config = AppConfig.getInstance();
+	public static void main(String[] args) throws ClientProtocolException, IOException {
 		
-		for (Object key : config.keySet()) {
-			System.out.println(key.toString() + " - " + config.getProperty((String)key));
+		Properties apiCatalog = ApiCatalog.getInstance();
+		
+		for (Object key : apiCatalog.keySet())
+		{
+			System.out.println(key.toString() + " - " + apiCatalog.getProperty(key.toString()));
 		}
-
+		
 	}
+	
 
 }
