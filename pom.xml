@@ -32,13 +32,34 @@
 			<version>1.1.7</version>
 		</dependency>
 
-		<!-- JSON-Simple Parser -->
+		<!-- Commons-Logging implementation which ports to SLF4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+
+		<!-- Pull in current version of apache http client (updated dependency 
+			for Google API Client) -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+			<exclusions>
+				<!-- Eclude commons-logging as we are using jcl-over-slf4j to provide 
+					the commons-logging implementation -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- JSON Simple API -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-
 	</dependencies>
 
 </project>
