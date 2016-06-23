@@ -13,7 +13,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -42,20 +41,9 @@ public class ApiCatalog extends Properties {
 		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("lds-tools-config"));
 		CloseableHttpResponse apiCatalogResponse;
 		try {
-			CloseableHttpClient httpclient = HttpClients.createDefault();
+			CloseableHttpClient httpclient = LdsToolsClient.getHttpClient();
 			apiCatalogResponse = httpclient.execute(httpGet);
-			// The underlying HTTP connection is still held by the response
-			// object
-			// to allow the response content to be streamed directly from the
-			// network socket.
-			// In order to ensure correct deallocation of system resources
-			// the user MUST call CloseableHttpResponse#close() from a finally
-			// clause.
-			// Please note that if response content is not fully consumed the
-			// underlying
-			// connection cannot be safely re-used and will be shut down and
-			// discarded
-			// by the connection manager.
+
 			try {
 				HttpEntity catalogEntity = apiCatalogResponse.getEntity();
 				// do something useful with the response body
@@ -66,7 +54,6 @@ public class ApiCatalog extends Properties {
 				EntityUtils.consume(catalogEntity);
 			} finally {
 				apiCatalogResponse.close();
-				httpclient.close();
 			}
 		} catch (IOException e) {
 			log.error("Unable to retrieve API Catalog", e);
