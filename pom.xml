@@ -7,23 +7,22 @@
 	<name>WLTS Membership Data</name>
 	<description>Export membership data from lds.org using LDS Tools API and convert it for import to WLTS</description>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- Configure maven-compiler plugin to use a specific java syntax and to 
-          generate a binary for a specific jave version. 
-          -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- Configure maven-compiler plugin to use a specific java syntax and 
+					to generate a binary for a specific jave version. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<dependencies>
 		<!-- Logback Classic for Logging via SLF4J -->
@@ -31,6 +30,35 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.1.7</version>
+		</dependency>
+
+		<!-- Commons-Logging implementation which ports to SLF4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+
+		<!-- Pull in current version of apache http client (updated dependency 
+			for Google API Client) -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+			<exclusions>
+				<!-- Eclude commons-logging as we are using jcl-over-slf4j to provide 
+					the commons-logging implementation -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- JSON Simple API -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 	</dependencies>
 
