@@ -6,8 +6,10 @@ package org.randywebb.wlts;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
 import org.randywebb.wlts.ldstools.rest.ApiCatalog;
+import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,16 +25,16 @@ public class Main {
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
 	 */
-	public static void main(String[] args) throws ClientProtocolException, IOException {
+	public static void main(String[] args) {
 		
-		Properties apiCatalog = ApiCatalog.getInstance();
 		
-		for (Object key : apiCatalog.keySet())
-		{
-			System.out.println(key.toString() + " - " + apiCatalog.getProperty(key.toString()));
+		try {
+			LdsToolsClient client = new LdsToolsClient("someUser","invalidPassword");
+		} catch (AuthenticationException e) {
+			log.error("Error signing in", e);
 		}
 		
-	}
-	
+		//client.signOut();
 
+	}
 }
