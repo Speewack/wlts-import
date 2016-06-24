@@ -30,6 +30,7 @@ public class Household {
 	private String phone;
 	private String emailAddress;
 	private String coupleName;
+	private String headOfHouseholdIndividualID;
 
 	public String getHouseholdName() {
 		return householdName;
@@ -152,6 +153,20 @@ public class Household {
 		return "Household [householdName=" + householdName + ", headOfHousehold=" + headOfHousehold + ", spouse="
 				+ spouse + ", children=" + children + ", householdAddress=" + householdAddress + ", phone=" + phone
 				+ ", emailAddress=" + emailAddress + ", coupleName=" + coupleName + "]";
+	}
+
+	/**
+	 * @return the headOfHouseholdIndividualID
+	 */
+	public String getHeadOfHouseholdIndividualID() {
+		return headOfHouseholdIndividualID;
+	}
+
+	/**
+	 * @param headOfHouseholdIndividualID the headOfHouseholdIndividualID to set
+	 */
+	public void setHeadOfHouseholdIndividualID(String headOfHouseholdIndividualID) {
+		this.headOfHouseholdIndividualID = headOfHouseholdIndividualID;
 	}
 
 }

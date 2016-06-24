@@ -42,6 +42,7 @@ public class HouseholdConsumer extends AbstractConsumer {
 			household.setEmailAddress(convert(jo.get("emailAddress")));
 			household.setHouseholdName(convert(jo.get("householdName")));
 			household.setPhone(convert(jo.get("phone")));
+			household.setHeadOfHouseholdIndividualID(convert(jo.get("headOfHouseholdIndividualId")));
 
 			Address address = new Address();
 			address.setLattitude(convert(jo.get("lattitude")));
