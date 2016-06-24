@@ -30,7 +30,7 @@ public class CSVWriter {
 				new ConvertNullTo(""), // "spokenName",
 				new ConvertNullTo(""), // "address", 
 				new ConvertNullTo(""), // "age", 
-				new FmtDate("dd mmm yyyyy"), // "birthDate",  
+				new FmtDate("dd MMM yyyyy"), // "birthDate",  
 				new ConvertNullTo(""), // "email",
 				new ConvertNullTo(""), // "phone", 
 				new ConvertNullTo(""), // "gender", 
