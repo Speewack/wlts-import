@@ -55,7 +55,7 @@ public class DetailedMemberConsumer extends AbstractConsumer {
 			member.setEmail(convert(jo.get("email")));
 			member.setFormattedBirthDate(convert(jo.get("formattedBirthDate")));
 			member.setFormattedBirthDateFull(convert(jo.get("formattedBirthDateFull")));
-			member.setFormattedMRN(convert(jo.get("formattedMRN")));
+			member.setFormattedMRN(convert(jo.get("formattedMrn")));
 			member.setFullTimeMissionary(Boolean.valueOf(convert(jo.get("fullTimeMissionary"))));
 			member.setGender(convert(jo.get("gender")));
 			member.setGenderCode(convert(jo.get("genderCode")));
