@@ -37,6 +37,8 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		
+		//TODO: Inputs Needed: username, password, outputFileName
+		
 		
 		// Parse JSON Membership file into beans
 		
