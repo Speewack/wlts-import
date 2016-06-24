@@ -18,6 +18,7 @@ import org.randywebb.wlts.beans.DetailedMember;
 import org.randywebb.wlts.beans.Household;
 import org.randywebb.wlts.ldstools.json.DetailedMemberConsumer;
 import org.randywebb.wlts.ldstools.json.HouseholdConsumer;
+import org.randywebb.wlts.util.CSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,9 @@ public class Main {
 		// Parse JSON Membership file into beans
 		
 		List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
-		List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
+//		List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
+		
+		CSVWriter.writeCSVFile("/Users/randyw/Desktop/heatherwilde.csv", members);
 		
 	}
 	

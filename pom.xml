@@ -60,6 +60,14 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+
+<!-- Super CSV for writing CSV files -->
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
