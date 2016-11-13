@@ -4,10 +4,12 @@
 package org.randywebb.wlts.ldstools.rest;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthenticationException;
@@ -18,7 +20,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.randywebb.wlts.util.AppConfig;
 import org.randywebb.wlts.util.http.JSONResponseHandler;
 import org.randywebb.wlts.util.http.NoOpResponseHandler;
@@ -130,6 +131,11 @@ public class LdsToolsClient {
 		return unitNumber;
 	}
 	
-	
+	public InputStream getMemberInfo() throws IOException
+	{
+		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("mls-report-endpoint"));
+		HttpResponse response = getHttpClient().execute(httpGet);
+		return response.getEntity().getContent();
+	}
 
 }
