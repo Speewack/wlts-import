@@ -17,84 +17,62 @@ import org.supercsv.prefs.CsvPreference;
 
 public class CSVWriter {
 
-	private static Logger log = LoggerFactory.getLogger(CSVWriter.class);
+  private static Logger log = LoggerFactory.getLogger(CSVWriter.class);
 
-	public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
-		ICsvBeanWriter beanWriter = null;
-		CellProcessor[] processors = new CellProcessor[] { 
-				new ConvertNullTo(""), // "id", 
-				new ConvertNullTo(""), // "mrn", 
-				new ConvertNullTo(""), // "formattedMRN",
-				new ConvertNullTo(""), // "name", 
-				new ConvertNullTo(""), // "givenName",
-				new ConvertNullTo(""), // "spokenName",
-				new ConvertNullTo(""), // "address", 
-				new ConvertNullTo(""), // "age", 
-				new FmtDate("dd MMM yyyy"), // "birthDate",  
-				new ConvertNullTo(""), // "email",
-				new ConvertNullTo(""), // "phone", 
-				new ConvertNullTo(""), // "gender", 
-				new ConvertNullTo(""), // "genderCode",
-				new ConvertNullTo(""), // "coupleName",
-				new ConvertNullTo(""), // "householdEmail", 
-				new ConvertNullTo(""), // "householdId", 
-				new ConvertNullTo(""), // "householdPhone", 
-				new FmtBool("true", "false"), // "isAdult", 
-				new FmtBool("true", "false"), // "isHead", 
-				new FmtBool("true", "false"), // "isSpouse", 
-				new FmtBool("true", "false"), // "nonMember", 
-				new FmtBool("true", "false"), // "outOfUnitMember", 
-				new ConvertNullTo(""), // "priesthood", 
-				new ConvertNullTo(""), // "unitNumber", 
-				new ConvertNullTo("") // "unitName" 
-		};
+  public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
+    ICsvBeanWriter beanWriter = null;
+    CellProcessor[] processors = new CellProcessor[] { new ConvertNullTo(""), // "id",
+        new ConvertNullTo(""), // "mrn",
+        new ConvertNullTo(""), // "formattedMRN",
+        new ConvertNullTo(""), // "name",
+        new ConvertNullTo(""), // "givenName",
+        new ConvertNullTo(""), // "spokenName",
+        new ConvertNullTo(""), // "street",
+        new ConvertNullTo(""), // "city",
+        new ConvertNullTo(""), // "state",
+        new ConvertNullTo(""), // "zip",
+        new ConvertNullTo(""), // "age",
+        new FmtDate("dd MMM yyyy"), // "birthDate",
+        new ConvertNullTo(""), // "email",
+        new ConvertNullTo(""), // "phone",
+        new ConvertNullTo(""), // "gender",
+        new ConvertNullTo(""), // "genderCode",
+        new ConvertNullTo(""), // "coupleName",
+        new ConvertNullTo(""), // "householdEmail",
+        new ConvertNullTo(""), // "householdId",
+        new ConvertNullTo(""), // "householdPhone",
+        new FmtBool("true", "false"), // "isAdult",
+        new FmtBool("true", "false"), // "isHead",
+        new FmtBool("true", "false"), // "isSpouse",
+        new FmtBool("true", "false"), // "nonMember",
+        new FmtBool("true", "false"), // "outOfUnitMember",
+        new ConvertNullTo(""), // "priesthood",
+        new ConvertNullTo(""), // "unitNumber",
+        new ConvertNullTo("") // "unitName"
+    };
 
-		try {
-			beanWriter = new CsvBeanWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
-			String[] header = { 
-					"id", 
-					"mrn", 
-					"formattedMRN",
-					"name", 
-					"givenName",
-					"spokenName",
-					"address", 
-					"age", 
-					"birthDate",  
-					"email",
-					"phone", 
-					"gender", 
-					"genderCode",
-					"coupleName",
-					"householdEmail", 
-					"householdId", 
-					"householdPhone", 
-					"isAdult", 
-					"isHead", 
-					"isSpouse", 
-					"nonMember", 
-					"outOfUnitMember", 
-					"priesthood", 
-					"unitNumber", 
-					"unitName" };
-		
-			beanWriter.writeHeader(header);
+    try {
+      beanWriter = new CsvBeanWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
+      String[] header = { "id", "mrn", "formattedMRN", "name", "givenName", "spokenName", "street", "city", "state", "zip", "age", "birthDate", "email", "phone", "gender", "genderCode", "coupleName",
+          "householdEmail", "householdId", "householdPhone", "isAdult", "isHead", "isSpouse", "nonMember", "outOfUnitMember", "priesthood", "unitNumber", "unitName" };
 
-			for (DetailedMember member : members) {
-				beanWriter.write(member, header, processors);
-			}
+      beanWriter.writeHeader(header);
 
-		} catch (IOException ex) {
-			log.error("Error writing the CSV file: " + ex);
-		} finally {
-			if (beanWriter != null) {
-				try {
-					beanWriter.close();
-				} catch (IOException ex) {
-					log.error("Error closing the writer: " + ex);
-				}
-			}
-		}
-	}
+      for (DetailedMember member : members) {
+        beanWriter.write(member, header, processors);
+      }
+
+    } catch (IOException ex) {
+      log.error("Error writing the CSV file: " + ex);
+    } finally {
+      if (beanWriter != null) {
+        try {
+          beanWriter.close();
+        } catch (IOException ex) {
+          log.error("Error closing the writer: " + ex);
+        }
+      }
+    }
+  }
 
 }

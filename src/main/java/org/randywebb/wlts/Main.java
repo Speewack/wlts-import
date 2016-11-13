@@ -18,6 +18,7 @@ import org.randywebb.wlts.beans.DetailedMember;
 import org.randywebb.wlts.beans.Household;
 import org.randywebb.wlts.ldstools.json.DetailedMemberConsumer;
 import org.randywebb.wlts.ldstools.json.HouseholdConsumer;
+import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.util.CSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +38,24 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		//TODO: Inputs Needed: username, password, outputFileName
+		//read input parameters
+		if(args.length != 2)
+		{
+			System.out.println("Usage Main username password");
+			System.exit(1);
+		}
+		
+		// Initialize LDSTools Client
+		LdsToolsClient client = new LdsToolsClient(args[0], args[1]);
 		
 		
 		// Parse JSON Membership file into beans
 		
-		List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
+		InputStream in = client.getMemberInfo();
+		
+		List<DetailedMember> members = processDetailMembers(in);
+		
+//		List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
 //		List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
 		
 		CSVWriter.writeCSVFile("/Users/randyw/Desktop/heatherwilde.csv", members);
