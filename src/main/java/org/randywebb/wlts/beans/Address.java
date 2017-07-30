@@ -133,7 +133,7 @@ public class Address {
   @Override
   public String toString() {
     return "Address [streetAddress=" + streetAddress + ", city=" + city + ", State=" + State + ", postalCode=" + postalCode + ", longitude=" + longitude + ", lattitude=" + lattitude
-            + ", includeLatLong=" + includeLatLong + "]";
+        + ", includeLatLong=" + includeLatLong + "]";
   }
 
   /**
@@ -167,6 +167,10 @@ public class Address {
     } catch (NullPointerException npe) {
       if (log.isInfoEnabled()) {
         log.info("Unable to parse address from \"" + addressString + "\"", npe);
+      }
+    } catch (ArrayIndexOutOfBoundsException e) {
+      if (log.isInfoEnabled()) {
+        log.info("Unable to parse address from \"" + addressString + "\"", e);
       }
     }
     return a;
