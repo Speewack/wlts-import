@@ -63,19 +63,30 @@ public class Main {
     // Capture file path from args
 	String filePath = (args.length == 3) ? args[2] : args[1];
 
-    // Parse JSON Membership file into beans
+	if (isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
+		// Parse JSON Membership file into beans
 
-    InputStream in = client.getMemberInfo();
+		InputStream in = client.getMemberInfo();
 
-    List<DetailedMember> members = processDetailMembers(in);
+		List<DetailedMember> members = processDetailMembers(in);
 
-    // List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
-    // List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
+		// List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
+		// List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
 
-    CSVWriter.writeCSVFile(filePath, members);
+		CSVWriter.writeCSVFile(filePath, members);
 
-    System.out.println("Export complete");
+		System.out.println("Export complete");
+	} else {
+		System.out.println("You do not have permissions to export all data");
+	}
 
+  }
+
+  private static boolean isUserAdmin(JSONObject response) throws IOException, ParseException {
+  	JSONArray units = (JSONArray) response.get("units");
+  	JSONObject firstUnit = (JSONObject) units.get(0);
+
+  	return (Boolean) firstUnit.get("hasUnitAdminRights");
   }
 
   private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {

@@ -115,9 +115,8 @@ public class LdsToolsClient {
 	{
 		String unitNumber = null;
 
-		HttpGet httpGet = new HttpGet(apiCatalog.getProperty("current-user-unit"));
 		try {
-			JSONObject jsonObj = getHttpClient().execute(httpGet, new JSONResponseHandler());
+			JSONObject jsonObj = getEndpointInfo("current-user-unit");
 
 			unitNumber =  jsonObj.get("message").toString();
 			if (log.isTraceEnabled())
@@ -131,16 +130,23 @@ public class LdsToolsClient {
 		return unitNumber;
 	}
 
-	public InputStream getEndpointInfo(String endpointName) throws IOException
+	public JSONObject getEndpointInfo(String endpointName) throws IOException
 	{
-		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty(endpointName));
+		HttpGet httpGet = new HttpGet(apiCatalog.getProperty(endpointName));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler());
+	}
+
+	public InputStream getAppProperty(String appPropertyName) throws IOException
+	{
+		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty(appPropertyName));
 		HttpResponse response = getHttpClient().execute(httpGet);
 		return response.getEntity().getContent();
 	}
 
 	public InputStream getMemberInfo() throws IOException
 	{
-		return getEndpointInfo("mls-report-endpoint");
+		return getAppProperty("mls-report-endpoint");
 	}
 
 }
