@@ -82,11 +82,17 @@ public class Main {
 	if (!minimal && isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
 		generateWLTSReport(client, filePath);
 	} else if (minimal) {
+		generateMinimalReport(client, filePath);
 		System.out.println("This will be really cool when we implement it!");
 	} else {
 		System.out.println("You do not have permissions to export all data. You can pass '--minimal' as the first argument to export what you can");
 	}
 
+  }
+
+  private static void generateMinimalReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
+  	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
+  	System.out.println("Unit: " + (String) ward.get("orgName"));
   }
 
   private static void generateWLTSReport(LdsToolsClient client, String filePath) throws IOException, ParseException {

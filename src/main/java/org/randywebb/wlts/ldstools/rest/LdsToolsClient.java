@@ -111,7 +111,7 @@ public class LdsToolsClient {
 	 *
 	 * @return String containing the unit number
 	 */
-	private String getUnitNumber()
+	public String getUnitNumber()
 	{
 		String unitNumber = null;
 
