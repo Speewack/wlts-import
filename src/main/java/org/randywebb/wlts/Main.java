@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -41,45 +42,66 @@ public class Main {
   public static void main(String[] args) throws Exception {
 
     // read input parameters
-    if ( (args.length != 3) && (args.length != 2) ) {
+    if ( (args.length < 2) || (args.length > 4) ) {
       System.out.println("Usage Main username password target_file");
       System.out.println("\tor Main username target_file");
+      System.out.println("\tor Main --minimal username password target_file");
+      System.out.println("\tor Main --minimal username target_file");
       System.exit(1);
     }
 
-	// determine username and password
-	String password = (args.length == 3) ? args[1] : null;
-	String username = args[0];
+	final boolean minimal = args[0].equals("--minimal");
+	final boolean hasPassword = (minimal && args.length == 4) || (!minimal && args.length == 3);
+	final int usernameIndex = minimal ? 1 : 0;
+	final int targetIndex = 1 + (hasPassword ? 1 : 0) + (minimal ? 1 : 0);
+	final int passwordIndex = hasPassword ? (minimal ? 2 : 1) : 0;
 
-	if (args.length == 2) {
+	// determine username and password
+	String password = hasPassword ? args[passwordIndex] : null;
+	String username = args[usernameIndex];
+
+	if (!hasPassword) {
 		System.out.print("Enter password [" + username + "]: ");
 		System.out.flush();
 		password = (new Scanner(System.in)).nextLine();
 	}
 
     // Initialize LDSTools Client
-    LdsToolsClient client = new LdsToolsClient(username, password);
+    LdsToolsClient client = null;
+
+    try {
+		client = new LdsToolsClient(username, password);
+    } catch(AuthenticationException exception) {
+    	System.out.println("Authentication error: " + exception.getMessage());
+    	System.exit(1);
+    }
 
     // Capture file path from args
-	String filePath = (args.length == 3) ? args[2] : args[1];
+	String filePath = args[targetIndex];
 
-	if (isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
-		// Parse JSON Membership file into beans
-
-		InputStream in = client.getMemberInfo();
-
-		List<DetailedMember> members = processDetailMembers(in);
-
-		// List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
-		// List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
-
-		CSVWriter.writeCSVFile(filePath, members);
-
-		System.out.println("Export complete");
+	if (!minimal && isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
+		generateWLTSReport(client, filePath);
+	} else if (minimal) {
+		System.out.println("This will be really cool when we implement it!");
 	} else {
-		System.out.println("You do not have permissions to export all data");
+		System.out.println("You do not have permissions to export all data. You can pass '--minimal' as the first argument to export what you can");
 	}
 
+  }
+
+  private static void generateWLTSReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
+	// Parse JSON Membership file into beans
+
+	InputStream in = client.getMemberInfo();
+
+	List<DetailedMember> members = processDetailMembers(in);
+
+	// List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
+	// List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
+
+	CSVWriter.writeCSVFile(filePath, members);
+
+	System.out.println("Export complete");
   }
 
   private static boolean isUserAdmin(JSONObject response) throws IOException, ParseException {

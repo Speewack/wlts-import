@@ -130,9 +130,10 @@ public class LdsToolsClient {
 		return unitNumber;
 	}
 
-	public JSONObject getEndpointInfo(String endpointName) throws IOException
+	public JSONObject getEndpointInfo(String endpointName, String... args) throws IOException
 	{
-		HttpGet httpGet = new HttpGet(apiCatalog.getProperty(endpointName));
+		String url = apiCatalog.getProperty(endpointName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
 
 		return getHttpClient().execute(httpGet, new JSONResponseHandler());
 	}
