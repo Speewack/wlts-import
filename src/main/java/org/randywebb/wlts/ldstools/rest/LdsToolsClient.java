@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.randywebb.wlts.ldstools.rest;
 
@@ -50,7 +50,7 @@ public class LdsToolsClient {
 	/**
 	 * Deliberately package scoped to enable other ldstools api components
 	 * access to a common client
-	 * 
+	 *
 	 * @return
 	 */
 	static CloseableHttpClient getHttpClient() {
@@ -114,11 +114,11 @@ public class LdsToolsClient {
 	private String getUnitNumber()
 	{
 		String unitNumber = null;
-		
+
 		HttpGet httpGet = new HttpGet(apiCatalog.getProperty("current-user-unit"));
 		try {
 			JSONObject jsonObj = getHttpClient().execute(httpGet, new JSONResponseHandler());
-			
+
 			unitNumber =  jsonObj.get("message").toString();
 			if (log.isTraceEnabled())
 			{
@@ -130,12 +130,17 @@ public class LdsToolsClient {
 		}
 		return unitNumber;
 	}
-	
-	public InputStream getMemberInfo() throws IOException
+
+	public InputStream getEndpointInfo(String endpointName) throws IOException
 	{
-		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("mls-report-endpoint"));
+		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty(endpointName));
 		HttpResponse response = getHttpClient().execute(httpGet);
 		return response.getEntity().getContent();
+	}
+
+	public InputStream getMemberInfo() throws IOException
+	{
+		return getEndpointInfo("mls-report-endpoint");
 	}
 
 }

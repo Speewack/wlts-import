@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.simple.JSONArray;
@@ -40,16 +41,27 @@ public class Main {
   public static void main(String[] args) throws Exception {
 
     // read input parameters
-    if (args.length != 3) {
+    if ( (args.length != 3) && (args.length != 2) ) {
       System.out.println("Usage Main username password target_file");
+      System.out.println("\tor Main username target_file");
       System.exit(1);
     }
 
+	// determine username and password
+	String password = (args.length == 3) ? args[1] : null;
+	String username = args[0];
+
+	if (args.length == 2) {
+		System.out.print("Enter password [" + username + "]: ");
+		System.out.flush();
+		password = (new Scanner(System.in)).nextLine();
+	}
+
     // Initialize LDSTools Client
-    LdsToolsClient client = new LdsToolsClient(args[0], args[1]);
+    LdsToolsClient client = new LdsToolsClient(username, password);
 
     // Capture file path from args
-    String filePath = args[2];
+	String filePath = (args.length == 3) ? args[2] : args[1];
 
     // Parse JSON Membership file into beans
 
