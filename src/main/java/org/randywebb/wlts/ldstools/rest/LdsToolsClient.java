@@ -20,6 +20,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.randywebb.wlts.util.AppConfig;
 import org.randywebb.wlts.util.http.JSONResponseHandler;
 import org.randywebb.wlts.util.http.NoOpResponseHandler;
@@ -139,7 +140,15 @@ public class LdsToolsClient {
 		String url = apiCatalog.getProperty(endpointName).replace("%@", "%s");
 		HttpGet httpGet = new HttpGet(String.format(url, args));
 
-		return getHttpClient().execute(httpGet, new JSONResponseHandler());
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONObject>());
+	}
+
+	public JSONArray getEndpointList(String endpointName, String... args) throws IOException
+	{
+		String url = apiCatalog.getProperty(endpointName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONArray>());
 	}
 
 	public InputStream getAppProperty(String appPropertyName, String... args) throws IOException
@@ -155,7 +164,15 @@ public class LdsToolsClient {
 		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
 		HttpGet httpGet = new HttpGet(String.format(url, args));
 
-		return getHttpClient().execute(httpGet, new JSONResponseHandler());
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONObject>());
+	}
+
+	public JSONArray getAppPropertyEndpointList(String appPropertyName, String... args) throws IOException
+	{
+		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONArray>());
 	}
 
 	public InputStream getMemberInfo() throws IOException

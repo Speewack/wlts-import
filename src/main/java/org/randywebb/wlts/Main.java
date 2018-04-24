@@ -148,9 +148,16 @@ public class Main {
 
   private static KMLWriter.Folder mapCompanionships(LdsToolsClient client, String auxiliaryId, String auxiliaryName, String companionshipName, String ministryName, Map<String,Household> map) throws IOException, ParseException {
 	KMLWriter.Folder folder = new KMLWriter.Folder();
+	JSONArray companionships = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
 
 	folder.append(new KMLWriter.Name(auxiliaryName))
 		.append(new KMLWriter.Description("Ministry map for " + auxiliaryName));
+
+	for (Object districtObject : companionships) {
+		JSONObject district = (JSONObject) districtObject;
+
+		System.out.println("District: " + district.get("name"));
+	}
 
 	return folder;
   }
