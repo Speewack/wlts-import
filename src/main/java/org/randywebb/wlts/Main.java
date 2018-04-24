@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
@@ -145,6 +146,15 @@ public class Main {
 	}
   }
 
+  private static KMLWriter.Folder mapCompanionships(LdsToolsClient client, String auxiliaryId, String auxiliaryName, String companionshipName, String ministryName, Map<String,Household> map) throws IOException, ParseException {
+	KMLWriter.Folder folder = new KMLWriter.Folder();
+
+	folder.append(new KMLWriter.Name(auxiliaryName))
+		.append(new KMLWriter.Description("Ministry map for " + auxiliaryName));
+
+	return folder;
+  }
+
   /** Generate .kml file.
   	@param client lds tools client to use for connection
   	@param filePath the path to the .kml file to generate
@@ -156,15 +166,16 @@ public class Main {
   	JSONArray households = (JSONArray) ward.get("households");
 	double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
     List<Household> household_list = new LinkedList<Household>();
-	HashMap<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
+	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
     HouseholdConsumer action = new HouseholdConsumer(household_list, idToHousehold);
-  	KMLWriter.Folder folder = (new KMLWriter.Folder())
-  								.append(new KMLWriter.Name("Households"))
-  								.append(new KMLWriter.Description("Households in the " + (String) ward.get("orgName")));
+  	KMLWriter.Folder folder = new KMLWriter.Folder();
 
 	//System.out.println( households.toJSONString());
   	System.out.println("Unit: " + (String) ward.get("orgName"));
     households.forEach(action);
+
+	folder.append(new KMLWriter.Name("Households"))
+		.append(new KMLWriter.Description("Households in the " + (String) ward.get("orgName")));
 
 	for (Household household : household_list) {
 		if (null != household.getHouseholdAddress().getLattitude() && null != household.getHouseholdAddress().getLongitude()) {
@@ -198,6 +209,10 @@ public class Main {
   	document.append(new KMLWriter.Name((String) ward.get("orgName")))
   			.append(new KMLWriter.Open())
   			.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
+  			.append((new KMLWriter.Style("companionship"))
+  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(10)).append(new KMLWriter.StyleColor("87000000"))))
+  			.append((new KMLWriter.Style("ministry"))
+  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(4)).append(new KMLWriter.StyleColor("7f00ffff"))))
   			.append((new KMLWriter.Style("home"))
   				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png")))
   			.append(folder);
@@ -208,10 +223,10 @@ public class Main {
 		getAuxiliaries(client, priesthood, reliefsociety);
 
 		for (String aux : priesthood) {
-			System.out.println("priesthood: " + aux);
+			document.append(mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold));
 		}
 		for (String aux : reliefsociety) {
-			System.out.println("reliefsociety: " + aux);
+			document.append(mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold));
 		}
 	}
 

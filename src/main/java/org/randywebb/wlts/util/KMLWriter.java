@@ -57,6 +57,61 @@ public class KMLWriter {
   	}
   }
 
+  public static class Line implements Item {
+
+  	public Line() {
+  		tessellate = false;
+  		altitude_mode = null;
+  		coordinates = new ArrayList<String>();
+  	}
+
+	public Line altitudeMode(String mode) {
+		altitude_mode = mode;
+		return this;
+	}
+
+	public Line altitudeRelativeToGround() {
+		return altitudeMode("relativeToGround");
+	}
+
+	public Line altitudeAbsolute() {
+		return altitudeMode("absolute");
+	}
+
+	public Line add(double latitude, double longitude, double altitude) {
+		coordinates.add(""+longitude+","+latitude+","+altitude);
+		return this;
+	}
+
+  	public void write(String prefix, FileWriter output) throws IOException {
+  		String lineEnding = "";
+
+		output.append(prefix + "<LineString>\n");
+
+		if (tessellate) {
+			output.append(prefix + "\t<tessellate>1</tessellate>\n");
+		}
+
+		if (null != altitude_mode) {
+			output.append(prefix + "\t<altitudeMode>"+altitude_mode+"</altitudeMode>\n");
+		}
+
+		output.append(prefix + "\t<coordinates>");
+
+		for (String coordinate : coordinates) {
+			output.append(lineEnding + coordinate);
+			lineEnding = "\n" + prefix + "\t";
+		}
+
+		output.append("</coordinates>\n");
+		output.append(prefix + "</LineString>\n");
+	}
+
+  	private boolean tessellate;
+  	private String altitude_mode;
+  	private ArrayList<String> coordinates;
+  }
+
   public static class Point implements Item {
 
   	public Point(double latitude, double longitude, double altitude) {
