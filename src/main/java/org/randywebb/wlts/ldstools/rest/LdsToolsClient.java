@@ -39,12 +39,11 @@ public class LdsToolsClient {
 
 	private Properties apiCatalog = ApiCatalog.getInstance();
 	private Properties appConfig = AppConfig.getInstance();
-	private String unitNumber = null;
+	private String unitNumber = null; // cache unit number
 
 	public LdsToolsClient(String user, String password) throws AuthenticationException {
 		getHttpClient();
 		signIn(user, password);
-		unitNumber = getUnitNumber();
 	}
 
 	/**
@@ -105,6 +104,11 @@ public class LdsToolsClient {
 
 	}
 
+	public boolean leaderReportsAvailable()
+	{
+		return apiCatalog.getProperty("leader-reports-enabled").substring(0,1).equalsIgnoreCase("t");
+	}
+
 	/**
 	 * Assumes user is signed in to LDS Tools API
 	 * Retrieves the signed-in user's unit number
@@ -113,19 +117,19 @@ public class LdsToolsClient {
 	 */
 	public String getUnitNumber()
 	{
-		String unitNumber = null;
+		if (null == unitNumber) {
+			try {
+				JSONObject jsonObj = getEndpointInfo("current-user-unit");
 
-		try {
-			JSONObject jsonObj = getEndpointInfo("current-user-unit");
+				unitNumber =  jsonObj.get("message").toString();
+				if (log.isTraceEnabled())
+				{
+					log.trace("Unit Number Found: " + unitNumber);
+				}
 
-			unitNumber =  jsonObj.get("message").toString();
-			if (log.isTraceEnabled())
-			{
-				log.trace("Unit Number Found: " + unitNumber);
+			} catch (IOException e) {
+				log.error("Error retrieving Unit Number", e);
 			}
-
-		} catch (IOException e) {
-			log.error("Error retrieving Unit Number", e);
 		}
 		return unitNumber;
 	}

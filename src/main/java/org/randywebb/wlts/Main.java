@@ -103,6 +103,7 @@ public class Main {
   								.append(new KMLWriter.Name("Households"))
   								.append(new KMLWriter.Description("Households in the " + (String) ward.get("orgName")));
 
+	//System.out.println( households.toJSONString());
   	System.out.println("Unit: " + (String) ward.get("orgName"));
     households.forEach(action);
 
@@ -126,6 +127,7 @@ public class Main {
 			folder.append((new KMLWriter.Placemark())
 							.append(new KMLWriter.Name(household.getHouseholdName()))
 							.append(new KMLWriter.Description(household.getCoupleName()))
+							.append(new KMLWriter.UseStyle("home"))
 							.append(new KMLWriter.Point(lat, lon, 0.0)));
 
 		} else {
@@ -135,11 +137,12 @@ public class Main {
 	}
 
   	document.append(new KMLWriter.Name((String) ward.get("orgName")))
-  			.append(new KMLWriter.Invisible())
+  			.append(new KMLWriter.Open())
   			.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
   			.append(new KMLWriter.LookAt( (minLat + maxLat) / 2.0, (minLon + maxLon) / 2.0 ))
   			.append((new KMLWriter.Style("home"))
-  				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png")));
+  				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png"))
+  			.append(folder));
 
 	KMLWriter.write(filePath, document);
 
