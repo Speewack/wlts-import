@@ -17,64 +17,52 @@ public class KMLWriter {
   	public void write(String prefix, FileWriter output) throws IOException;
   };
 
-  public static class Name implements Item {
+  public static class Simple implements Item {
 
+  	public Simple(String tag, String value) {
+  		this.tag = tag;
+  		this.value = value;
+  	}
+
+  	public void write(String prefix, FileWriter output) throws IOException {
+		output.append(prefix + "<"+tag+">"+value+"</"+tag+">\n");
+  	}
+
+  	private String tag;
+  	private String value;
+
+  }
+
+  public static class Name extends Simple {
   	public Name(String name) {
-  		this.name = name;
+  		super("name", name);
   	}
-
-  	public void write(String prefix, FileWriter output) throws IOException {
-		output.append(prefix + "<name>"+name+"</name>\n");
-  	}
-
-  	private String name;
-
   }
 
-  public static class Description implements Item {
-
+  public static class Description extends Simple {
   	public Description(String description) {
-  		this.description = description;
+  		super("description", description);
   	}
-
-  	public void write(String prefix, FileWriter output) throws IOException {
-		output.append(prefix + "<description>"+description+"</description>\n");
-  	}
-
-  	private String description;
-
   }
 
-  public static class Invisible implements Item {
-
+  public static class Invisible extends Simple {
   	public Invisible() {
+  		super("visibility", "0");
   	}
-
-  	public void write(String prefix, FileWriter output) throws IOException {
-		output.append(prefix + "<visibility>0</visibility>\n");
-	}
-
   }
 
-  public static class UseStyle implements Item {
-
+  public static class UseStyle extends Simple {
   	public UseStyle(String name) {
-  		this.name = name;
+  		super("styleUrl", "#"+name);
   	}
-
-  	public void write(String prefix, FileWriter output) throws IOException {
-		output.append(prefix + "<styleUrl>#"+name+"</styleUrl>\n");
-	}
-
-	private String name;
-
   }
 
-  public static class Point {
+  public static class Point implements Item {
 
-  	public Point(double latitude, double longitude) {
+  	public Point(double latitude, double longitude, double altitude) {
   		this.latitude = latitude;
   		this.longitude = longitude;
+  		this.altitude = altitude;
   		extrude = false;
   		altitude_mode = null;
   	}
@@ -108,12 +96,13 @@ public class KMLWriter {
 			output.append(prefix + "\t<altitudeMode>"+altitude_mode+"</altitudeMode>\n");
 		}
 
-		output.append(prefix + "\t<coordinates>"+latitude+","+longitude+"</coordinates>\n");
+		output.append(prefix + "\t<coordinates>"+latitude+","+longitude+","+altitude+"</coordinates>\n");
 		output.append(prefix + "</Point>\n");
 	}
 
   	private double latitude;
   	private double longitude;
+  	private double altitude;
   	private boolean extrude;
   	private String altitude_mode;
   }
@@ -168,9 +157,31 @@ public class KMLWriter {
   	private double altitude;
   }
 
-  public static class Folder extends ArrayList<Item> implements Item {
+  public static class List extends ArrayList<Item> implements Item {
+
+  	public List(String tag, String attributes) {
+  		this.tag = tag;
+  		this.attributes = attributes;
+  	}
+
+  	public void write(String prefix, FileWriter output) throws IOException {
+  		output.append(prefix + "<"+tag+(null == attributes ? "" : (" " + attributes))+">\n");
+
+		for (Item item : this) {
+			item.write(prefix + "\t", output);
+		}
+
+  		output.append(prefix + "</"+tag+">\n");
+  	}
+
+  	private String tag;
+  	private String attributes;
+  }
+
+  public static class Folder extends List {
 
   	public Folder() {
+  		super("Folder", null);
   	}
 
 	public Folder append(Item item) {
@@ -178,21 +189,12 @@ public class KMLWriter {
 		return this;
 	}
 
-  	public void write(String prefix, FileWriter output) throws IOException {
-  		output.append(prefix + "<Folder>\n");
-
-		for (Item item : this) {
-			item.write(prefix + "\t", output);
-		}
-
-  		output.append(prefix + "</Folder>\n");
-  	}
-
   }
 
-  public static class Placemark extends ArrayList<Item> implements Item {
+  public static class Placemark extends List {
 
   	public Placemark() {
+  		super("Placemark", null);
   	}
 
 	public Placemark append(Item item) {
@@ -200,21 +202,11 @@ public class KMLWriter {
 		return this;
 	}
 
-  	public void write(String prefix, FileWriter output) throws IOException {
-  		output.append(prefix + "<Placemark>\n");
-
-		for (Item item : this) {
-			item.write(prefix + "\t", output);
-		}
-
-  		output.append(prefix + "</Placemark>\n");
-  	}
-
   }
 
-  public static class IconStyle implements Item {
+  public static class StyleIcon implements Item {
 
-  	public IconStyle(String url) {
+  	public StyleIcon(String url) {
   		this.url = url;
   	}
 
@@ -230,37 +222,22 @@ public class KMLWriter {
 
   }
 
-  public static class StyleWidth implements Item {
-
+  public static class StyleWidth extends Simple {
   	public StyleWidth(double width) {
-  		this.width = width;
+  		super("width", ""+width);
   	}
-
-  	public void write(String prefix, FileWriter output) throws IOException {
-		output.append(prefix + "<width>"+width+"</width>\n");
-	}
-
-	private double width;
-
   }
 
-  public static class StyleColor implements Item {
-
+  public static class StyleColor extends Simple {
   	public StyleColor(String color) {
-  		this.color = color;
+  		super("color", color);
   	}
-
-  	public void write(String prefix, FileWriter output) throws IOException {
-		output.append(prefix + "<color>"+color+"</color>\n");
-	}
-
-	private String color;
-
   }
 
-  public static class LineStyle extends ArrayList<Item> implements Item {
+  public static class LineStyle extends List {
 
   	public LineStyle() {
+  		super("LineStyle", null);
   	}
 
 	public LineStyle append(Item item) {
@@ -268,21 +245,12 @@ public class KMLWriter {
 		return this;
 	}
 
-  	public void write(String prefix, FileWriter output) throws IOException {
-  		output.append(prefix + "<LineStyle>\n");
-
-		for (Item item : this) {
-			item.write(prefix + "\t", output);
-		}
-
-  		output.append(prefix + "</LineStyle>\n");
-  	}
-
   }
 
-  public static class PolyStyle extends ArrayList<Item> implements Item {
+  public static class PolyStyle extends List {
 
   	public PolyStyle() {
+  		super("PolyStyle", null);
   	}
 
 	public PolyStyle append(Item item) {
@@ -290,22 +258,12 @@ public class KMLWriter {
 		return this;
 	}
 
-  	public void write(String prefix, FileWriter output) throws IOException {
-  		output.append(prefix + "<PolyStyle>\n");
-
-		for (Item item : this) {
-			item.write(prefix + "\t", output);
-		}
-
-  		output.append(prefix + "</PolyStyle>\n");
-  	}
-
   }
 
-  public static class Style extends ArrayList<Item> implements Item {
+  public static class Style extends List {
 
   	public Style(String name) {
-  		this.name = name;
+  		super("Style", "id=\""+name+"\"");
   	}
 
 	public Style append(Item item) {
@@ -313,47 +271,35 @@ public class KMLWriter {
 		return this;
 	}
 
-  	public void write(String prefix, FileWriter output) throws IOException {
-  		output.append(prefix + "<Style id=\""+name+"\">\n");
+  }
 
-		for (Item item : this) {
-			item.write(prefix + "\t", output);
-		}
+  public static class Open extends Simple {
+  	public Open() {
+  		super("open", "1");
+  	}
+  }
 
-  		output.append(prefix + "</Style>\n");
+  public static class Document extends List {
+
+  	public Document() {
+  		super("Document", null);
   	}
 
-  	private String name;
+	public Document append(Item item) {
+		add(item);
+		return this;
+	}
 
   }
 
-  public static void write(String filename, String name, String description, List<Style> styles, List<Folder> folders) throws IOException {
-  	String prefix = "";
+  public static void write(String filename, Document document) throws IOException {
   	FileWriter output = new FileWriter(filename);
 
-  	output.append(prefix + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-  	output.append(prefix + "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n");
+  	output.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+  	output.append("<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n");
 
-  	prefix += "\t";
-  	output.append(prefix + "<Document>\n");
-
-  	prefix += "\t";
-  	output.append(prefix + "<name>"+name+"</name>\n");
-  	output.append(prefix + "<open>1</open>\n");
-  	output.append(prefix + "<description>"+description+"</description>\n");
-
-  	for (Style style : styles) {
-  		style.write(prefix, output);
-  	}
-
-  	for (Folder folder : folders) {
-  		folder.write(prefix, output);
-  	}
-
-  	prefix = prefix.substring(0, prefix.length() - 1);
-  	output.append(prefix+"</Document>\n");
-  	prefix = prefix.substring(0, prefix.length() - 1);
-  	output.append(prefix+"</kml>\n");
+	document.write("\t", output);
+  	output.append("</kml>\n");
   	output.close();
   }
 

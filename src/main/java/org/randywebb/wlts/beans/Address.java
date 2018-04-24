@@ -33,7 +33,7 @@ public class Address {
    *          the streetAddress to set
    */
   public void setStreetAddress(String streetAddress) {
-    this.streetAddress = streetAddress.trim();
+    this.streetAddress = null == streetAddress ? null : streetAddress.trim();
   }
 
   /**
@@ -48,7 +48,7 @@ public class Address {
    *          the city to set
    */
   public void setCity(String city) {
-    this.city = city.trim();
+    this.city = null == city ? null : city.trim();
   }
 
   /**
@@ -63,7 +63,7 @@ public class Address {
    *          the state to set
    */
   public void setState(String state) {
-    State = state.trim();
+    State = null == state ? null : state.trim();
   }
 
   /**
@@ -78,7 +78,7 @@ public class Address {
    *          the postalCode to set
    */
   public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode.trim();
+    this.postalCode = null == postalCode ? null : postalCode.trim();
   }
 
   /**
@@ -93,7 +93,7 @@ public class Address {
    *          the longitude to set
    */
   public void setLongitude(String longitude) {
-    this.longitude = longitude.trim();
+    this.longitude = null == longitude ? null : longitude.trim();
   }
 
   /**
@@ -108,7 +108,7 @@ public class Address {
    *          the lattitude to set
    */
   public void setLattitude(String lattitude) {
-    this.lattitude = lattitude.trim();
+    this.lattitude = null == lattitude ? null : lattitude.trim();
   }
 
   /**

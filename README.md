@@ -23,6 +23,6 @@ If you have admin access on LDS Tools:
 
 If you do not have admin access:
 
-`java -jar target/lds-tools-export-1.0-jar-with-dependencies.jar --minimal <username> output.csv`
+`java -jar target/lds-tools-export-1.0-jar-with-dependencies.jar --map <username> output.csv`
 
-*Note:* --minimal is not available at this time
+*Note:* --map is not fully functional at this time
