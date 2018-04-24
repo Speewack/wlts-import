@@ -5,6 +5,7 @@ package org.randywebb.wlts.ldstools.json;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -19,16 +20,36 @@ import org.randywebb.wlts.beans.HouseholdMember;
 public class HouseholdConsumer extends AbstractConsumer {
 
 	private List<Household> households;
+	private Map<String,Household> idToHousehold;
 
 	public HouseholdConsumer(List<Household> households) {
 		this.households = households;
+		this.idToHousehold = null;
+	}
+
+	public HouseholdConsumer(Map<String,Household> households) {
+		this.households = null;
+		this.idToHousehold = households;
+	}
+
+	public HouseholdConsumer(List<Household> households, Map<String,Household> householdMap) {
+		this.households = households;
+		this.idToHousehold = householdMap;
 	}
 
 	@Override
 	public void accept(Object obj) {
 		JSONObject jo = (JSONObject) obj;
+		Household household = bindHousehold(jo);
 
-		households.add(bindHousehold(jo));
+		if (null != households) {
+			households.add(household);
+		}
+		if (null != idToHousehold) {
+			for (String memberId : household.getIndividualIds()) {
+				idToHousehold.put(memberId, household);
+			}
+		}
 	}
 
 	public static Household bindHousehold(JSONObject jo) {

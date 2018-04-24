@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.randywebb.wlts.beans;
 
@@ -31,6 +31,19 @@ public class Household {
 	private String emailAddress;
 	private String coupleName;
 	private String headOfHouseholdIndividualID;
+
+	public List<String> getIndividualIds() {
+		List<String> ids = new ArrayList<String>();
+
+		ids.add(headOfHousehold.getIndividualId());
+		if (null != spouse) {
+			ids.add(spouse.getIndividualId());
+		}
+		for (HouseholdMember child : children) {
+			ids.add(child.getIndividualId());
+		}
+		return ids;
+	}
 
 	public String getHouseholdName() {
 		return householdName;
@@ -74,7 +87,7 @@ public class Household {
 
 	/**
 	 * Add multiple children to the household
-	 * 
+	 *
 	 * @param children
 	 *            List<Member>
 	 */
@@ -84,7 +97,7 @@ public class Household {
 
 	/**
 	 * Add a single child to the household
-	 * 
+	 *
 	 * @param child
 	 *            Member
 	 */

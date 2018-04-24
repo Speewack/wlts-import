@@ -142,11 +142,20 @@ public class LdsToolsClient {
 		return getHttpClient().execute(httpGet, new JSONResponseHandler());
 	}
 
-	public InputStream getAppProperty(String appPropertyName) throws IOException
+	public InputStream getAppProperty(String appPropertyName, String... args) throws IOException
 	{
-		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty(appPropertyName));
+		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
 		HttpResponse response = getHttpClient().execute(httpGet);
 		return response.getEntity().getContent();
+	}
+
+	public JSONObject getAppPropertyEndpointInfo(String appPropertyName, String... args) throws IOException
+	{
+		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler());
 	}
 
 	public InputStream getMemberInfo() throws IOException

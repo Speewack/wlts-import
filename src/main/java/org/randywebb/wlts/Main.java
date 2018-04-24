@@ -8,8 +8,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.HashMap;
 
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
@@ -92,13 +94,70 @@ public class Main {
 
   }
 
+  private static void addAuxiliaries(JSONObject person, List<String> htIds, List<String> vtIds) {
+	JSONObject teachers = (JSONObject) person.get("teacherAuxIds");
+	JSONArray ht = (JSONArray) teachers.get("htAuxiliaries");
+	JSONArray vt = (JSONArray) teachers.get("vtAuxiliaries");
+
+	if (null != ht) {
+		for (Object ministerObject : ht) {
+			String value = Long.toString((Long) ministerObject);
+
+			if (!htIds.contains(value)) {
+				htIds.add(value);
+			}
+		}
+	}
+
+	if (null != vt) {
+		for (Object ministerObject : vt) {
+			String value = Long.toString((Long) ministerObject);
+
+			if (!vtIds.contains(value)) {
+				vtIds.add(value);
+			}
+		}
+	}
+
+  }
+
+  private static void getAuxiliaries(LdsToolsClient client, List<String> htIds, List<String> vtIds) throws IOException, ParseException {
+	JSONObject members = client.getAppPropertyEndpointInfo("ministering-members-endpoint");
+	JSONArray families = (JSONArray) members.get("families");
+
+	for (Object familyObject : families) {
+		JSONObject family = (JSONObject) familyObject;
+		JSONObject spouse = (JSONObject) family.get("spouse");
+		JSONArray children = (JSONArray) family.get("children");
+
+		addAuxiliaries((JSONObject) family.get("headOfHouse"), htIds, vtIds);
+
+		if (null != spouse) {
+			addAuxiliaries(spouse, htIds, vtIds);
+		}
+
+		if (null != children) {
+			for (Object childObject : children) {
+				addAuxiliaries((JSONObject) childObject, htIds, vtIds);
+			}
+		}
+
+	}
+  }
+
+  /** Generate .kml file.
+  	@param client lds tools client to use for connection
+  	@param filePath the path to the .kml file to generate
+  	Icons for maps can be found at: http://kml4earth.appspot.com/icons.html
+  */
   private static void generateMapReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
   	KMLWriter.Document document = new KMLWriter.Document();
   	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
   	JSONArray households = (JSONArray) ward.get("households");
 	double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
     List<Household> household_list = new LinkedList<Household>();
-    HouseholdConsumer action = new HouseholdConsumer(household_list);
+	HashMap<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
+    HouseholdConsumer action = new HouseholdConsumer(household_list, idToHousehold);
   	KMLWriter.Folder folder = (new KMLWriter.Folder())
   								.append(new KMLWriter.Name("Households"))
   								.append(new KMLWriter.Description("Households in the " + (String) ward.get("orgName")));
@@ -140,8 +199,21 @@ public class Main {
   			.append(new KMLWriter.Open())
   			.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
   			.append((new KMLWriter.Style("home"))
-  				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png")))
+  				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png")))
   			.append(folder);
+
+	if (client.leaderReportsAvailable()) {
+		List<String> priesthood = new ArrayList<String>();
+		List<String> reliefsociety = new ArrayList<String>();
+		getAuxiliaries(client, priesthood, reliefsociety);
+
+		for (String aux : priesthood) {
+			System.out.println("priesthood: " + aux);
+		}
+		for (String aux : reliefsociety) {
+			System.out.println("reliefsociety: " + aux);
+		}
+	}
 
 	KMLWriter.write(filePath, document);
 
