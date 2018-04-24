@@ -25,7 +25,7 @@ public class KMLWriter {
   	}
 
   	public void write(String prefix, FileWriter output) throws IOException {
-		output.append(prefix + "<"+tag+">"+value+"</"+tag+">\n");
+		output.append(prefix + "<"+tag+"><![CDATA["+value+"]]></"+tag+">\n");
   	}
 
   	private String tag;
@@ -96,7 +96,7 @@ public class KMLWriter {
 			output.append(prefix + "\t<altitudeMode>"+altitude_mode+"</altitudeMode>\n");
 		}
 
-		output.append(prefix + "\t<coordinates>"+latitude+","+longitude+","+altitude+"</coordinates>\n");
+		output.append(prefix + "\t<coordinates>"+longitude+","+latitude+","+altitude+"</coordinates>\n");
 		output.append(prefix + "</Point>\n");
 	}
 
@@ -213,7 +213,7 @@ public class KMLWriter {
   	public void write(String prefix, FileWriter output) throws IOException {
 		output.append(prefix + "<IconStyle>\n");
 		output.append(prefix + "\t<Icon>\n");
-		output.append(prefix + "\t\t<href>"+url+"</href>\n");
+		output.append(prefix + "\t\t<href><![CDATA["+url+"]]></href>\n");
 		output.append(prefix + "\t</Icon>\n");
 		output.append(prefix + "</IconStyle>\n");
 	}

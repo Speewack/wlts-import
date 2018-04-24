@@ -139,10 +139,9 @@ public class Main {
   	document.append(new KMLWriter.Name((String) ward.get("orgName")))
   			.append(new KMLWriter.Open())
   			.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
-  			.append(new KMLWriter.LookAt( (minLat + maxLat) / 2.0, (minLon + maxLon) / 2.0 ))
   			.append((new KMLWriter.Style("home"))
-  				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png"))
-  			.append(folder));
+  				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png")))
+  			.append(folder);
 
 	KMLWriter.write(filePath, document);
 
