@@ -22,7 +22,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.randywebb.wlts.beans.DetailedMember;
 import org.randywebb.wlts.beans.Household;
+import org.randywebb.wlts.beans.District;
+import org.randywebb.wlts.beans.Companionship;
+import org.randywebb.wlts.beans.Visit;
+import org.randywebb.wlts.beans.Assignment;
+import org.randywebb.wlts.beans.Teacher;
 import org.randywebb.wlts.ldstools.json.DetailedMemberConsumer;
+import org.randywebb.wlts.ldstools.json.DistrictConsumer;
 import org.randywebb.wlts.ldstools.json.HouseholdConsumer;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.util.CSVWriter;
@@ -48,18 +54,19 @@ public class Main {
 
     // read input parameters
     if ( (args.length < 2) || (args.length > 4) ) {
-      System.out.println("Usage Main username password target_file");
-      System.out.println("\tor Main username target_file");
-      System.out.println("\tor Main --map username password target_file");
-      System.out.println("\tor Main --map username target_file");
+      System.out.println("Usage Main [verb] username [password] target_file");
+      System.out.println("\t[verb] may be --map or --ministers or empty");
+      System.out.println("\tif [password] is not passed, it will be requested");
       System.exit(1);
     }
 
+	final boolean ministers = args[0].equals("--ministers");
 	final boolean map = args[0].equals("--map");
-	final boolean hasPassword = (map && args.length == 4) || (!map && args.length == 3);
-	final int usernameIndex = map ? 1 : 0;
-	final int targetIndex = 1 + (hasPassword ? 1 : 0) + (map ? 1 : 0);
-	final int passwordIndex = hasPassword ? (map ? 2 : 1) : 0;
+	final boolean verb = ministers || map;
+	final boolean hasPassword = (verb && args.length == 4) || (!verb && args.length == 3);
+	final int usernameIndex = verb ? 1 : 0;
+	final int targetIndex = 1 + (hasPassword ? 1 : 0) + (verb ? 1 : 0);
+	final int passwordIndex = hasPassword ? (verb ? 2 : 1) : 0;
 
 	// determine username and password
 	String password = hasPassword ? args[passwordIndex] : null;
@@ -84,13 +91,14 @@ public class Main {
     // Capture file path from args
 	String filePath = args[targetIndex];
 
-	if (!map && isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
+	if (!verb && isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
 		generateWLTSReport(client, filePath);
 	} else if (map) {
 		generateMapReport(client, filePath);
-		System.out.println("This will be really cool when we implement it!");
+	} else if (ministers) {
+		generateMinistersReport(client, filePath);
 	} else {
-		System.out.println("You do not have permissions to export all data. You can pass '--map' as the first argument to export what you can");
+		System.out.println("You do not have permissions to export all data. You can pass '--map' or '--ministers' as the first argument to export what you can");
 	}
 
   }
@@ -147,19 +155,118 @@ public class Main {
   }
 
   private static KMLWriter.Folder mapCompanionships(LdsToolsClient client, String auxiliaryId, String auxiliaryName, String companionshipName, String ministryName, Map<String,Household> map) throws IOException, ParseException {
-	KMLWriter.Folder folder = new KMLWriter.Folder();
-	JSONArray companionships = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
-
-	folder.append(new KMLWriter.Name(auxiliaryName))
+	JSONArray districtsJSON = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
+	List<District> districts = new ArrayList<District>();
+	DistrictConsumer action = new DistrictConsumer(districts);
+	KMLWriter.Folder folder = new KMLWriter.Folder()
+		.append(new KMLWriter.Name(auxiliaryName))
 		.append(new KMLWriter.Description("Ministry map for " + auxiliaryName));
 
-	for (Object districtObject : companionships) {
-		JSONObject district = (JSONObject) districtObject;
+	districtsJSON.forEach(action);
 
-		System.out.println("District: " + district.get("name"));
+	for (District district : districts) {
+		KMLWriter.Folder districtFolder = new KMLWriter.Folder()
+					.append(new KMLWriter.Name(district.getName()))
+					.append(new KMLWriter.Description("Map of ministering companionships for " + district.getName()));
+
+		for (Companionship companionship : district.getCompanionships()) {
+			String name = "", prefix;
+			double startLon = 0.0, startLat = 0.0;
+			boolean haveStart = false;
+			KMLWriter.Placemark connected = new KMLWriter.Placemark();
+			KMLWriter.Line connection = new KMLWriter.Line();
+
+			prefix = "";
+			for (Teacher teacher : companionship.getTeachers()) {
+				String	individualId = teacher.getIndividualId();
+				Household household = map.get(individualId);
+
+				if (null != household) {
+					name = name + prefix + household.getMember(individualId).getPreferredName();
+					prefix = " - ";
+
+					if (null != household.getHouseholdAddress().getLattitude() && null != household.getHouseholdAddress().getLongitude()) {
+						double lat = Double.parseDouble(household.getHouseholdAddress().getLattitude());
+						double lon = Double.parseDouble(household.getHouseholdAddress().getLongitude());
+
+						connection.add(lat, lon, 0.0);
+						if (!haveStart) {
+							haveStart = true;
+							startLon = lon;
+							startLat = lat;
+						}
+					}
+				}
+			}
+
+			districtFolder.append(connected
+									.append(new KMLWriter.Name(name))
+									.append(new KMLWriter.Description("Ministering Companionship: " + name))
+									.append(new KMLWriter.UseStyle(companionshipName))
+									.append(connection));
+
+			for (Assignment assignment : companionship.getAssignments()) {
+				String	familyId = assignment.getIndividualId();
+				Household family = map.get(familyId);
+				connected = new KMLWriter.Placemark();
+				connection = new KMLWriter.Line();
+
+				prefix = "";
+				name = "";
+				for (Teacher teacher : companionship.getTeachers()) {
+					String	individualId = teacher.getIndividualId();
+					Household household = map.get(individualId);
+
+
+				}
+
+			}
+
+		}
+
+		folder.append(districtFolder);
+
 	}
 
 	return folder;
+  }
+
+  private static void generateMinistersReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
+  	KMLWriter.Document document = new KMLWriter.Document();
+  	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
+  	JSONArray households = (JSONArray) ward.get("households");
+	double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
+    List<Household> household_list = new LinkedList<Household>();
+	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
+    HouseholdConsumer action = new HouseholdConsumer(household_list, idToHousehold);
+
+	//System.out.println( households.toJSONString());
+  	System.out.println("Unit: " + (String) ward.get("orgName"));
+    households.forEach(action);
+
+  	document.append(new KMLWriter.Name((String) ward.get("orgName")))
+  			.append(new KMLWriter.Open())
+  			.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
+  			.append((new KMLWriter.Style("companionship"))
+  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(10)).append(new KMLWriter.StyleColor("87000000"))))
+  			.append((new KMLWriter.Style("ministry"))
+  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(4)).append(new KMLWriter.StyleColor("7f00ffff"))));;
+
+	if (client.leaderReportsAvailable()) {
+		List<String> priesthood = new ArrayList<String>();
+		List<String> reliefsociety = new ArrayList<String>();
+		getAuxiliaries(client, priesthood, reliefsociety);
+
+		for (String aux : priesthood) {
+			document.append(mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold));
+		}
+		for (String aux : reliefsociety) {
+			document.append(mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold));
+		}
+	}
+
+	KMLWriter.write(filePath, document);
+
   }
 
   /** Generate .kml file.
@@ -223,19 +330,6 @@ public class Main {
   			.append((new KMLWriter.Style("home"))
   				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png")))
   			.append(folder);
-
-	if (client.leaderReportsAvailable()) {
-		List<String> priesthood = new ArrayList<String>();
-		List<String> reliefsociety = new ArrayList<String>();
-		getAuxiliaries(client, priesthood, reliefsociety);
-
-		for (String aux : priesthood) {
-			document.append(mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold));
-		}
-		for (String aux : reliefsociety) {
-			document.append(mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold));
-		}
-	}
 
 	KMLWriter.write(filePath, document);
 

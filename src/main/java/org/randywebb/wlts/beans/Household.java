@@ -49,6 +49,25 @@ public class Household {
 		return householdName;
 	}
 
+	public HouseholdMember getMember(String individualId) {
+
+		if (individualId.equals(headOfHousehold.getIndividualId())) {
+			return headOfHousehold;
+		}
+
+		if ( (null != spouse) && individualId.equals(spouse.getIndividualId()) ) {
+			return spouse;
+		}
+
+		for (HouseholdMember child : children) {
+			if (individualId.equals(child.getIndividualId())) {
+				return child;
+			}
+		}
+
+		return null;
+	}
+
 	public void setHouseholdName(String householdName) {
 		this.householdName = householdName;
 	}
