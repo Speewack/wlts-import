@@ -154,16 +154,16 @@ public class Main {
 	}
   }
 
-  private static KMLWriter.Folder mapCompanionships(LdsToolsClient client, String auxiliaryId, String auxiliaryName, String companionshipName, String ministryName, Map<String,Household> map) throws IOException, ParseException {
+  private static void mapCompanionships(LdsToolsClient client, String auxiliaryId, String auxiliaryName, String companionshipName, String ministryName, Map<String,Household> map, KMLWriter.List container) throws IOException, ParseException {
 	JSONArray districtsJSON = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
 	List<District> districts = new ArrayList<District>();
 	DistrictConsumer action = new DistrictConsumer(districts);
 	KMLWriter.Folder folder = new KMLWriter.Folder()
-		.append(new KMLWriter.Name(auxiliaryName))
-		.append(new KMLWriter.Description("Ministry map for " + auxiliaryName));
+				.append(new KMLWriter.Name(auxiliaryName))
+				.append(new KMLWriter.Description("Map of ministering companionships for " + auxiliaryName));
 
 	if (districtsJSON.size() == 0) {
-		return null;
+		return;
 	}
 
 	districtsJSON.forEach(action);
@@ -203,7 +203,8 @@ public class Main {
 				}
 			}
 
-			districtFolder.append(connected
+			districtFolder
+						.append(connected
 									.append(new KMLWriter.Name(name))
 									.append(new KMLWriter.Description("Ministering Companionship: " + name))
 									.append(new KMLWriter.UseStyle(companionshipName))
@@ -212,15 +213,38 @@ public class Main {
 			for (Assignment assignment : companionship.getAssignments()) {
 				String	familyId = assignment.getIndividualId();
 				Household family = map.get(familyId);
-				connected = new KMLWriter.Placemark();
-				connection = new KMLWriter.Line();
 
-				prefix = "";
-				name = "";
-				for (Teacher teacher : companionship.getTeachers()) {
-					String	individualId = teacher.getIndividualId();
-					Household household = map.get(individualId);
+				if (null != family.getHouseholdAddress().getLattitude() && null != family.getHouseholdAddress().getLongitude()) {
+					connected = new KMLWriter.Placemark();
+					connection = new KMLWriter.Line();
+					double lat_family = Double.parseDouble(family.getHouseholdAddress().getLattitude());
+					double lon_family = Double.parseDouble(family.getHouseholdAddress().getLongitude());
 
+					connection.add(lat_family, lon_family, 0.0);
+
+					prefix = "";
+					name = family.getMember(familyId).getPreferredName() + " ministered by ";
+					for (Teacher teacher : companionship.getTeachers()) {
+						String	individualId = teacher.getIndividualId();
+						Household household = map.get(individualId);
+
+						name += prefix + household.getMember(individualId).getPreferredName();
+						prefix = ", ";
+						if (null != household.getHouseholdAddress().getLattitude() && null != household.getHouseholdAddress().getLongitude()) {
+							double lat = Double.parseDouble(household.getHouseholdAddress().getLattitude());
+							double lon = Double.parseDouble(household.getHouseholdAddress().getLongitude());
+
+							connection.add(lat, lon, 0.0);
+						}
+
+					}
+
+					connection.add(lat_family, lon_family, 0.0);
+					districtFolder.append(connected
+											.append(new KMLWriter.Name(district.getName() + " - " + name))
+											.append(new KMLWriter.Description("Family Ministered: " + family.getMember(familyId).getPreferredName()))
+											.append(new KMLWriter.UseStyle(ministryName))
+											.append(connection));
 
 				}
 
@@ -228,11 +252,12 @@ public class Main {
 
 		}
 
-		folder.append(districtFolder);
+		folder.add(districtFolder);
 
 	}
 
-	return folder;
+	container.add(folder);
+
   }
 
   private static void generateMinistersReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
@@ -244,7 +269,6 @@ public class Main {
 	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
     HouseholdConsumer action = new HouseholdConsumer(household_list, idToHousehold);
 
-	//System.out.println( households.toJSONString());
   	System.out.println("Unit: " + (String) ward.get("orgName"));
     households.forEach(action);
 
@@ -262,18 +286,11 @@ public class Main {
 		getAuxiliaries(client, priesthood, reliefsociety);
 
 		for (String aux : priesthood) {
-			KMLWriter.Folder found = mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold);
-
-			if (null != found) {
-				document.append(found);
-			}
+			mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold, document);
 		}
-		for (String aux : reliefsociety) {
-			KMLWriter.Folder found = mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold);
 
-			if (null != found) {
-				document.append(found);
-			}
+		for (String aux : reliefsociety) {
+			mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold, document);
 		}
 	}
 
