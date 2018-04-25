@@ -13,6 +13,7 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
@@ -44,34 +45,73 @@ public class Main {
 
   private static Logger log = LoggerFactory.getLogger(Main.class);
 
+  private static String[] parseArgs(String[] args, String[] onOff, String[] hasValue, Map<String,String> results) {
+  	String	next = null;
+  	List<String> ordinal = new ArrayList<String>();
+	List<String> onOffList = (null == onOff) ? null : Arrays.asList(onOff);
+	List<String> hasValueList = (null == hasValue) ? null : Arrays.asList(hasValue);
+
+  	for (String arg : args) {
+  		if (null != next) {
+  			results.put(next, arg);
+  			next = null;
+  		} else if ( (null != onOff) && onOffList.contains(arg)) {
+  			results.put(arg, "true");
+  		} else if( (null != hasValue) && hasValueList.contains(arg) ) {
+  			next = arg;
+  		} else {
+  			ordinal.add(arg);
+  		}
+  	}
+
+  	if (null != next) {
+  		System.out.println("Passed " + next + " but need a value after it");
+  		System.exit(1);
+  	}
+
+	return ordinal.toArray(new String[0]);
+  }
+
   /**
    * @param args
    * @throws Exception
    * @throws IOException
    * @throws ClientProtocolException
    */
-  public static void main(String[] args) throws Exception {
+  public static void main(String... args) throws Exception {
+  	Map<String,String> switches = new HashMap<String,String>();
+  	String[] outputFileTypes = {"--map", "--routes", "--ministers"};
+	String[] arguments = parseArgs(args, null, outputFileTypes, switches);
 
     // read input parameters
-    if ( (args.length < 2) || (args.length > 4) ) {
-      System.out.println("Usage Main [verb] username [password] target_file");
-      System.out.println("\t[verb] may be --map, --routes or --ministers or empty");
+    if ( (arguments.length < 1) || (arguments.length > 3) ) {
+      System.out.println("Usage Main [--map /path/to/file.kml] [--ministers /path/to/file.kml] [--routes /path/to/file.kml] username [password] target_file");
       System.out.println("\tif [password] is not passed, it will be requested");
+      log.trace("arguments.length = " + arguments.length);
+      for (String argument : arguments) {
+      	log.trace("\t" + argument);
+      }
       System.exit(1);
     }
 
-	final boolean ministers = args[0].equals("--ministers");
-	final boolean routes = args[0].equals("--routes");
-	final boolean map = args[0].equals("--map");
+	final boolean ministers = switches.containsKey("--ministers");
+	final boolean routes = switches.containsKey("--routes");
+	final boolean map = switches.containsKey("--map");
 	final boolean verb = ministers || map || routes;
-	final boolean hasPassword = (verb && args.length == 4) || (!verb && args.length == 3);
-	final int usernameIndex = verb ? 1 : 0;
-	final int targetIndex = 1 + (hasPassword ? 1 : 0) + (verb ? 1 : 0);
-	final int passwordIndex = hasPassword ? (verb ? 2 : 1) : 0;
+	final boolean hasPassword = (verb && arguments.length == 2) || (!verb && arguments.length == 3);
+	final int usernameIndex = 0;
+	final int targetIndex = 1 + (hasPassword ? 1 : 0);
+	final int passwordIndex = 1;
+
+	if ( !verb && (arguments.length < 2) ) {
+      System.out.println("Usage Main [--map /path/to/file.kml] [--ministers /path/to/file.kml] [--routes /path/to/file.kml] username [password] target_file");
+      System.out.println("\tif [password] is not passed, it will be requested");
+      System.exit(1);
+	}
 
 	// determine username and password
-	String password = hasPassword ? args[passwordIndex] : null;
-	String username = args[usernameIndex];
+	String password = hasPassword ? arguments[passwordIndex] : null;
+	String username = arguments[usernameIndex];
 
 	if (!hasPassword) {
 		System.out.print("Enter password [" + username + "]: ");
@@ -90,14 +130,25 @@ public class Main {
     }
 
     // Capture file path from args
-	String filePath = args[targetIndex];
 
 	if (!verb && isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
+		String filePath = arguments[targetIndex];
+
 		generateWLTSReport(client, filePath);
-	} else if (map) {
-		generateMapReport(client, filePath);
-	} else if (ministers || routes) {
-		generateMinistersReport(client, routes, filePath);
+	} else if (verb) {
+
+		if (map) {
+			generateMapReport(client, switches.get("--map"));
+		}
+
+		if (ministers) {
+			generateMinistersReport(client, false, switches.get("--ministers"));
+		}
+
+		if (routes) {
+			generateMinistersReport(client, true, switches.get("--routes"));
+		}
+
 	} else {
 		System.out.println("You do not have permissions to export all data. You can pass '--map', '--routes' or '--ministers' as the first argument to export what you can");
 	}
