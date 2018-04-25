@@ -73,4 +73,9 @@ public class District {
 		return Collections.unmodifiableList(companionships);
 	}
 
+	@Override
+	public String toString() {
+		return "District: " + getName();
+	}
+
 }

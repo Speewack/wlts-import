@@ -35,4 +35,10 @@ public class Teacher {
 		return individualId;
 	}
 
+	@Override
+	public String toString() {
+		return "Teacher [id=" + id + ", companionshipId=" + companionshipId + ", individualId="
+				+ individualId + "]";
+	}
+
 }

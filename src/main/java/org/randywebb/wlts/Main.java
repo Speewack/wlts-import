@@ -226,9 +226,9 @@ public class Main {
 										.append(new KMLWriter.Description("Ministering Companionship: " + name))
 										.append(new KMLWriter.UseStyle(companionshipName))
 										.append(connection));
-			} else {
+			} else if (companionship.getTeachers().size() > 0) {
 				districtFolder.append((new KMLWriter.Placemark())
-								.append(new KMLWriter.Name(name))
+								.append(new KMLWriter.Name(district.getName() + " - " + name))
 								.append(new KMLWriter.Description(name))
 								.append(new KMLWriter.UseStyle(ministerName))
 								.append(new KMLWriter.Point(startLat, startLon, 0.0)));
@@ -269,7 +269,7 @@ public class Main {
 
 					connection.add(lat_family, lon_family, 0.0);
 					districtFolder.append(connected
-											.append(new KMLWriter.Name(district.getName() + " - " + name))
+											.append(new KMLWriter.Name(name))
 											.append(new KMLWriter.Description("Family Ministered: " + family.getMember(familyId).getPreferredName()))
 											.append(new KMLWriter.UseStyle(ministryPrefix + ministryIndex))
 											.append(connection));

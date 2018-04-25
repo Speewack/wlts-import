@@ -64,4 +64,10 @@ public class Assignment {
 		return Collections.unmodifiableList(visits);
 	}
 
+	@Override
+	public String toString() {
+		return "Assignment [companionshipId=" + companionshipId + ", individualId=" + individualId + ", assignmentType="
+				+ assignmentType + "]";
+	}
+
 }
