@@ -162,6 +162,10 @@ public class Main {
 		.append(new KMLWriter.Name(auxiliaryName))
 		.append(new KMLWriter.Description("Ministry map for " + auxiliaryName));
 
+	if (districtsJSON.size() == 0) {
+		return null;
+	}
+
 	districtsJSON.forEach(action);
 
 	for (District district : districts) {
@@ -258,10 +262,18 @@ public class Main {
 		getAuxiliaries(client, priesthood, reliefsociety);
 
 		for (String aux : priesthood) {
-			document.append(mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold));
+			KMLWriter.Folder found = mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold);
+
+			if (null != found) {
+				document.append(found);
+			}
 		}
 		for (String aux : reliefsociety) {
-			document.append(mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold));
+			KMLWriter.Folder found = mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold);
+
+			if (null != found) {
+				document.append(found);
+			}
 		}
 	}
 
