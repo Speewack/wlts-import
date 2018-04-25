@@ -180,6 +180,7 @@ public class Main {
 			boolean haveStart = false;
 			KMLWriter.Placemark connected = new KMLWriter.Placemark();
 			KMLWriter.Line connection = new KMLWriter.Line();
+			boolean distinctCompanionLocations = false;
 
 			prefix = "";
 			for (Teacher teacher : companionship.getTeachers()) {
@@ -200,11 +201,12 @@ public class Main {
 							startLon = lon;
 							startLat = lat;
 						}
+						distinctCompanionLocations = distinctCompanionLocations || (startLon != lon) || (startLat != lat);
 					}
 				}
 			}
 
-			if (companionship.getTeachers().size() > 1) {
+			if (distinctCompanionLocations) {
 				districtFolder
 							.append(connected
 										.append(new KMLWriter.Name(name))
@@ -271,9 +273,6 @@ public class Main {
 
   }
 
-  /**
-  	@todo Remove duplicate points in line (companionship in same house)
-  */
   private static void generateMinistersReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
   	KMLWriter.Document document = new KMLWriter.Document();
   	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
@@ -286,8 +285,8 @@ public class Main {
     households.forEach(action);
 
 	String[] colors = {
-		"7fff0000", "7f00ff00", "7f0000ff", "7fffff00", "7f00ffff", "7fff00ff", "7f7f7f7f",
-		"7fff7f7f", "7f7fff7f", "7f7f7fff", "7fffff7f", "7f7fffff", "7fff7fff", "7f7f7f7f"
+		"7fff0000", "7f0000ff", "7fffff00", "7f00ffff", "7fff00ff", "7f7f7f7f", "7f00ff00",
+		"7fff7f7f", "7f7f7fff", "7fffff7f", "7f7fffff", "7fff7fff", "7f7f7f7f", "7f7fff7f"
 	};
 
   	document.append(new KMLWriter.Name((String) ward.get("orgName")))
