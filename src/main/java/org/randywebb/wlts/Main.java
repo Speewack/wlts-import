@@ -154,7 +154,7 @@ public class Main {
 	}
   }
 
-  private static void mapCompanionships(LdsToolsClient client, String auxiliaryId, String auxiliaryName, String companionshipName, String ministryName, Map<String,Household> map, KMLWriter.List container) throws IOException, ParseException {
+  private static void mapCompanionships(LdsToolsClient client, String auxiliaryId, String auxiliaryName, String companionshipName, String ministryPrefix, String ministerName, Map<String,Household> map, KMLWriter.List container) throws IOException, ParseException {
 	JSONArray districtsJSON = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
 	List<District> districts = new ArrayList<District>();
 	DistrictConsumer action = new DistrictConsumer(districts);
@@ -172,6 +172,7 @@ public class Main {
 		KMLWriter.Folder districtFolder = new KMLWriter.Folder()
 					.append(new KMLWriter.Name(district.getName()))
 					.append(new KMLWriter.Description("Map of ministering companionships for " + district.getName()));
+		int ministryIndex = 0;
 
 		for (Companionship companionship : district.getCompanionships()) {
 			String name = "", prefix;
@@ -203,12 +204,20 @@ public class Main {
 				}
 			}
 
-			districtFolder
-						.append(connected
-									.append(new KMLWriter.Name(name))
-									.append(new KMLWriter.Description("Ministering Companionship: " + name))
-									.append(new KMLWriter.UseStyle(companionshipName))
-									.append(connection));
+			if (companionship.getTeachers().size() > 1) {
+				districtFolder
+							.append(connected
+										.append(new KMLWriter.Name(name))
+										.append(new KMLWriter.Description("Ministering Companionship: " + name))
+										.append(new KMLWriter.UseStyle(companionshipName))
+										.append(connection));
+			} else {
+				districtFolder.append((new KMLWriter.Placemark())
+								.append(new KMLWriter.Name(name))
+								.append(new KMLWriter.Description(name))
+								.append(new KMLWriter.UseStyle(ministerName))
+								.append(new KMLWriter.Point(startLat, startLon, 0.0)));
+			}
 
 			for (Assignment assignment : companionship.getAssignments()) {
 				String	familyId = assignment.getIndividualId();
@@ -243,12 +252,14 @@ public class Main {
 					districtFolder.append(connected
 											.append(new KMLWriter.Name(district.getName() + " - " + name))
 											.append(new KMLWriter.Description("Family Ministered: " + family.getMember(familyId).getPreferredName()))
-											.append(new KMLWriter.UseStyle(ministryName))
+											.append(new KMLWriter.UseStyle(ministryPrefix + ministryIndex))
 											.append(connection));
 
 				}
 
 			}
+
+			ministryIndex += 1;
 
 		}
 
@@ -260,6 +271,9 @@ public class Main {
 
   }
 
+  /**
+  	@todo Remove duplicate points in line (companionship in same house)
+  */
   private static void generateMinistersReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
   	KMLWriter.Document document = new KMLWriter.Document();
   	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
@@ -269,28 +283,39 @@ public class Main {
 	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
     HouseholdConsumer action = new HouseholdConsumer(household_list, idToHousehold);
 
-  	System.out.println("Unit: " + (String) ward.get("orgName"));
     households.forEach(action);
+
+	String[] colors = {
+		"7fff0000", "7f00ff00", "7f0000ff", "7fffff00", "7f00ffff", "7fff00ff", "7f7f7f7f",
+		"7fff7f7f", "7f7fff7f", "7f7f7fff", "7fffff7f", "7f7fffff", "7fff7fff", "7f7f7f7f"
+	};
 
   	document.append(new KMLWriter.Name((String) ward.get("orgName")))
   			.append(new KMLWriter.Open())
   			.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
+  			.append((new KMLWriter.Style("minister"))
+  				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png")))
   			.append((new KMLWriter.Style("companionship"))
-  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(10)).append(new KMLWriter.StyleColor("87000000"))))
-  			.append((new KMLWriter.Style("ministry"))
-  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(4)).append(new KMLWriter.StyleColor("7f00ffff"))));;
+  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(8)).append(new KMLWriter.StyleColor("44000000"))));
+
+	for (int colorIndex = 0; colorIndex < colors.length; ++colorIndex) {
+		document
+  			.append((new KMLWriter.Style("ministry"+colorIndex))
+  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(2)).append(new KMLWriter.StyleColor(colors[colorIndex]))));
+	}
 
 	if (client.leaderReportsAvailable()) {
 		List<String> priesthood = new ArrayList<String>();
 		List<String> reliefsociety = new ArrayList<String>();
+
 		getAuxiliaries(client, priesthood, reliefsociety);
 
 		for (String aux : priesthood) {
-			mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", idToHousehold, document);
+			mapCompanionships(client, aux, "Priesthood", "companionship", "ministry", "minister", idToHousehold, document);
 		}
 
 		for (String aux : reliefsociety) {
-			mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", idToHousehold, document);
+			mapCompanionships(client, aux, "Relief Society", "companionship", "ministry", "minister", idToHousehold, document);
 		}
 	}
 
@@ -352,10 +377,6 @@ public class Main {
   	document.append(new KMLWriter.Name((String) ward.get("orgName")))
   			.append(new KMLWriter.Open())
   			.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
-  			.append((new KMLWriter.Style("companionship"))
-  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(10)).append(new KMLWriter.StyleColor("87000000"))))
-  			.append((new KMLWriter.Style("ministry"))
-  				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(4)).append(new KMLWriter.StyleColor("7f00ffff"))))
   			.append((new KMLWriter.Style("home"))
   				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png")))
   			.append(folder);
