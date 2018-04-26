@@ -33,7 +33,6 @@ import org.randywebb.wlts.beans.Assignment;
 import org.randywebb.wlts.beans.Teacher;
 import org.randywebb.wlts.ldstools.json.DetailedMemberConsumer;
 import org.randywebb.wlts.ldstools.json.DistrictConsumer;
-import org.randywebb.wlts.ldstools.json.HouseholdConsumer;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.util.CSVWriter;
 import org.randywebb.wlts.util.KMLWriter;
@@ -449,11 +448,16 @@ public class Main {
   	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
   	JSONArray households = (JSONArray) ward.get("households");
 	double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
-    List<Household> household_list = new LinkedList<Household>();
+    List<Household> household_list = Household.fromArray(households);
 	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
-    HouseholdConsumer action = new HouseholdConsumer(household_list, idToHousehold);
 
-    households.forEach(action);
+	if (null != idToHousehold) {
+		for (Household household : household_list) {
+			for (String individualId : household.getIndividualIds()) {
+				idToHousehold.put(individualId, household);
+			}
+		}
+	}
 
 	String[] colors = {
 		"7fff0000", "7f0000ff", "7fffff00", "7f00ffff", "7fff00ff", "7f7f7f7f", "7f00ff00",
@@ -505,14 +509,18 @@ public class Main {
   	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
   	JSONArray households = (JSONArray) ward.get("households");
 	double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
-    List<Household> household_list = new LinkedList<Household>();
+    List<Household> household_list = Household.fromArray(households);
 	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
-    HouseholdConsumer action = new HouseholdConsumer(household_list, idToHousehold);
   	KMLWriter.Folder folder = new KMLWriter.Folder();
 
-	//System.out.println( households.toJSONString());
-  	System.out.println("Unit: " + (String) ward.get("orgName"));
-    households.forEach(action);
+
+	if (null != idToHousehold) {
+		for (Household household : household_list) {
+			for (String individualId : household.getIndividualIds()) {
+				idToHousehold.put(individualId, household);
+			}
+		}
+	}
 
 	folder.append(new KMLWriter.Name("Households"))
 		.append(new KMLWriter.Description("Households in the " + (String) ward.get("orgName")));
@@ -595,19 +603,10 @@ public class Main {
   }
 
   private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {
-
-    List<Household> households = new LinkedList<Household>();
-
     JSONParser parser = new JSONParser();
     Object obj = parser.parse(new InputStreamReader(in));
     JSONObject jo = (JSONObject) obj;
 
-    JSONArray householdsJSON = (JSONArray) jo.get("households");
-
-    HouseholdConsumer action = new HouseholdConsumer(households);
-
-    householdsJSON.forEach(action);
-
-    return households;
+    return Household.fromArray( (JSONArray) jo.get("households") );
   }
 }

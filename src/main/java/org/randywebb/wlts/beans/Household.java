@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.randywebb.wlts.beans.HouseholdMember;
+import org.randywebb.wlts.beans.Address;
+import org.randywebb.wlts.beans.AbstractBean;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,22 +24,40 @@ import org.slf4j.LoggerFactory;
  * @author randyw
  *
  */
-public class Household implements Cloneable {
+public class Household extends AbstractBean {
 
 	private static Logger log = LoggerFactory.getLogger(Household.class);
 
-	private String householdName;
 	private HouseholdMember headOfHousehold;
 	private HouseholdMember spouse;
 	private List<HouseholdMember> children = new ArrayList<HouseholdMember>();
 	private Address householdAddress;
-	private String phone;
-	private String emailAddress;
-	private String coupleName;
-	private String headOfHouseholdIndividualID;
 
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public static List<Household> fromArray(JSONArray array) {
+		return fromArray(array, new ArrayList<Household>(), Household.class);
+	}
+
+	public Household() {
+	}
+
+	public Household(JSONObject definition) {
+		update(definition, new String[] {"householdName", "headOfHouse", "spouse", "children", "phone", "emailAddress", "coupleName", "headOfHouseholdIndividualID"});
+		householdAddress = new Address(definition);
+	}
+
+	@Override
+	protected void setFromJSON(JSONObject definition, String key) {
+
+		if (key.equals("headOfHouse")) {
+			setHeadOfHousehold((null == definition.get(key)) ? null : new HouseholdMember((JSONObject) definition.get(key)));
+		} else if (key.equals("spouse")) {
+			setSpouse((null == definition.get(key)) ? null : new HouseholdMember((JSONObject) definition.get(key)));
+		} else if (key.equals("children")) {
+			addChildren(HouseholdMember.fromArray( (JSONArray) definition.get(key)));
+		} else {
+			super.setFromJSON(definition, key);
+		}
+
 	}
 
 	public List<String> getIndividualIds() {
@@ -47,10 +71,6 @@ public class Household implements Cloneable {
 			ids.add(child.getIndividualId());
 		}
 		return ids;
-	}
-
-	public String getHouseholdName() {
-		return householdName;
 	}
 
 	public HouseholdMember getMember(String individualId) {
@@ -72,8 +92,12 @@ public class Household implements Cloneable {
 		return null;
 	}
 
+	public String getHouseholdName() {
+		return get("householdName");
+	}
+
 	public void setHouseholdName(String householdName) {
-		this.householdName = householdName;
+		put("householdName", householdName);
 	}
 
 	public HouseholdMember getHeadOfHousehold() {
@@ -140,7 +164,7 @@ public class Household implements Cloneable {
 	 * @return the phone
 	 */
 	public String getPhone() {
-		return phone;
+		return get("phone");
 	}
 
 	/**
@@ -148,14 +172,14 @@ public class Household implements Cloneable {
 	 *            the phone to set
 	 */
 	public void setPhone(String phone) {
-		this.phone = phone;
+		put("phone", phone);
 	}
 
 	/**
 	 * @return the emailAddress
 	 */
 	public String getEmailAddress() {
-		return emailAddress;
+		return get("emailAddress");
 	}
 
 	/**
@@ -163,14 +187,14 @@ public class Household implements Cloneable {
 	 *            the emailAddress to set
 	 */
 	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+		put("emailAddress", emailAddress);
 	}
 
 	/**
 	 * @return the coupleName
 	 */
 	public String getCoupleName() {
-		return coupleName;
+		return get("coupleName");
 	}
 
 	/**
@@ -178,7 +202,7 @@ public class Household implements Cloneable {
 	 *            the coupleName to set
 	 */
 	public void setCoupleName(String coupleName) {
-		this.coupleName = coupleName;
+		put("coupleName", coupleName);
 	}
 
 	/* (non-Javadoc)
@@ -186,23 +210,28 @@ public class Household implements Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return "Household [householdName=" + householdName + ", headOfHousehold=" + headOfHousehold + ", spouse="
-				+ spouse + ", children=" + children + ", householdAddress=" + householdAddress + ", phone=" + phone
-				+ ", emailAddress=" + emailAddress + ", coupleName=" + coupleName + "]";
+		String value = "";
+
+		for (HouseholdMember child : children) {
+			value += (value.length() == 0 ? "" : ", ") + child.toString();
+		}
+
+		return "Household [" + super.toString() + ", headOfHousehold = " + headOfHousehold + ", spouse = " + spouse + ", householdAddress = " + householdAddress + ", children = [" + value + "] ]";
+
 	}
 
 	/**
 	 * @return the headOfHouseholdIndividualID
 	 */
 	public String getHeadOfHouseholdIndividualID() {
-		return headOfHouseholdIndividualID;
+		return get("headOfHouseholdIndividualID");
 	}
 
 	/**
 	 * @param headOfHouseholdIndividualID the headOfHouseholdIndividualID to set
 	 */
 	public void setHeadOfHouseholdIndividualID(String headOfHouseholdIndividualID) {
-		this.headOfHouseholdIndividualID = headOfHouseholdIndividualID;
+		put("headOfHouseholdIndividualID", headOfHouseholdIndividualID);
 	}
 
 }
