@@ -586,7 +586,7 @@ public class Main {
     JSONParser parser = new JSONParser();
     Object obj = parser.parse(new InputStreamReader(in));
 
-    return DetailedMember.fromArray( (JSONArray) obj );
+    return DetailedMember.fromArray( (JSONArray) jo.get("households") );
   }
 
   private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {
