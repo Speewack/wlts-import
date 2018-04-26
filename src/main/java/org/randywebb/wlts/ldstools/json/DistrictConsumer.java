@@ -38,17 +38,7 @@ public class DistrictConsumer extends AbstractConsumer {
 			district.setDistrictLeaderId(convert(jo.get("districtLeaderId")));
 			district.setDistrictLeaderIndividualId(convert(jo.get("districtLeaderIndividualId")));
 			district.setName(convert(jo.get("name")));
-
-			JSONArray companionshipsJSON = (JSONArray) jo.get("companionships");
-
-			if (null != companionshipsJSON) {
-				List<Companionship> companionships = new ArrayList<Companionship>();
-				CompanionshipConsumer action = new CompanionshipConsumer(companionships);
-
-				companionshipsJSON.forEach(action);
-
-				district.setCompanionships(companionships);
-			}
+			district.setCompanionships(Companionship.fromArray((JSONArray) jo.get("companionships")));
 
 		}
 
