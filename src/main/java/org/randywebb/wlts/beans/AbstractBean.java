@@ -49,14 +49,13 @@ public abstract class AbstractBean extends HashMap<String,String> {
 		return this;
 	}
 
-	public AbstractBean setFromJSON(JSONObject definition, String key) {
+	protected void setFromJSON(JSONObject definition, String key) {
 		Object value = definition.get(key);
 
 		if ( (null != value) || !containsKey(key) ) {
 			put(key, (null == value) ? null : value.toString());
 		}
 
-		return this;
 	}
 
 	@Override

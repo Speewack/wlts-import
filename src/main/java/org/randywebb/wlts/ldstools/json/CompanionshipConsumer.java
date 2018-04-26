@@ -49,16 +49,7 @@ public class CompanionshipConsumer extends AbstractConsumer {
 				companionship.setTeachers(teachers);
 			}
 
-			JSONArray assignmentsJSON = (JSONArray) jo.get("assignments");
-
-			if (null != assignmentsJSON) {
-				List<Assignment> assignments = new ArrayList<Assignment>();
-				AssignmentConsumer action = new AssignmentConsumer(assignments);
-
-				assignmentsJSON.forEach(action);
-
-				companionship.setAssignments(assignments);
-			}
+			companionship.setAssignments(Assignment.fromArray((JSONArray) jo.get("assignments")));
 
 		}
 
