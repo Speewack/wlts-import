@@ -5,59 +5,79 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.randywebb.wlts.beans.Companionship;
+import org.randywebb.wlts.beans.AbstractBean;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class District {
+public class District extends AbstractBean {
 
 	private static Logger log = LoggerFactory.getLogger(District.class);
 
-	private String id;
-	private String auxiliaryId;
-	private String districtLeaderId;
-	private String districtLeaderIndividualId;
-	private String name;
 	private List<Companionship> companionships = new ArrayList<Companionship>();
 
+	public static List<District> fromArray(JSONArray array) {
+		return fromArray(array, new ArrayList<District>(), District.class);
+	}
+
+	public District() {
+	}
+
+	public District(JSONObject definition) {
+		update(definition, new String[] {"id", "auxiliaryId", "districtLeaderId", "districtLeaderIndividualId", "name", "companionships"});
+	}
+
+	@Override
+	protected void setFromJSON(JSONObject definition, String key) {
+
+		if (key.equals("companionships")) {
+			addCompanionships(Companionship.fromArray( (JSONArray) definition.get(key)));
+		} else {
+			super.setFromJSON(definition, key);
+		}
+
+	}
+
 	public void setId(String id) {
-		this.id = id;
+		put("id", id);
 	}
 
 	public String getId() {
-		return id;
+		return get("id");
 	}
 
 	public void setAuxiliaryId(String auxiliaryId) {
-		this.auxiliaryId = auxiliaryId;
+		put("auxiliaryId", auxiliaryId);
 	}
 
 	public String getAuxiliaryId() {
-		return auxiliaryId;
+		return get("auxiliaryId");
 	}
 
 	public void setDistrictLeaderId(String districtLeaderId) {
-		this.districtLeaderId = districtLeaderId;
+		put("districtLeaderId", districtLeaderId);
 	}
 
 	public String getDistrictLeaderId() {
-		return districtLeaderId;
+		return get("districtLeaderId");
 	}
 
 	public void setDistrictLeaderIndividualId(String districtLeaderIndividualId) {
-		this.districtLeaderIndividualId = districtLeaderIndividualId;
+		put("districtLeaderIndividualId", districtLeaderIndividualId);
 	}
 
 	public String getDistrictLeaderIndividualId() {
-		return districtLeaderIndividualId;
+		return get("districtLeaderIndividualId");
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		put("name", name);
 	}
 
 	public String getName() {
-		return name;
+		return get("name");
 	}
 
 	public void setCompanionships(List<Companionship> companionships) {
@@ -75,7 +95,13 @@ public class District {
 
 	@Override
 	public String toString() {
-		return "District: " + getName();
+		String value = "";
+
+		for (Companionship companionship : companionships) {
+			value += (value.length() == 0 ? "" : ", ") + companionship.toString();
+		}
+
+		return "District [" + super.toString() + ", companionships = [" + value + "] ]";
 	}
 
 }

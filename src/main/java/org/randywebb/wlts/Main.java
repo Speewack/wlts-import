@@ -32,7 +32,6 @@ import org.randywebb.wlts.beans.Visit;
 import org.randywebb.wlts.beans.Assignment;
 import org.randywebb.wlts.beans.Teacher;
 import org.randywebb.wlts.ldstools.json.DetailedMemberConsumer;
-import org.randywebb.wlts.ldstools.json.DistrictConsumer;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.util.CSVWriter;
 import org.randywebb.wlts.util.KMLWriter;
@@ -267,8 +266,7 @@ public class Main {
   											String ministeredName,
   										Map<String,Household> map, KMLWriter.List container) throws IOException, ParseException {
 	JSONArray districtsJSON = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
-	List<District> districts = new ArrayList<District>();
-	DistrictConsumer action = new DistrictConsumer(districts);
+	List<District> districts = District.fromArray(districtsJSON);
 	KMLWriter.Folder folder = new KMLWriter.Folder()
 				.append(new KMLWriter.Name(auxiliaryName))
 				.append(new KMLWriter.Description("Map of ministering companionships for " + auxiliaryName));
@@ -278,8 +276,6 @@ public class Main {
 	if (districtsJSON.size() == 0) {
 		return;
 	}
-
-	districtsJSON.forEach(action);
 
 	for (District district : districts) {
 		KMLWriter.Folder districtFolder = new KMLWriter.Folder()
