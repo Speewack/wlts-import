@@ -52,7 +52,9 @@ public abstract class AbstractBean extends HashMap<String,String> {
 	public AbstractBean setFromJSON(JSONObject definition, String key) {
 		Object value = definition.get(key);
 
-		put(key, (null == value) ? null : value.toString());
+		if ( (null != value) || !containsKey(key) ) {
+			put(key, (null == value) ? null : value.toString());
+		}
 
 		return this;
 	}
