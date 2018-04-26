@@ -243,6 +243,23 @@ public class Main {
 	}
   }
 
+  private static String getVisitMessage(Assignment assignment) {
+	List<Visit> visits = assignment.getVisits();
+	String message = "";
+
+	if (visits.size() > 0) {
+		message = visits.get(0).getMonth() + "/" + visits.get(0).getYear() + " - ";
+		message += visits.get(visits.size() - 1).getMonth() + "/" + visits.get(visits.size() - 1).getYear() + "\n";
+
+		for (Visit visit : visits) {
+			message += (null == visit.getVisited()) ? "?" : (visit.getVisited().substring(0,1).equalsIgnoreCase("t") ? "V" : ".");
+		}
+
+	}
+
+	return message;
+  }
+
   private static void mapCompanionships(LdsToolsClient client, JSONObject relocations, boolean routes,
   											String auxiliaryId, String auxiliaryName,
   											String companionshipName,
@@ -257,7 +274,7 @@ public class Main {
 				.append(new KMLWriter.Name(auxiliaryName))
 				.append(new KMLWriter.Description("Map of ministering companionships for " + auxiliaryName));
 	List<String> ministerIndividualIds = new ArrayList<String>();
-	List<String> ministeredIndividualIds = new ArrayList<String>();
+	Map<String,Assignment> ministeredIndividualIds = new HashMap<String,Assignment>();
 
 	if (districtsJSON.size() == 0) {
 		return;
@@ -328,8 +345,8 @@ public class Main {
 				String	familyId = assignment.getIndividualId();
 				Household family = map.get(familyId);
 
-				if (!ministeredIndividualIds.contains(familyId)) {
-					ministeredIndividualIds.add(familyId);
+				if (!ministeredIndividualIds.containsKey(familyId)) {
+					ministeredIndividualIds.put(familyId, assignment);
 				}
 
 				if (null != relocate(family, relocations).getLattitude() && null != relocate(family, relocations).getLongitude()) {
@@ -360,7 +377,8 @@ public class Main {
 					connection.add(lat_family, lon_family, 0.0);
 					districtFolder.append(connected
 											.append(new KMLWriter.Name(name))
-											.append(new KMLWriter.Description("Family Ministered: " + family.getMember(familyId).getPreferredName()))
+											.append(new KMLWriter.Description("Family Ministered: " + family.getMember(familyId).getPreferredName() + "\n"
+														+ getVisitMessage(assignment)))
 											.append(new KMLWriter.UseStyle(ministryPrefix + ministryIndex))
 											.append(connection));
 
@@ -404,14 +422,16 @@ public class Main {
 					.append(new KMLWriter.Name("Ministered"))
 					.append(new KMLWriter.Description("All persons who are assigned ministers"));
 
-	for (String individualId : ministeredIndividualIds) {
-		Household household = map.get(individualId);
+	for (Map.Entry<String,Assignment> individualIdAssignment : ministeredIndividualIds.entrySet()) {
+		Household household = map.get(individualIdAssignment.getKey());
+		Assignment assignment = individualIdAssignment.getValue();
 		double lat = Double.parseDouble(relocate(household, relocations).getLattitude());
 		double lon = Double.parseDouble(relocate(household, relocations).getLongitude());
 
 		group.append((new KMLWriter.Placemark())
-						.append(new KMLWriter.Name(household.getMember(individualId).getPreferredName()))
-						.append(new KMLWriter.Description(household.getMember(individualId).getPreferredName()))
+						.append(new KMLWriter.Name(household.getMember(individualIdAssignment.getKey()).getPreferredName()))
+						.append(new KMLWriter.Description(household.getMember(individualIdAssignment.getKey()).getPreferredName() + "\n"
+									+ getVisitMessage(assignment)))
 						.append(new KMLWriter.UseStyle(ministeredName))
 						.append(new KMLWriter.Point(lat, lon, 0.0)));
 	}

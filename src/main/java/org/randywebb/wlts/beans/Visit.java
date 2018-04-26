@@ -53,4 +53,12 @@ public class Visit {
 		return month;
 	}
 
+	@Override
+	public String toString() {
+		return "Visit [id=" + id + ", assignmentId=" + assignmentId + ", visited="
+				+ visited + ", year="
+				+ year + ", month="
+				+ month + "]";
+	}
+
 }
