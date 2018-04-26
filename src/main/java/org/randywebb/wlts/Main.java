@@ -31,7 +31,6 @@ import org.randywebb.wlts.beans.Companionship;
 import org.randywebb.wlts.beans.Visit;
 import org.randywebb.wlts.beans.Assignment;
 import org.randywebb.wlts.beans.Teacher;
-import org.randywebb.wlts.ldstools.json.DetailedMemberConsumer;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.util.CSVWriter;
 import org.randywebb.wlts.util.KMLWriter;
@@ -584,18 +583,10 @@ public class Main {
   }
 
   private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {
-    List<DetailedMember> members = new LinkedList<DetailedMember>();
-
     JSONParser parser = new JSONParser();
     Object obj = parser.parse(new InputStreamReader(in));
 
-    JSONArray membersJSON = (JSONArray) obj;
-
-    DetailedMemberConsumer action = new DetailedMemberConsumer(members);
-
-    membersJSON.forEach(action);
-
-    return members;
+    return DetailedMember.fromArray( (JSONArray) obj );
   }
 
   private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {

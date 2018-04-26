@@ -3,61 +3,84 @@
  */
 package org.randywebb.wlts.beans;
 
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+
+import org.randywebb.wlts.beans.AbstractBean;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author randyw
  *
  */
-public class DetailedMember {
+public class DetailedMember extends AbstractBean {
 
-  private String name;
-  private String spokenName;
-  private Integer nameOrder;
-  private Date birthDate;
-  private Integer birthDateSort;
-  private String formattedBirthDate;
-  private String gender;
-  private String genderCode;
-  private String mrn;
-  private String id;
-  private String email;
-  private String householdEmail;
-  private String phone;
-  private String householdPhone;
-  private String unitNumber;
-  private String unitName;
-  private String priesthood;
-  private String priesthoodCode;
-  private String priesthoodType;
-  private Integer age;
-  private Integer actualAge;
-  private Integer actualAgeInMonths;
-  private String genderLabelShort;
-  private Boolean visible;
-  private Boolean nonMember;
-  private Boolean outOfUnitMember;
-  private String street;
-  private String city;
-  private String state;
-  private String zip;
-  private String givenName;
-  private String coupleName;
-  private String householdId;
-  private Boolean isHead;
-  private Boolean isSpouse;
-  private Boolean isAdult;
-  private Boolean fullTimeMissionary;
-  private String formattedMRN;
-  private Boolean setApart;
-  private String formattedBirthDateFull;
-  private Date sustainedDate;
+  private static Logger log = LoggerFactory.getLogger(DetailedMember.class);
+  private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+  private static Boolean toBoolean(String value) {
+   	return (null == value) ? null : Boolean.valueOf(value);
+  }
+
+  private static String toString(Boolean value) {
+   	return (null == value) ? null : (value ? "true" : "false");
+  }
+
+  private static Integer toInteger(String value) {
+   	return (null == value) ? null : Integer.valueOf(value);
+  }
+
+  private static String toString(Integer value) {
+   	return (null == value) ? null : value.toString();
+  }
+
+  private static Date toDate(String value) {
+
+	try {
+		return (null == value) ? null : dateFormat.parse(value);
+	} catch(ParseException e) {
+        log.error("Error parsing Date (" + value + "): ", e);
+	} catch(NullPointerException e) {
+        log.error("Null found when parsing Date (" + value + "): ", e);
+	}
+
+   	return null;
+  }
+
+  private static String toString(Date value) {
+   	return (null == value) ? null : dateFormat.format(value);
+  }
+
+	public static List<DetailedMember> fromArray(JSONArray array) {
+		return fromArray(array, new ArrayList<DetailedMember>(), DetailedMember.class);
+	}
+
+	public DetailedMember() {
+	}
+
+	public DetailedMember(JSONObject definition) {
+		update(definition, new String[] {
+			"name", "spokenName", "nameOrder", "birthDate", "birthDateSort", "formattedBirthDate",
+			"gender", "genderCode", "mrn", "id", "email", "householdEmail", "phone", "householdPhone",
+			"unitNumber", "unitName", "priesthood", "priesthoodCode", "priesthoodType", "age",
+			"actualAge", "actualAgeInMonths", "genderLabelShort", "visible", "nonMember",
+			"outOfUnitMember", "street", "city", "state", "zip", "givenName", "coupleName",
+			"householdId", "isHead", "isSpouse", "isAdult", "fullTimeMissionary", "formattedMRN",
+			"setApart", "formattedBirthDateFull", "sustainedDate", });
+	}
 
   /**
    * @return the name
    */
   public String getName() {
-    return name;
+    return get("name");
   }
 
   /**
@@ -65,14 +88,14 @@ public class DetailedMember {
    *          the name to set
    */
   public void setName(String name) {
-    this.name = name;
+    put("name", name);
   }
 
   /**
    * @return the spokenName
    */
   public String getSpokenName() {
-    return spokenName;
+    return get("spokenName");
   }
 
   /**
@@ -80,14 +103,14 @@ public class DetailedMember {
    *          the spokenName to set
    */
   public void setSpokenName(String spokenName) {
-    this.spokenName = spokenName;
+    put("spokenName", spokenName);
   }
 
   /**
    * @return the nameOrder
    */
   public Integer getNameOrder() {
-    return nameOrder;
+    return toInteger(get("nameOrder"));
   }
 
   /**
@@ -95,14 +118,14 @@ public class DetailedMember {
    *          the nameOrder to set
    */
   public void setNameOrder(Integer nameOrder) {
-    this.nameOrder = nameOrder;
+    put("nameOrder", toString(nameOrder));
   }
 
   /**
    * @return the birthDate
    */
   public Date getBirthDate() {
-    return birthDate;
+    return toDate(get("birthDate"));
   }
 
   /**
@@ -110,14 +133,14 @@ public class DetailedMember {
    *          the birthDate to set
    */
   public void setBirthDate(Date birthDate) {
-    this.birthDate = birthDate;
+    put("birthDate", toString(birthDate));
   }
 
   /**
    * @return the birthDateSort
    */
   public Integer getBirthDateSort() {
-    return birthDateSort;
+    return toInteger(get("birthDateSort"));
   }
 
   /**
@@ -125,14 +148,14 @@ public class DetailedMember {
    *          the birthDateSort to set
    */
   public void setBirthDateSort(Integer birthDateSort) {
-    this.birthDateSort = birthDateSort;
+    put("birthDateSort", toString(birthDateSort));
   }
 
   /**
    * @return the formattedBirthdate
    */
   public String getFormattedBirthDate() {
-    return formattedBirthDate;
+    return get("formattedBirthDate");
   }
 
   /**
@@ -140,14 +163,14 @@ public class DetailedMember {
    *          the formattedBirthdate to set
    */
   public void setFormattedBirthDate(String formattedBirthdate) {
-    this.formattedBirthDate = formattedBirthdate;
+    put("formattedBirthDate", formattedBirthdate);
   }
 
   /**
    * @return the gender
    */
   public String getGender() {
-    return gender;
+    return get("gender");
   }
 
   /**
@@ -155,14 +178,14 @@ public class DetailedMember {
    *          the gender to set
    */
   public void setGender(String gender) {
-    this.gender = gender;
+    put("gender", gender);
   }
 
   /**
    * @return the genderCode
    */
   public String getGenderCode() {
-    return genderCode;
+    return get("genderCode");
   }
 
   /**
@@ -170,14 +193,14 @@ public class DetailedMember {
    *          the genderCode to set
    */
   public void setGenderCode(String genderCode) {
-    this.genderCode = genderCode;
+    put("genderCode", genderCode);
   }
 
   /**
    * @return the mrn
    */
   public String getMrn() {
-    return mrn;
+    return get("mrn");
   }
 
   /**
@@ -185,14 +208,14 @@ public class DetailedMember {
    *          the mrn to set
    */
   public void setMrn(String mrn) {
-    this.mrn = mrn;
+    put("mrn", mrn);
   }
 
   /**
    * @return the id
    */
   public String getId() {
-    return id;
+    return get("id");
   }
 
   /**
@@ -200,14 +223,14 @@ public class DetailedMember {
    *          the id to set
    */
   public void setId(String id) {
-    this.id = id;
+    put("id", id);
   }
 
   /**
    * @return the email
    */
   public String getEmail() {
-    return email;
+    return get("email");
   }
 
   /**
@@ -215,14 +238,14 @@ public class DetailedMember {
    *          the email to set
    */
   public void setEmail(String email) {
-    this.email = email;
+    put("email", email);
   }
 
   /**
    * @return the householdEmail
    */
   public String getHouseholdEmail() {
-    return householdEmail;
+    return get("householdEmail");
   }
 
   /**
@@ -230,14 +253,14 @@ public class DetailedMember {
    *          the householdEmail to set
    */
   public void setHouseholdEmail(String householdEmail) {
-    this.householdEmail = householdEmail;
+    put("householdEmail", householdEmail);
   }
 
   /**
    * @return the phone
    */
   public String getPhone() {
-    return phone;
+    return get("phone");
   }
 
   /**
@@ -245,14 +268,14 @@ public class DetailedMember {
    *          the phone to set
    */
   public void setPhone(String phone) {
-    this.phone = phone;
+    put("phone", phone);
   }
 
   /**
    * @return the householdPhone
    */
   public String getHouseholdPhone() {
-    return householdPhone;
+    return get("householdPhone");
   }
 
   /**
@@ -260,14 +283,14 @@ public class DetailedMember {
    *          the householdPhone to set
    */
   public void setHouseholdPhone(String householdPhone) {
-    this.householdPhone = householdPhone;
+    put("householdPhone", householdPhone);
   }
 
   /**
    * @return the unitNumber
    */
   public String getUnitNumber() {
-    return unitNumber;
+    return get("unitNumber");
   }
 
   /**
@@ -275,14 +298,14 @@ public class DetailedMember {
    *          the unitNumber to set
    */
   public void setUnitNumber(String unitNumber) {
-    this.unitNumber = unitNumber;
+    put("unitNumber", unitNumber);
   }
 
   /**
    * @return the unitName
    */
   public String getUnitName() {
-    return unitName;
+    return get("unitName");
   }
 
   /**
@@ -290,14 +313,14 @@ public class DetailedMember {
    *          the unitName to set
    */
   public void setUnitName(String unitName) {
-    this.unitName = unitName;
+    put("unitName", unitName);
   }
 
   /**
    * @return the priesthood
    */
   public String getPriesthood() {
-    return priesthood;
+    return get("priesthood");
   }
 
   /**
@@ -305,14 +328,14 @@ public class DetailedMember {
    *          the priesthood to set
    */
   public void setPriesthood(String priesthood) {
-    this.priesthood = priesthood;
+    put("priesthood", priesthood);
   }
 
   /**
    * @return the priesthoodCode
    */
   public String getPriesthoodCode() {
-    return priesthoodCode;
+    return get("priesthoodCode");
   }
 
   /**
@@ -320,14 +343,14 @@ public class DetailedMember {
    *          the priesthoodCode to set
    */
   public void setPriesthoodCode(String priesthoodCode) {
-    this.priesthoodCode = priesthoodCode;
+    put("priesthoodCode", priesthoodCode);
   }
 
   /**
    * @return the priesthoodType
    */
   public String getPriesthoodType() {
-    return priesthoodType;
+    return get("priesthoodType");
   }
 
   /**
@@ -335,14 +358,14 @@ public class DetailedMember {
    *          the priesthoodType to set
    */
   public void setPriesthoodType(String priesthoodType) {
-    this.priesthoodType = priesthoodType;
+    put("priesthoodType", priesthoodType);
   }
 
   /**
    * @return the age
    */
   public Integer getAge() {
-    return age;
+    return toInteger(get("age"));
   }
 
   /**
@@ -350,14 +373,14 @@ public class DetailedMember {
    *          the age to set
    */
   public void setAge(Integer age) {
-    this.age = age;
+    put("age", toString(age));
   }
 
   /**
    * @return the actualAge
    */
   public Integer getActualAge() {
-    return actualAge;
+    return toInteger(get("actualAge"));
   }
 
   /**
@@ -365,14 +388,14 @@ public class DetailedMember {
    *          the actualAge to set
    */
   public void setActualAge(Integer actualAge) {
-    this.actualAge = actualAge;
+    put("actualAge", toString(actualAge));
   }
 
   /**
    * @return the actualAgeInMonths
    */
   public Integer getActualAgeInMonths() {
-    return actualAgeInMonths;
+    return toInteger(get("actualAgeInMonths"));
   }
 
   /**
@@ -380,14 +403,14 @@ public class DetailedMember {
    *          the actualAgeInMonths to set
    */
   public void setActualAgeInMonths(Integer actualAgeInMonths) {
-    this.actualAgeInMonths = actualAgeInMonths;
+    put("actualAgeInMonths", toString(actualAgeInMonths));
   }
 
   /**
    * @return the genderLabelShort
    */
   public String getGenderLabelShort() {
-    return genderLabelShort;
+    return get("genderLabelShort");
   }
 
   /**
@@ -395,14 +418,14 @@ public class DetailedMember {
    *          the genderLabelShort to set
    */
   public void setGenderLabelShort(String genderLabelShort) {
-    this.genderLabelShort = genderLabelShort;
+    put("genderLabelShort", genderLabelShort);
   }
 
   /**
    * @return the visible
    */
   public Boolean getVisible() {
-    return visible;
+    return toBoolean(get("visible"));
   }
 
   /**
@@ -410,14 +433,14 @@ public class DetailedMember {
    *          the visible to set
    */
   public void setVisible(Boolean visible) {
-    this.visible = visible;
+    put("visible", toString(visible));
   }
 
   /**
    * @return the nonMember
    */
   public Boolean getNonMember() {
-    return nonMember;
+    return toBoolean(get("nonMember"));
   }
 
   /**
@@ -425,14 +448,14 @@ public class DetailedMember {
    *          the nonMember to set
    */
   public void setNonMember(Boolean nonMember) {
-    this.nonMember = nonMember;
+    put("nonMember", toString(nonMember));
   }
 
   /**
    * @return the outOfUnitMember
    */
   public Boolean getOutOfUnitMember() {
-    return outOfUnitMember;
+    return toBoolean(get("outOfUnitMember"));
   }
 
   /**
@@ -440,7 +463,7 @@ public class DetailedMember {
    *          the outOfUnitMember to set
    */
   public void setOutOfUnitMember(Boolean outOfUnitMember) {
-    this.outOfUnitMember = outOfUnitMember;
+    put("outOfUnitMember", toString(outOfUnitMember));
   }
 
   /**
@@ -472,7 +495,7 @@ public class DetailedMember {
    * @return the givenName
    */
   public String getGivenName() {
-    return givenName;
+    return get("givenName");
   }
 
   /**
@@ -480,14 +503,14 @@ public class DetailedMember {
    *          the givenName to set
    */
   public void setGivenName(String givenName) {
-    this.givenName = givenName;
+    put("givenName", givenName);
   }
 
   /**
    * @return the coupleName
    */
   public String getCoupleName() {
-    return coupleName;
+    return get("coupleName");
   }
 
   /**
@@ -495,14 +518,14 @@ public class DetailedMember {
    *          the coupleName to set
    */
   public void setCoupleName(String coupleName) {
-    this.coupleName = coupleName;
+    put("coupleName", coupleName);
   }
 
   /**
    * @return the householdId
    */
   public String getHouseholdId() {
-    return householdId;
+    return get("householdId");
   }
 
   /**
@@ -510,14 +533,14 @@ public class DetailedMember {
    *          the householdId to set
    */
   public void setHouseholdId(String householdId) {
-    this.householdId = householdId;
+    put("householdId", householdId);
   }
 
   /**
    * @return the isHead
    */
   public Boolean getIsHead() {
-    return isHead;
+    return toBoolean(get("isHead"));
   }
 
   /**
@@ -525,14 +548,14 @@ public class DetailedMember {
    *          the isHead to set
    */
   public void setIsHead(Boolean isHead) {
-    this.isHead = isHead;
+    put("isHead", toString(isHead));
   }
 
   /**
    * @return the isSpouse
    */
   public Boolean getIsSpouse() {
-    return isSpouse;
+    return toBoolean(get("isSpouse"));
   }
 
   /**
@@ -540,14 +563,14 @@ public class DetailedMember {
    *          the isSpouse to set
    */
   public void setIsSpouse(Boolean isSpouse) {
-    this.isSpouse = isSpouse;
+    put("isSpouse", toString(isSpouse));
   }
 
   /**
    * @return the isAdult
    */
   public Boolean getIsAdult() {
-    return isAdult;
+    return toBoolean(get("isAdult"));
   }
 
   /**
@@ -555,14 +578,14 @@ public class DetailedMember {
    *          the isAdult to set
    */
   public void setIsAdult(Boolean isAdult) {
-    this.isAdult = isAdult;
+    put("isAdult", toString(isAdult));
   }
 
   /**
    * @return the fullTimeMissionary
    */
   public Boolean getFullTimeMissionary() {
-    return fullTimeMissionary;
+    return toBoolean(get("fullTimeMissionary"));
   }
 
   /**
@@ -570,14 +593,14 @@ public class DetailedMember {
    *          the fullTimeMissionary to set
    */
   public void setFullTimeMissionary(Boolean fullTimeMissionary) {
-    this.fullTimeMissionary = fullTimeMissionary;
+    put("fullTimeMissionary", toString(fullTimeMissionary));
   }
 
   /**
    * @return the formattedMRN
    */
   public String getFormattedMRN() {
-    return formattedMRN;
+    return get("formattedMRN");
   }
 
   /**
@@ -585,14 +608,14 @@ public class DetailedMember {
    *          the formattedMRN to set
    */
   public void setFormattedMRN(String formattedMRN) {
-    this.formattedMRN = formattedMRN;
+    put("formattedMRN", formattedMRN);
   }
 
   /**
    * @return the setApart
    */
   public Boolean getSetApart() {
-    return setApart;
+    return toBoolean(get("setApart"));
   }
 
   /**
@@ -600,14 +623,14 @@ public class DetailedMember {
    *          the setApart to set
    */
   public void setSetApart(Boolean setApart) {
-    this.setApart = setApart;
+    put("setApart", toString(setApart));
   }
 
   /**
    * @return the formattedBirthDateFull
    */
   public String getFormattedBirthDateFull() {
-    return formattedBirthDateFull;
+    return get("formattedBirthDateFull");
   }
 
   /**
@@ -615,14 +638,14 @@ public class DetailedMember {
    *          the formattedBirthDateFull to set
    */
   public void setFormattedBirthDateFull(String formattedBirthDateFull) {
-    this.formattedBirthDateFull = formattedBirthDateFull;
+    put("formattedBirthDateFull", formattedBirthDateFull);
   }
 
   /**
    * @return the sustainedDate
    */
   public Date getSustainedDate() {
-    return sustainedDate;
+    return toDate(get("sustainedDate"));
   }
 
   /**
@@ -630,7 +653,7 @@ public class DetailedMember {
    *          the sustainedDate to set
    */
   public void setSustainedDate(Date sustainedDate) {
-    this.sustainedDate = sustainedDate;
+    put("sustainedDate", toString(sustainedDate));
   }
 
   /*
@@ -853,7 +876,7 @@ public class DetailedMember {
    * @return the street
    */
   public String getStreet() {
-    return street;
+    return get("street");
   }
 
   /**
@@ -861,14 +884,14 @@ public class DetailedMember {
    *          the street to set
    */
   public void setStreet(String street) {
-    this.street = street;
+    put("street", street);
   }
 
   /**
    * @return the city
    */
   public String getCity() {
-    return city;
+    return get("city");
   }
 
   /**
@@ -876,14 +899,14 @@ public class DetailedMember {
    *          the city to set
    */
   public void setCity(String city) {
-    this.city = city;
+    put("city", city);
   }
 
   /**
    * @return the state
    */
   public String getState() {
-    return state;
+    return get("state");
   }
 
   /**
@@ -891,14 +914,14 @@ public class DetailedMember {
    *          the state to set
    */
   public void setState(String state) {
-    this.state = state;
+    put("state", state);
   }
 
   /**
    * @return the zip
    */
   public String getZip() {
-    return zip;
+    return get("zip");
   }
 
   /**
@@ -906,7 +929,7 @@ public class DetailedMember {
    *          the zip to set
    */
   public void setZip(String zip) {
-    this.zip = zip;
+    put("zip", zip);
   }
 
 }
