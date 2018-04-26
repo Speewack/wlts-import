@@ -37,17 +37,7 @@ public class AssignmentConsumer extends AbstractConsumer {
 			assignment.setCompanionshipId(convert(jo.get("companionshipId")));
 			assignment.setIndividualId(convert(jo.get("individualId")));
 			assignment.setAssignmentType(convert(jo.get("assignmentType")));
-
-			JSONArray visitsJSON = (JSONArray) jo.get("visits");
-
-			if (null != visitsJSON) {
-				List<Visit> visits = new ArrayList<Visit>();
-				VisitConsumer action = new VisitConsumer(visits);
-
-				visitsJSON.forEach(action);
-
-				assignment.setVisits(visits);
-			}
+			assignment.setVisits(Visit.fromArray((JSONArray) jo.get("visits")));
 
 		}
 

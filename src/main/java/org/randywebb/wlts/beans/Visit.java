@@ -1,64 +1,74 @@
 package org.randywebb.wlts.beans;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import org.randywebb.wlts.beans.AbstractBean;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Visit {
+public class Visit extends AbstractBean {
 
 	private static Logger log = LoggerFactory.getLogger(Visit.class);
 
-	private String id;
-	private String assignmentId;
-	private String visited;
-	private String year;
-	private String month;
+	public static List<Visit> fromArray(JSONArray array) {
+		return fromArray(array, new ArrayList<Visit>(), Visit.class);
+	}
+
+	public Visit() {
+	}
+
+	public Visit(JSONObject definition) {
+		String[] fields = {"id", "assignmentId", "visited", "year", "month"};
+
+		update(definition, fields);
+	}
 
 	public void setId(String id) {
-		this.id = id;
+		put("id", id);
 	}
 
 	public String getId() {
-		return id;
+		return get("id");
 	}
 
 	public void setAssignmentId(String assignmentId) {
-		this.assignmentId = assignmentId;
+		put("assignmentId", assignmentId);
 	}
 
 	public String getAssignmentId() {
-		return assignmentId;
+		return get("assignmentId");
 	}
 
 	public void setVisited(String visited) {
-		this.visited = visited;
+		put("visited", visited);
 	}
 
 	public String getVisited() {
-		return visited;
+		return get("visited");
 	}
 
 	public void setYear(String year) {
-		this.year = year;
+		put("year", year);
 	}
 
 	public String getYear() {
-		return year;
+		return get("year");
 	}
 
 	public void setMonth(String month) {
-		this.month = month;
+		put("month", month);
 	}
 
 	public String getMonth() {
-		return month;
+		return get("month");
 	}
 
 	@Override
 	public String toString() {
-		return "Visit [id=" + id + ", assignmentId=" + assignmentId + ", visited="
-				+ visited + ", year="
-				+ year + ", month="
-				+ month + "]";
+		return "Visit [" + super.toString() + "]";
 	}
 
 }
