@@ -21,9 +21,7 @@ public class Visit extends AbstractBean {
 	}
 
 	public Visit(JSONObject definition) {
-		String[] fields = {"id", "assignmentId", "visited", "year", "month"};
-
-		update(definition, fields);
+		update(definition, new String[] {"id", "assignmentId", "visited", "year", "month"});
 	}
 
 	public void setId(String id) {

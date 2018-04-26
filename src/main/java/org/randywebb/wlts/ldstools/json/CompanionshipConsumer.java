@@ -37,18 +37,7 @@ public class CompanionshipConsumer extends AbstractConsumer {
 			companionship.setId(convert(jo.get("id")));
 			companionship.setDistrictId(convert(jo.get("districtId")));
 			companionship.setStartDate(convert(jo.get("startDate")));
-
-			JSONArray teachersJSON = (JSONArray) jo.get("teachers");
-
-			if (null != teachersJSON) {
-				List<Teacher> teachers = new ArrayList<Teacher>();
-				TeacherConsumer action = new TeacherConsumer(teachers);
-
-				teachersJSON.forEach(action);
-
-				companionship.setTeachers(teachers);
-			}
-
+			companionship.setTeachers(Teacher.fromArray((JSONArray) jo.get("teachers")));
 			companionship.setAssignments(Assignment.fromArray((JSONArray) jo.get("assignments")));
 
 		}

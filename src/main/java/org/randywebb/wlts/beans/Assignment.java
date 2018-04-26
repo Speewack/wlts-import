@@ -26,9 +26,7 @@ public class Assignment extends AbstractBean {
 	}
 
 	public Assignment(JSONObject definition) {
-		String[] fields = {"id", "companionshipId", "individualId", "assignmentType", "visits"};
-
-		update(definition, fields);
+		update(definition, new String[] {"id", "companionshipId", "individualId", "assignmentType", "visits"});
 	}
 
 	@Override
