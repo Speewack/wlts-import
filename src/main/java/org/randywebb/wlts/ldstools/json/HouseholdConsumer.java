@@ -65,19 +65,9 @@ public class HouseholdConsumer extends AbstractConsumer {
 			household.setPhone(convert(jo.get("phone")));
 			household.setHeadOfHouseholdIndividualID(convert(jo.get("headOfHouseholdIndividualId")));
 			household.setHouseholdAddress(new Address(jo));
-			household.setHeadOfHousehold(HouseholdMemberConsumer.bindMember((JSONObject) jo.get("headOfHouse")));
-			household.setSpouse(HouseholdMemberConsumer.bindMember((JSONObject) jo.get("spouse")));
-
-			JSONArray childrenJSON = (JSONArray) jo.get("children");
-
-			if (childrenJSON != null) {
-				List<HouseholdMember> children = new ArrayList<HouseholdMember>();
-				HouseholdMemberConsumer action = new HouseholdMemberConsumer(children);
-
-				childrenJSON.forEach(action);
-
-				household.setChildren(children);
-			}
+			household.setHeadOfHousehold((null == jo.get("headOfHouse")) ? null : new HouseholdMember((JSONObject) jo.get("headOfHouse")));
+			household.setSpouse((null == jo.get("spouse")) ? null : new HouseholdMember((JSONObject) jo.get("spouse")));
+			household.setChildren(HouseholdMember.fromArray((JSONArray) jo.get("children")));
 
 		}
 
