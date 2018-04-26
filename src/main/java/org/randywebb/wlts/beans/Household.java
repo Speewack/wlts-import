@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author randyw
  *
  */
-public class Household {
+public class Household implements Cloneable {
 
 	private static Logger log = LoggerFactory.getLogger(Household.class);
 
@@ -31,6 +31,10 @@ public class Household {
 	private String emailAddress;
 	private String coupleName;
 	private String headOfHouseholdIndividualID;
+
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 
 	public List<String> getIndividualIds() {
 		List<String> ids = new ArrayList<String>();

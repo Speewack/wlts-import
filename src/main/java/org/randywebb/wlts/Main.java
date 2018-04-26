@@ -14,6 +14,8 @@ import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
@@ -22,6 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.randywebb.wlts.beans.DetailedMember;
+import org.randywebb.wlts.beans.Address;
 import org.randywebb.wlts.beans.Household;
 import org.randywebb.wlts.beans.District;
 import org.randywebb.wlts.beans.Companionship;
@@ -72,6 +75,37 @@ public class Main {
 	return ordinal.toArray(new String[0]);
   }
 
+  private static JSONObject loadJSONFile(String path) throws IOException, FileNotFoundException, ParseException {
+  	return (JSONObject) (new JSONParser()).parse(new FileReader(path));
+  }
+
+  private static Address relocate(Household household, JSONObject relocation) {
+  	JSONObject relocatable = (null == relocation) ? null : (JSONObject) relocation.get(household.getCoupleName());
+	Address previous = household.getHouseholdAddress();
+
+  	if (null != relocatable) {
+		Address address = new Address();
+
+		address.setLattitude( (null == relocatable.get("latitude")) ? previous.getLattitude() : relocatable.get("latitude").toString());
+		address.setLongitude( (null == relocatable.get("longitude")) ? previous.getLongitude() : relocatable.get("longitude").toString());
+		address.setPostalCode( (null == relocatable.get("postalCode")) ? previous.getPostalCode() : relocatable.get("postalCode").toString());
+		address.setState( (null == relocatable.get("state")) ? previous.getState() : relocatable.get("state").toString());
+		if (null == relocatable.get("address")) {
+			address.setStreetAddress( (null == relocatable.get("desc1") || null == relocatable.get("desc2"))
+									? previous.getLattitude()
+									: relocatable.get("desc1").toString() + ", " + relocatable.get("desc2").toString());
+		} else {
+			address.setStreetAddress(relocatable.get("address").toString());
+		}
+
+		return address;
+
+  	}
+
+	return previous;
+
+  }
+
   /**
    * @param args
    * @throws Exception
@@ -80,13 +114,15 @@ public class Main {
    */
   public static void main(String... args) throws Exception {
   	Map<String,String> switches = new HashMap<String,String>();
-  	String[] outputFileTypes = {"--map", "--routes", "--ministers"};
+  	String[] outputFileTypes = {"--map", "--routes", "--ministers", "--relocate"};
 	String[] arguments = parseArgs(args, null, outputFileTypes, switches);
+	JSONObject relocations = switches.containsKey("--relocate") ? loadJSONFile(switches.get("--relocate")) : null;
 
     // read input parameters
     if ( (arguments.length < 1) || (arguments.length > 3) ) {
-      System.out.println("Usage Main [--map /path/to/file.kml] [--ministers /path/to/file.kml] [--routes /path/to/file.kml] username [password] target_file");
+      System.out.println("Usage Main [--map /path/to/file.kml] [--ministers /path/to/file.kml] [--routes /path/to/file.kml] username [password] [target_file]");
       System.out.println("\tif [password] is not passed, it will be requested");
+      System.out.println("\tif [target_file] is only passed when --map, --ministers and --routes is not passed");
       log.trace("arguments.length = " + arguments.length);
       for (String argument : arguments) {
       	log.trace("\t" + argument);
@@ -135,22 +171,23 @@ public class Main {
 		String filePath = arguments[targetIndex];
 
 		generateWLTSReport(client, filePath);
+
 	} else if (verb) {
 
 		if (map) {
-			generateMapReport(client, switches.get("--map"));
+			generateMapReport(client, relocations, switches.get("--map"));
 		}
 
 		if (ministers) {
-			generateMinistersReport(client, false, switches.get("--ministers"));
+			generateMinistersReport(client, relocations, false, switches.get("--ministers"));
 		}
 
 		if (routes) {
-			generateMinistersReport(client, true, switches.get("--routes"));
+			generateMinistersReport(client, relocations, true, switches.get("--routes"));
 		}
 
 	} else {
-		System.out.println("You do not have permissions to export all data. You can pass '--map', '--routes' or '--ministers' as the first argument to export what you can");
+		System.out.println("You do not have permissions to export all data. You can pass '--map', '--routes' or '--ministers' followed by an output file to export what you can");
 	}
 
   }
@@ -206,7 +243,7 @@ public class Main {
 	}
   }
 
-  private static void mapCompanionships(LdsToolsClient client, boolean routes,
+  private static void mapCompanionships(LdsToolsClient client, JSONObject relocations, boolean routes,
   											String auxiliaryId, String auxiliaryName,
   											String companionshipName,
   											String ministryPrefix,
@@ -255,9 +292,9 @@ public class Main {
 					name = name + prefix + household.getMember(individualId).getPreferredName();
 					prefix = " - ";
 
-					if (null != household.getHouseholdAddress().getLattitude() && null != household.getHouseholdAddress().getLongitude()) {
-						double lat = Double.parseDouble(household.getHouseholdAddress().getLattitude());
-						double lon = Double.parseDouble(household.getHouseholdAddress().getLongitude());
+					if (null != relocate(household, relocations).getLattitude() && null != relocate(household, relocations).getLongitude()) {
+						double lat = Double.parseDouble(relocate(household, relocations).getLattitude());
+						double lon = Double.parseDouble(relocate(household, relocations).getLongitude());
 
 						connection.add(lat, lon, 0.0);
 						if (!haveStart) {
@@ -266,6 +303,8 @@ public class Main {
 							startLat = lat;
 						}
 						distinctCompanionLocations = distinctCompanionLocations || (startLon != lon) || (startLat != lat);
+					} else {
+						System.out.println("WARNING: No location found for " + household.getCoupleName());
 					}
 				}
 			}
@@ -293,11 +332,11 @@ public class Main {
 					ministeredIndividualIds.add(familyId);
 				}
 
-				if (null != family.getHouseholdAddress().getLattitude() && null != family.getHouseholdAddress().getLongitude()) {
+				if (null != relocate(family, relocations).getLattitude() && null != relocate(family, relocations).getLongitude()) {
 					connected = new KMLWriter.Placemark();
 					connection = new KMLWriter.Line();
-					double lat_family = Double.parseDouble(family.getHouseholdAddress().getLattitude());
-					double lon_family = Double.parseDouble(family.getHouseholdAddress().getLongitude());
+					double lat_family = Double.parseDouble(relocate(family, relocations).getLattitude());
+					double lon_family = Double.parseDouble(relocate(family, relocations).getLongitude());
 
 					connection.add(lat_family, lon_family, 0.0);
 
@@ -309,9 +348,9 @@ public class Main {
 
 						name += prefix + household.getMember(individualId).getPreferredName();
 						prefix = ", ";
-						if (null != household.getHouseholdAddress().getLattitude() && null != household.getHouseholdAddress().getLongitude()) {
-							double lat = Double.parseDouble(household.getHouseholdAddress().getLattitude());
-							double lon = Double.parseDouble(household.getHouseholdAddress().getLongitude());
+						if (null != relocate(household, relocations).getLattitude() && null != relocate(household, relocations).getLongitude()) {
+							double lat = Double.parseDouble(relocate(household, relocations).getLattitude());
+							double lon = Double.parseDouble(relocate(household, relocations).getLongitude());
 
 							connection.add(lat, lon, 0.0);
 						}
@@ -325,6 +364,8 @@ public class Main {
 											.append(new KMLWriter.UseStyle(ministryPrefix + ministryIndex))
 											.append(connection));
 
+				} else {
+					System.out.println("WARNING: No location found for " + family.getCoupleName());
 				}
 
 			}
@@ -345,8 +386,8 @@ public class Main {
 
 	for (String individualId : ministerIndividualIds) {
 		Household household = map.get(individualId);
-		double lat = Double.parseDouble(household.getHouseholdAddress().getLattitude());
-		double lon = Double.parseDouble(household.getHouseholdAddress().getLongitude());
+		double lat = Double.parseDouble(relocate(household, relocations).getLattitude());
+		double lon = Double.parseDouble(relocate(household, relocations).getLongitude());
 
 		group.append((new KMLWriter.Placemark())
 						.append(new KMLWriter.Name(household.getMember(individualId).getPreferredName()))
@@ -365,8 +406,8 @@ public class Main {
 
 	for (String individualId : ministeredIndividualIds) {
 		Household household = map.get(individualId);
-		double lat = Double.parseDouble(household.getHouseholdAddress().getLattitude());
-		double lon = Double.parseDouble(household.getHouseholdAddress().getLongitude());
+		double lat = Double.parseDouble(relocate(household, relocations).getLattitude());
+		double lon = Double.parseDouble(relocate(household, relocations).getLongitude());
 
 		group.append((new KMLWriter.Placemark())
 						.append(new KMLWriter.Name(household.getMember(individualId).getPreferredName()))
@@ -383,7 +424,7 @@ public class Main {
 
   }
 
-  private static void generateMinistersReport(LdsToolsClient client, boolean routes, String filePath) throws IOException, ParseException {
+  private static void generateMinistersReport(LdsToolsClient client, JSONObject relocations, boolean routes, String filePath) throws IOException, ParseException {
   	KMLWriter.Document document = new KMLWriter.Document();
   	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
   	JSONArray households = (JSONArray) ward.get("households");
@@ -422,11 +463,11 @@ public class Main {
 		getAuxiliaries(client, priesthood, reliefsociety);
 
 		for (String aux : priesthood) {
-			mapCompanionships(client, routes, aux, "Priesthood", "companionship", "ministry", "minister", "ministered", idToHousehold, document);
+			mapCompanionships(client, relocations, routes, aux, "Priesthood", "companionship", "ministry", "minister", "ministered", idToHousehold, document);
 		}
 
 		for (String aux : reliefsociety) {
-			mapCompanionships(client, routes, aux, "Relief Society", "companionship", "ministry", "minister", "ministered", idToHousehold, document);
+			mapCompanionships(client, relocations, routes, aux, "Relief Society", "companionship", "ministry", "minister", "ministered", idToHousehold, document);
 		}
 	}
 
@@ -439,7 +480,7 @@ public class Main {
   	@param filePath the path to the .kml file to generate
   	Icons for maps can be found at: http://kml4earth.appspot.com/icons.html
   */
-  private static void generateMapReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
+  private static void generateMapReport(LdsToolsClient client, JSONObject relocations, String filePath) throws IOException, ParseException {
   	KMLWriter.Document document = new KMLWriter.Document();
   	JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
   	JSONArray households = (JSONArray) ward.get("households");
@@ -457,9 +498,9 @@ public class Main {
 		.append(new KMLWriter.Description("Households in the " + (String) ward.get("orgName")));
 
 	for (Household household : household_list) {
-		if (null != household.getHouseholdAddress().getLattitude() && null != household.getHouseholdAddress().getLongitude()) {
-			double lat = Double.parseDouble(household.getHouseholdAddress().getLattitude());
-			double lon = Double.parseDouble(household.getHouseholdAddress().getLongitude());
+		if (null != relocate(household, relocations).getLattitude() && null != relocate(household, relocations).getLongitude()) {
+			double lat = Double.parseDouble(relocate(household, relocations).getLattitude());
+			double lon = Double.parseDouble(relocate(household, relocations).getLongitude());
 
 			if (minLat == 0.0 || lat < minLat) {
 				minLat = lat;
