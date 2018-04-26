@@ -64,16 +64,7 @@ public class HouseholdConsumer extends AbstractConsumer {
 			household.setHouseholdName(convert(jo.get("householdName")));
 			household.setPhone(convert(jo.get("phone")));
 			household.setHeadOfHouseholdIndividualID(convert(jo.get("headOfHouseholdIndividualId")));
-
-			Address address = new Address();
-			address.setLattitude(convert(jo.get("latitude")));
-			address.setLongitude(convert(jo.get("longitude")));
-			address.setPostalCode(convert(jo.get("postalCode")));
-			address.setState(convert(jo.get("state")));
-			address.setStreetAddress(convert(jo.get("desc1") + ", " + convert(jo.get("desc2"))));
-
-			household.setHouseholdAddress(address);
-
+			household.setHouseholdAddress(new Address(jo));
 			household.setHeadOfHousehold(HouseholdMemberConsumer.bindMember((JSONObject) jo.get("headOfHouse")));
 			household.setSpouse(HouseholdMemberConsumer.bindMember((JSONObject) jo.get("spouse")));
 

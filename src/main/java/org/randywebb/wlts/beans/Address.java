@@ -3,6 +3,13 @@
  */
 package org.randywebb.wlts.beans;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import org.randywebb.wlts.beans.AbstractBean;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,22 +17,29 @@ import org.slf4j.LoggerFactory;
  * @author randyw
  *
  */
-public class Address {
+public class Address extends AbstractBean {
   private static Logger log = LoggerFactory.getLogger(Address.class);
 
-  private String streetAddress;
-  private String city;
-  private String State;
-  private String postalCode;
-  private String longitude;
-  private String lattitude;
-  private boolean includeLatLong;
+	public static List<Address> fromArray(JSONArray array) {
+		return fromArray(array, new ArrayList<Address>(), Address.class);
+	}
+
+	public Address() {
+	}
+
+	public Address(JSONObject definition) {
+		update(definition, new String[] {"latitude", "longitude", "postalCode", "state", "desc1", "desc2", "desc3", "includeLatLong"});
+
+		if (!containsKey("streetAddress") || (null != get("desc1")) && (null != get("desc2"))) {
+			setStreetAddress(get("desc1") + ", " + get("desc2"));
+		}
+	}
 
   /**
    * @return the streetAddress
    */
   public String getStreetAddress() {
-    return streetAddress;
+    return get("streetAddress");
   }
 
   /**
@@ -33,14 +47,14 @@ public class Address {
    *          the streetAddress to set
    */
   public void setStreetAddress(String streetAddress) {
-    this.streetAddress = null == streetAddress ? null : streetAddress.trim();
+    put("streetAddress", null == streetAddress ? null : streetAddress.trim());
   }
 
   /**
    * @return the city
    */
   public String getCity() {
-    return city;
+    return get("city");
   }
 
   /**
@@ -48,14 +62,14 @@ public class Address {
    *          the city to set
    */
   public void setCity(String city) {
-    this.city = null == city ? null : city.trim();
+    put("city", null == city ? null : city.trim());
   }
 
   /**
    * @return the state
    */
   public String getState() {
-    return State;
+    return get("state");
   }
 
   /**
@@ -63,14 +77,14 @@ public class Address {
    *          the state to set
    */
   public void setState(String state) {
-    State = null == state ? null : state.trim();
+    put("state", null == state ? null : state.trim());
   }
 
   /**
    * @return the postalCode
    */
   public String getPostalCode() {
-    return postalCode;
+    return get("postalCode");
   }
 
   /**
@@ -78,14 +92,14 @@ public class Address {
    *          the postalCode to set
    */
   public void setPostalCode(String postalCode) {
-    this.postalCode = null == postalCode ? null : postalCode.trim();
+    put("postalCode", null == postalCode ? null : postalCode.trim());
   }
 
   /**
    * @return the longitude
    */
   public String getLongitude() {
-    return longitude;
+    return get("longitude");
   }
 
   /**
@@ -93,29 +107,44 @@ public class Address {
    *          the longitude to set
    */
   public void setLongitude(String longitude) {
-    this.longitude = null == longitude ? null : longitude.trim();
+    put("longitude", null == longitude ? null : longitude.trim());
   }
 
   /**
-   * @return the lattitude
+   * @return the latitude
    */
   public String getLattitude() {
-    return lattitude;
+    return getLatitude();
   }
 
   /**
-   * @param lattitude
-   *          the lattitude to set
+   * @return the latitude
    */
-  public void setLattitude(String lattitude) {
-    this.lattitude = null == lattitude ? null : lattitude.trim();
+  public String getLatitude() {
+    return get("latitude");
+  }
+
+  /**
+   * @param latitude
+   *          the latitude to set
+   */
+  public void setLattitude(String latitude) {
+    setLatitude(latitude);
+  }
+
+  /**
+   * @param latitude
+   *          the latitude to set
+   */
+  public void setLatitude(String latitude) {
+    put("latitude", null == latitude ? null : latitude.trim());
   }
 
   /**
    * @return the includeLatLong
    */
   public boolean isIncludeLatLong() {
-    return includeLatLong;
+    return get("includeLatLong").substring(0,1).equalsIgnoreCase("t");
   }
 
   /**
@@ -123,7 +152,7 @@ public class Address {
    *          the includeLatLong to set
    */
   public void setIncludeLatLong(boolean includeLatLong) {
-    this.includeLatLong = includeLatLong;
+    put("includeLatLong", includeLatLong ? "true" : "false");
   }
 
   /*
@@ -132,8 +161,7 @@ public class Address {
    */
   @Override
   public String toString() {
-    return "Address [streetAddress=" + streetAddress + ", city=" + city + ", State=" + State + ", postalCode=" + postalCode + ", longitude=" + longitude + ", lattitude=" + lattitude
-        + ", includeLatLong=" + includeLatLong + "]";
+    return "Address [" + super.toString() + "]";
   }
 
   /**
@@ -141,6 +169,7 @@ public class Address {
    */
   public static Address toAddress(String addressString) {
     Address a = new Address();
+
     try {
       StringBuilder sb = new StringBuilder(addressString);
 
