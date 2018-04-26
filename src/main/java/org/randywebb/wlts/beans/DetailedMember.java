@@ -448,10 +448,10 @@ public class DetailedMember {
    */
   public Address getAddress() {
     Address address = new Address();
-    address.setStreetAddress(this.street);
-    address.setCity(this.city);
-    address.setState(this.state);
-    address.setPostalCode(this.zip);
+    address.setStreetAddress(this.getStreet());
+    address.setCity(this.getCity());
+    address.setState(this.getState());
+    address.setPostalCode(this.getZip());
     return address;
   }
 
@@ -641,209 +641,209 @@ public class DetailedMember {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("DetailedMember [");
-    if (name != null) {
+    if (getName() != null) {
       builder.append("name=");
-      builder.append(name);
+      builder.append(getName());
       builder.append(", ");
     }
-    if (spokenName != null) {
+    if (getSpokenName() != null) {
       builder.append("spokenName=");
-      builder.append(spokenName);
+      builder.append(getSpokenName());
       builder.append(", ");
     }
-    if (nameOrder != null) {
+    if (getNameOrder() != null) {
       builder.append("nameOrder=");
-      builder.append(nameOrder);
+      builder.append(getNameOrder());
       builder.append(", ");
     }
-    if (birthDate != null) {
+    if (getBirthDate() != null) {
       builder.append("birthDate=");
-      builder.append(birthDate);
+      builder.append(getBirthDate());
       builder.append(", ");
     }
-    if (birthDateSort != null) {
+    if (getBirthDateSort() != null) {
       builder.append("birthDateSort=");
-      builder.append(birthDateSort);
+      builder.append(getBirthDateSort());
       builder.append(", ");
     }
-    if (formattedBirthDate != null) {
+    if (getFormattedBirthDate() != null) {
       builder.append("formattedBirthdate=");
-      builder.append(formattedBirthDate);
+      builder.append(getFormattedBirthDate());
       builder.append(", ");
     }
-    if (gender != null) {
+    if (getGender() != null) {
       builder.append("gender=");
-      builder.append(gender);
+      builder.append(getGender());
       builder.append(", ");
     }
-    if (genderCode != null) {
+    if (getGenderCode() != null) {
       builder.append("genderCode=");
-      builder.append(genderCode);
+      builder.append(getGenderCode());
       builder.append(", ");
     }
-    if (mrn != null) {
+    if (getMrn() != null) {
       builder.append("mrn=");
-      builder.append(mrn);
+      builder.append(getMrn());
       builder.append(", ");
     }
-    if (id != null) {
+    if (getId() != null) {
       builder.append("id=");
-      builder.append(id);
+      builder.append(getId());
       builder.append(", ");
     }
-    if (email != null) {
+    if (getEmail() != null) {
       builder.append("email=");
-      builder.append(email);
+      builder.append(getEmail());
       builder.append(", ");
     }
-    if (householdEmail != null) {
+    if (getHouseholdEmail() != null) {
       builder.append("householdEmail=");
-      builder.append(householdEmail);
+      builder.append(getHouseholdEmail());
       builder.append(", ");
     }
-    if (phone != null) {
+    if (getPhone() != null) {
       builder.append("phone=");
-      builder.append(phone);
+      builder.append(getPhone());
       builder.append(", ");
     }
-    if (householdPhone != null) {
+    if (getHouseholdPhone() != null) {
       builder.append("householdPhone=");
-      builder.append(householdPhone);
+      builder.append(getHouseholdPhone());
       builder.append(", ");
     }
-    if (unitNumber != null) {
+    if (getUnitNumber() != null) {
       builder.append("unitNumber=");
-      builder.append(unitNumber);
+      builder.append(getUnitNumber());
       builder.append(", ");
     }
-    if (unitName != null) {
+    if (getUnitName() != null) {
       builder.append("unitName=");
-      builder.append(unitName);
+      builder.append(getUnitName());
       builder.append(", ");
     }
-    if (priesthood != null) {
+    if (getPriesthood() != null) {
       builder.append("priesthood=");
-      builder.append(priesthood);
+      builder.append(getPriesthood());
       builder.append(", ");
     }
-    if (priesthoodCode != null) {
+    if (getPriesthoodCode() != null) {
       builder.append("priesthoodCode=");
-      builder.append(priesthoodCode);
+      builder.append(getPriesthoodCode());
       builder.append(", ");
     }
-    if (priesthoodType != null) {
+    if (getPriesthoodType() != null) {
       builder.append("priesthoodType=");
-      builder.append(priesthoodType);
+      builder.append(getPriesthoodType());
       builder.append(", ");
     }
-    if (age != null) {
+    if (getAge() != null) {
       builder.append("age=");
-      builder.append(age);
+      builder.append(getAge());
       builder.append(", ");
     }
-    if (actualAge != null) {
+    if (getActualAge() != null) {
       builder.append("actualAge=");
-      builder.append(actualAge);
+      builder.append(getActualAge());
       builder.append(", ");
     }
-    if (actualAgeInMonths != null) {
+    if (getActualAgeInMonths() != null) {
       builder.append("actualAgeInMonths=");
-      builder.append(actualAgeInMonths);
+      builder.append(getActualAgeInMonths());
       builder.append(", ");
     }
-    if (genderLabelShort != null) {
+    if (getGenderLabelShort() != null) {
       builder.append("genderLabelShort=");
-      builder.append(genderLabelShort);
+      builder.append(getGenderLabelShort());
       builder.append(", ");
     }
-    if (visible != null) {
+    if (getVisible() != null) {
       builder.append("visible=");
-      builder.append(visible);
+      builder.append(getVisible());
       builder.append(", ");
     }
-    if (nonMember != null) {
+    if (getNonMember() != null) {
       builder.append("nonMember=");
-      builder.append(nonMember);
+      builder.append(getNonMember());
       builder.append(", ");
     }
-    if (outOfUnitMember != null) {
+    if (getOutOfUnitMember() != null) {
       builder.append("outOfUnitMember=");
-      builder.append(outOfUnitMember);
+      builder.append(getOutOfUnitMember());
       builder.append(", ");
     }
-    if (street != null) {
+    if (getStreet() != null) {
       builder.append("street=");
-      builder.append(street);
+      builder.append(getStreet());
       builder.append(", ");
     }
-    if (city != null) {
+    if (getCity() != null) {
       builder.append("city=");
-      builder.append(city);
+      builder.append(getCity());
       builder.append(", ");
     }
-    if (state != null) {
+    if (getState() != null) {
       builder.append("state=");
-      builder.append(state);
+      builder.append(getState());
       builder.append(", ");
     }
-    if (zip != null) {
+    if (getZip() != null) {
       builder.append("zip=");
-      builder.append(zip);
+      builder.append(getZip());
       builder.append(", ");
     }
-    if (givenName != null) {
+    if (getGivenName() != null) {
       builder.append("givenName=");
-      builder.append(givenName);
+      builder.append(getGivenName());
       builder.append(", ");
     }
-    if (coupleName != null) {
+    if (getCoupleName() != null) {
       builder.append("coupleName=");
-      builder.append(coupleName);
+      builder.append(getCoupleName());
       builder.append(", ");
     }
-    if (householdId != null) {
+    if (getHouseholdId() != null) {
       builder.append("householdId=");
-      builder.append(householdId);
+      builder.append(getHouseholdId());
       builder.append(", ");
     }
-    if (isHead != null) {
+    if (getIsHead() != null) {
       builder.append("isHead=");
-      builder.append(isHead);
+      builder.append(getIsHead());
       builder.append(", ");
     }
-    if (isSpouse != null) {
+    if (getIsSpouse() != null) {
       builder.append("isSpouse=");
-      builder.append(isSpouse);
+      builder.append(getIsSpouse());
       builder.append(", ");
     }
-    if (isAdult != null) {
+    if (getIsAdult() != null) {
       builder.append("isAdult=");
-      builder.append(isAdult);
+      builder.append(getIsAdult());
       builder.append(", ");
     }
-    if (fullTimeMissionary != null) {
+    if (getFullTimeMissionary() != null) {
       builder.append("fullTimeMissionary=");
-      builder.append(fullTimeMissionary);
+      builder.append(getFullTimeMissionary());
       builder.append(", ");
     }
-    if (formattedMRN != null) {
+    if (getFormattedMRN() != null) {
       builder.append("formattedMRN=");
-      builder.append(formattedMRN);
+      builder.append(getFormattedMRN());
       builder.append(", ");
     }
-    if (setApart != null) {
+    if (getSetApart() != null) {
       builder.append("setApart=");
-      builder.append(setApart);
+      builder.append(getSetApart());
       builder.append(", ");
     }
-    if (formattedBirthDateFull != null) {
+    if (getFormattedBirthDateFull() != null) {
       builder.append("formattedBirthDateFull=");
-      builder.append(formattedBirthDateFull);
+      builder.append(getFormattedBirthDateFull());
       builder.append(", ");
     }
-    if (sustainedDate != null) {
+    if (getFormattedBirthDateFull() != null) {
       builder.append("sustainedDate=");
-      builder.append(sustainedDate);
+      builder.append(getFormattedBirthDateFull());
     }
     builder.append("]");
     return builder.toString();
