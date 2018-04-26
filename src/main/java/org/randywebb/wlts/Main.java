@@ -318,7 +318,7 @@ public class Main {
 										.append(connection));
 			} else if (companionship.getTeachers().size() > 0) {
 				districtFolder.append((new KMLWriter.Placemark())
-								.append(new KMLWriter.Name(district.getName() + " - " + name))
+								.append(new KMLWriter.Name(name))
 								.append(new KMLWriter.Description(name))
 								.append(new KMLWriter.UseStyle(ministerName))
 								.append(new KMLWriter.Point(startLat, startLon, 0.0)));
