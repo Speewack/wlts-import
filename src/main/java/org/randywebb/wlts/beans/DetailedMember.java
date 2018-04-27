@@ -3,11 +3,14 @@
  */
 package org.randywebb.wlts.beans;
 
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
 
 import org.randywebb.wlts.beans.AbstractBean;
 import org.json.simple.JSONObject;
@@ -25,47 +28,20 @@ public class DetailedMember extends AbstractBean {
   private static Logger log = LoggerFactory.getLogger(DetailedMember.class);
   private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-  private static Boolean toBoolean(String value) {
-   	return (null == value) ? null : Boolean.valueOf(value);
-  }
-
-  private static String toString(Boolean value) {
-   	return (null == value) ? null : (value ? "true" : "false");
-  }
-
-  private static Integer toInteger(String value) {
-   	return (null == value) ? null : Integer.valueOf(value);
-  }
-
-  private static String toString(Integer value) {
-   	return (null == value) ? null : value.toString();
-  }
-
-  private static Date toDate(String value) {
-
-	try {
-		return (null == value) ? null : dateFormat.parse(value);
-	} catch(ParseException e) {
-        log.error("Error parsing Date (" + value + "): ", e);
-	} catch(NullPointerException e) {
-        log.error("Null found when parsing Date (" + value + "): ", e);
-	}
-
-   	return null;
-  }
-
-  private static String toString(Date value) {
-   	return (null == value) ? null : dateFormat.format(value);
-  }
-
 	public static List<DetailedMember> fromArray(JSONArray array) {
 		return fromArray(array, new ArrayList<DetailedMember>(), DetailedMember.class);
 	}
 
+	private final static List<String> booleanFields = Arrays.asList(new String[] {"visible", "nonMember", "outOfUnitMember", "isHead", "isSpouse", "isAdult", "fullTimeMissionary", "setApart"});
+	private final static List<String> dateFields = Arrays.asList(new String[] {"birthDate", "sustainedDate"});
+	private final static List<String> integerFields = Arrays.asList(new String[] {"nameOrder", "birthDateSort", "age", "actualAge", "actualAgeInMonths"});
+
 	public DetailedMember() {
+		super(dateFormat, booleanFields, integerFields, dateFields);
 	}
 
 	public DetailedMember(JSONObject definition) {
+		super(dateFormat, booleanFields, integerFields, dateFields);
 		update(definition, new String[] {
 			"name", "spokenName", "nameOrder", "birthDate", "birthDateSort", "formattedBirthDate",
 			"gender", "genderCode", "mrn", "id", "email", "householdEmail", "phone", "householdPhone",

@@ -17,8 +17,8 @@ import org.supercsv.cellprocessor.ConvertNullTo;
 import org.supercsv.cellprocessor.FmtBool;
 import org.supercsv.cellprocessor.FmtDate;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.CsvBeanWriter;
-import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.io.CsvMapWriter;
+import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import org.json.simple.JSONArray;
@@ -62,7 +62,7 @@ public class DetailedMemberListCSV {
   }
 
   public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
-    ICsvBeanWriter beanWriter = null;
+    ICsvMapWriter beanWriter = null;
     CellProcessor[] processors = new CellProcessor[] { new ConvertNullTo(""), // "id",
         new ConvertNullTo(""), // "mrn",
         new ConvertNullTo(""), // "formattedMRN",
@@ -94,14 +94,14 @@ public class DetailedMemberListCSV {
     };
 
     try {
-      beanWriter = new CsvBeanWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
+      beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
       String[] header = { "id", "mrn", "formattedMRN", "name", "givenName", "spokenName", "street", "city", "state", "zip", "age", "birthDate", "email", "phone", "gender", "genderCode", "coupleName",
           "householdEmail", "householdId", "householdPhone", "isAdult", "isHead", "isSpouse", "nonMember", "outOfUnitMember", "priesthood", "unitNumber", "unitName" };
 
       beanWriter.writeHeader(header);
 
       for (DetailedMember member : members) {
-        beanWriter.write(member, header, processors);
+        beanWriter.write(member.forCSV(), header, processors);
       }
 
     } catch (IOException ex) {
