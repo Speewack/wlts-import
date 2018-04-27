@@ -32,7 +32,7 @@ import org.randywebb.wlts.beans.Visit;
 import org.randywebb.wlts.beans.Assignment;
 import org.randywebb.wlts.beans.Teacher;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
-import org.randywebb.wlts.util.CSVWriter;
+import org.randywebb.wlts.reports.DetailedMemberListCSV;
 import org.randywebb.wlts.util.KMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -570,7 +570,7 @@ public class Main {
 	// List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
 	// List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
 
-	CSVWriter.writeCSVFile(filePath, members);
+	DetailedMemberListCSV.writeCSVFile(filePath, members);
 
 	System.out.println("Export complete");
   }

@@ -15,9 +15,9 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
-public class CSVWriter {
+public class DetailedMemberListCSV {
 
-  private static Logger log = LoggerFactory.getLogger(CSVWriter.class);
+  private static Logger log = LoggerFactory.getLogger(DetailedMemberListCSV.class);
 
   public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
     ICsvBeanWriter beanWriter = null;
