@@ -46,8 +46,9 @@ public class DetailedMinistered extends AbstractBean {
 
 				for (Assignment assignment : companionship.getAssignments()) {
 					DetailedMinistered ministered = new DetailedMinistered();
-					Household household = idToHousehold.get(assignment.get("individualId"));
-					HouseholdMember member = household.getMember(assignment.get("individualId"));
+					String individualId = assignment.get("individualId");
+					Household household = idToHousehold.get(individualId);
+					HouseholdMember member = household.getMember(individualId);
 					Address address = household.relocate(relocation);
 
 					copy(assignment, "individualId", ministered);
