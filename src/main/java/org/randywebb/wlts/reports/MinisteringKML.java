@@ -143,8 +143,8 @@ public class MinisteringKML {
 					prefix = " - ";
 
 					if (null != household.relocate(relocations).getLattitude() && null != household.relocate(relocations).getLongitude()) {
-						double lat = Double.parseDouble(household.relocate(relocations).getLattitude());
-						double lon = Double.parseDouble(household.relocate(relocations).getLongitude());
+						double lat = household.relocate(relocations).getLatitudeValue();
+						double lon = household.relocate(relocations).getLongitudeValue();
 
 						connection.add(lat, lon, 0.0);
 						if (!haveStart) {
@@ -185,8 +185,8 @@ public class MinisteringKML {
 				if (null != family.relocate(relocations).getLattitude() && null != family.relocate(relocations).getLongitude()) {
 					connected = new KMLWriter.Placemark();
 					connection = new KMLWriter.Line();
-					double lat_family = Double.parseDouble(family.relocate(relocations).getLattitude());
-					double lon_family = Double.parseDouble(family.relocate(relocations).getLongitude());
+					double lat_family = family.relocate(relocations).getLatitudeValue();
+					double lon_family = family.relocate(relocations).getLongitudeValue();
 
 					connection.add(lat_family, lon_family, 0.0);
 
@@ -199,8 +199,8 @@ public class MinisteringKML {
 						name += prefix + household.getMember(individualId).getPreferredName();
 						prefix = ", ";
 						if (null != household.relocate(relocations).getLattitude() && null != household.relocate(relocations).getLongitude()) {
-							double lat = Double.parseDouble(household.relocate(relocations).getLattitude());
-							double lon = Double.parseDouble(household.relocate(relocations).getLongitude());
+							double lat = household.relocate(relocations).getLatitudeValue();
+							double lon = household.relocate(relocations).getLongitudeValue();
 
 							connection.add(lat, lon, 0.0);
 						}
@@ -237,8 +237,8 @@ public class MinisteringKML {
 
 	for (String individualId : ministerIndividualIds) {
 		Household household = map.get(individualId);
-		double lat = Double.parseDouble(household.relocate(relocations).getLattitude());
-		double lon = Double.parseDouble(household.relocate(relocations).getLongitude());
+		double lat = household.relocate(relocations).getLatitudeValue();
+		double lon = household.relocate(relocations).getLongitudeValue();
 
 		group.append((new KMLWriter.Placemark())
 						.append(new KMLWriter.Name(household.getMember(individualId).getPreferredName()))
@@ -258,8 +258,8 @@ public class MinisteringKML {
 	for (Map.Entry<String,Assignment> individualIdAssignment : ministeredIndividualIds.entrySet()) {
 		Household household = map.get(individualIdAssignment.getKey());
 		Assignment assignment = individualIdAssignment.getValue();
-		double lat = Double.parseDouble(household.relocate(relocations).getLattitude());
-		double lon = Double.parseDouble(household.relocate(relocations).getLongitude());
+		double lat = household.relocate(relocations).getLatitudeValue();
+		double lon = household.relocate(relocations).getLongitudeValue();
 
 		group.append((new KMLWriter.Placemark())
 						.append(new KMLWriter.Name(household.getMember(individualIdAssignment.getKey()).getPreferredName()))
@@ -344,8 +344,8 @@ public class MinisteringKML {
 
 	for (Household household : household_list) {
 		if (null != household.relocate(relocations).getLattitude() && null != household.relocate(relocations).getLongitude()) {
-			double lat = Double.parseDouble(household.relocate(relocations).getLattitude());
-			double lon = Double.parseDouble(household.relocate(relocations).getLongitude());
+			double lat = household.relocate(relocations).getLatitudeValue();
+			double lon = household.relocate(relocations).getLongitudeValue();
 
 			if (minLat == 0.0 || lat < minLat) {
 				minLat = lat;

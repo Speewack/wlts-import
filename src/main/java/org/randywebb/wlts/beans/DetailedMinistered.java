@@ -85,6 +85,7 @@ public class DetailedMinistered extends AbstractBean {
 
 					ministered.put("ministers", companionshipName);
 					ministered.put("districtLeaderName", districtLeader.getPreferredName());
+					ministered.put("nearestHouseholdName", household.nearest(households, relocation).get("householdName"));
 
 				}
 

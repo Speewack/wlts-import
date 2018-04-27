@@ -30,6 +30,10 @@ public class Household extends AbstractBean {
 
 	private static Logger log = LoggerFactory.getLogger(Household.class);
 
+	// estimates for Pflugerville, TX
+	private static double milesPerLat = 68.9;
+	private static double milesPerLon = 59.7;
+
 	private HouseholdMember headOfHousehold;
 	private HouseholdMember spouse;
 	private List<HouseholdMember> children = new ArrayList<HouseholdMember>();
@@ -57,6 +61,46 @@ public class Household extends AbstractBean {
 	public Household(JSONObject definition) {
 		update(definition, new String[] {"householdName", "headOfHouse", "spouse", "children", "phone", "emailAddress", "coupleName", "headOfHouseholdIndividualID"});
 		householdAddress = new Address(definition);
+	}
+
+	public Household nearest(List<Household> households, JSONObject relocation) {
+		double min = 100000000.0; // circumference of the earth is approximately 24,900
+		Household found = null;
+
+		for (Household household : households) {
+			double d = distance(household, relocation);
+
+			if ( (0.01 < d) && (d < min) ) { // within hundreth of a mile is the same place
+				min = d;
+				found = household;
+			}
+		}
+
+		return found;
+	}
+
+	public Household furthest(List<Household> households, JSONObject relocation) {
+		double max = 0.0;
+		Household found = null;
+
+		for (Household household : households) {
+			double d = distance(household, relocation);
+
+			if (d > max) {
+				max = d;
+				found = household;
+			}
+		}
+
+		return found;
+	}
+
+	public double distance(Household other, JSONObject relocation) {
+		Address me = relocate(relocation);
+		Address them = other.relocate(relocation);
+
+		return Math.sqrt(Math.pow((milesPerLat * (me.getLatitudeValue() - them.getLatitudeValue())),2)
+						+ Math.pow((milesPerLon * (me.getLongitudeValue() - them.getLongitudeValue())),2));
 	}
 
 	public Address relocate(JSONObject relocation) {
