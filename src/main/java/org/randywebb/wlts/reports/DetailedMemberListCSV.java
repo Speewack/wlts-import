@@ -1,12 +1,18 @@
-package org.randywebb.wlts.util;
+package org.randywebb.wlts.reports;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import org.randywebb.wlts.beans.DetailedMember;
+import org.randywebb.wlts.beans.Household;
+import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.supercsv.cellprocessor.ConvertNullTo;
 import org.supercsv.cellprocessor.FmtBool;
 import org.supercsv.cellprocessor.FmtDate;
@@ -15,9 +21,45 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class DetailedMemberListCSV {
 
   private static Logger log = LoggerFactory.getLogger(DetailedMemberListCSV.class);
+
+  public static void generateWLTSReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
+	// Parse JSON Membership file into beans
+
+	InputStream in = client.getMemberInfo();
+
+	List<DetailedMember> members = processDetailMembers(in);
+
+	// List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
+	// List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
+
+	writeCSVFile(filePath, members);
+
+	System.out.println("Export complete");
+  }
+
+  private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {
+    JSONParser parser = new JSONParser();
+    Object obj = parser.parse(new InputStreamReader(in));
+    JSONObject jo = (JSONObject) obj;
+
+    return DetailedMember.fromArray( (JSONArray) jo.get("households") );
+  }
+
+  private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {
+    JSONParser parser = new JSONParser();
+    Object obj = parser.parse(new InputStreamReader(in));
+    JSONObject jo = (JSONObject) obj;
+
+    return Household.fromArray( (JSONArray) jo.get("households") );
+  }
 
   public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
     ICsvBeanWriter beanWriter = null;
