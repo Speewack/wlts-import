@@ -283,15 +283,7 @@ public class MinisteringKML {
   	JSONArray households = (JSONArray) ward.get("households");
 	double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
     List<Household> household_list = Household.fromArray(households);
-	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
-
-	if (null != idToHousehold) {
-		for (Household household : household_list) {
-			for (String individualId : household.getIndividualIds()) {
-				idToHousehold.put(individualId, household);
-			}
-		}
-	}
+	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(household_list) : null;
 
 	String[] colors = {
 		"7fff0000", "7f0000ff", "7fffff00", "7f00ffff", "7fff00ff", "7f7f7f7f", "7f00ff00",
@@ -344,17 +336,8 @@ public class MinisteringKML {
   	JSONArray households = (JSONArray) ward.get("households");
 	double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
     List<Household> household_list = Household.fromArray(households);
-	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? new HashMap<String,Household>() : null;
+	Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(household_list) : null;
   	KMLWriter.Folder folder = new KMLWriter.Folder();
-
-
-	if (null != idToHousehold) {
-		for (Household household : household_list) {
-			for (String individualId : household.getIndividualIds()) {
-				idToHousehold.put(individualId, household);
-			}
-		}
-	}
 
 	folder.append(new KMLWriter.Name("Households"))
 		.append(new KMLWriter.Description("Households in the " + (String) ward.get("orgName")));

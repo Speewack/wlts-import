@@ -6,6 +6,8 @@ package org.randywebb.wlts.beans;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.randywebb.wlts.beans.HouseholdMember;
 import org.randywebb.wlts.beans.Address;
@@ -35,6 +37,18 @@ public class Household extends AbstractBean {
 
 	public static List<Household> fromArray(JSONArray array) {
 		return fromArray(array, new ArrayList<Household>(), Household.class);
+	}
+
+	public static Map<String,Household> mapIndividualIdsToHousehold(List<Household> households) {
+		Map<String, Household> idToHousehold = new HashMap<String,Household>();
+
+		for (Household household : households) {
+			for (String individualId : household.getIndividualIds()) {
+				idToHousehold.put(individualId, household);
+			}
+		}
+
+		return idToHousehold;
 	}
 
 	public Household() {
