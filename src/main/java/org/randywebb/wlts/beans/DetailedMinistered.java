@@ -1,39 +1,61 @@
 package org.randywebb.wlts.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 import org.randywebb.wlts.beans.AbstractBean;
-import org.randywebb.wlts.beans.Household;
 import org.randywebb.wlts.beans.District;
+import org.randywebb.wlts.beans.Household;
 
-import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/// Detailed information for ministered csv report.
 public class DetailedMinistered extends AbstractBean {
 
+	/// To use for debugging
 	private static Logger log = LoggerFactory.getLogger(DetailedMinistered.class);
 
+	/** Helper method to copy a field name from one object to another.
+		@param from The object to copy from
+		@param fromName The name of the key in from to copy into to
+		@param to The object to receive the value for key in from
+	*/
 	private static void copy(AbstractBean from, String fromName, AbstractBean to) {
 		copy(from, fromName, to, fromName);
 	}
 
+	/** Helper method to copy a field name from one object to another with a different key.
+		@param from The object to copy from
+		@param fromName The name of the key in from to copy into to
+		@param to The object to receive the value for key in from
+		@param toName The name of the value in to
+	*/
 	private static void copy(AbstractBean from, String fromName, AbstractBean to, String toName) {
 		to.put(toName, from.get(fromName));
 	}
 
+	/** Gets the CellProcessors for CSV generation.
+		@param headers The names of the fields, in the order they will be used.
+		@param stringProcessor The processor to use for the values
+		@return The appropriate processor for each header field in the order they are found in headers
+	*/
 	public static CellProcessor[] csvProcessors(String[] headers, CellProcessor stringProcessor) {
 		ArrayList<String> none = new ArrayList<String>();
 
 		return csvProcessors(headers, none, none, none, stringProcessor, null, null, null);
 	}
 
+	/** Converts a JSON Array of detailed ministered data to a List of DetailedMinistered.
+		@param array JSON Array of JSON detailed ministered data objects
+		@return The DetailedMinistereds from the JSON Array
+	*/
 	public static List<DetailedMinistered> fromDistricts(List<District> districts, List<Household> households, JSONObject relocation) {
 		ArrayList<DetailedMinistered> results = new ArrayList<DetailedMinistered>();
 		Map<String, Household> idToHousehold = Household.mapIndividualIdsToHousehold(households);
@@ -110,6 +132,9 @@ public class DetailedMinistered extends AbstractBean {
 	public DetailedMinistered() {
 	}
 
+	/**
+		@return A textual representation of the DetailedMinistered
+	*/
 	@Override
 	public String toString() {
 		return "DetailedMinistered [" + super.toString() + "]";
