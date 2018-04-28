@@ -1,34 +1,52 @@
 package org.randywebb.wlts.beans;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import org.randywebb.wlts.beans.Companionship;
 import org.randywebb.wlts.beans.AbstractBean;
-import org.json.simple.JSONObject;
+import org.randywebb.wlts.beans.Companionship;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/// Represents a ministering district
 public class District extends AbstractBean {
 
+	/// To be used for debugging
 	private static Logger log = LoggerFactory.getLogger(District.class);
 
+	/// Companionships in the district
 	private List<Companionship> companionships = new ArrayList<Companionship>();
 
+	/** Converts a JSON Array of districts to a List of District.
+		@param array JSON Array of JSON districts objects
+		@return The Districts from the JSON Array
+	*/
 	public static List<District> fromArray(JSONArray array) {
 		return fromArray(array, new ArrayList<District>(), District.class);
 	}
 
+	/// Default constructor
 	public District() {
 	}
 
+	/** Convert a district JSON Object to an District.
+		@param definition A JSON district Object
+	*/
 	public District(JSONObject definition) {
 		update(definition, new String[] {"id", "auxiliaryId", "districtLeaderId", "districtLeaderIndividualId", "name", "companionships"});
 	}
 
+	/** Extract a specific key from a district JSON Object.
+		We need to override since visits is not a string but an Array of Visits.
+		For all other fields (simple strings), we just use the default behavior of AbstractBean.
+		@param defintion The JSON assignment object
+		@param key The field of this Assignment to pull from definition
+	*/
 	@Override
 	protected void setFromJSON(JSONObject definition, String key) {
 
