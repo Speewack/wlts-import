@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.randywebb.wlts.ldstools.rest;
 
@@ -35,7 +35,7 @@ public class ApiCatalog extends Properties {
 	private static ApiCatalog _instance = null;
 
 	/**
-	 * 
+	 *
 	 */
 	private ApiCatalog() {
 		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("lds-tools-config"));
@@ -62,7 +62,7 @@ public class ApiCatalog extends Properties {
 
 	/**
 	 * Retrieve an instance of the LDS Tools API Catalog
-	 * 
+	 *
 	 * @return ApiCatalog
 	 */
 	public static ApiCatalog getInstance() {
@@ -74,10 +74,9 @@ public class ApiCatalog extends Properties {
 
 	/**
 	 * Convert the JSON API catalog from lds tools to a Properties object
-	 * 
+	 *
 	 * @param in
 	 *            InputStream containing the JSON catalog from LDS-Tools API
-	 * @return
 	 */
 	private void convertCatalog(InputStream in) {
 

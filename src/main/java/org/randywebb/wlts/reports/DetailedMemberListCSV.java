@@ -63,40 +63,12 @@ public class DetailedMemberListCSV {
 
   public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
     ICsvMapWriter beanWriter = null;
-    CellProcessor[] processors = new CellProcessor[] { new ConvertNullTo(""), // "id",
-        new ConvertNullTo(""), // "mrn",
-        new ConvertNullTo(""), // "formattedMRN",
-        new ConvertNullTo(""), // "name",
-        new ConvertNullTo(""), // "givenName",
-        new ConvertNullTo(""), // "spokenName",
-        new ConvertNullTo(""), // "street",
-        new ConvertNullTo(""), // "city",
-        new ConvertNullTo(""), // "state",
-        new ConvertNullTo(""), // "zip",
-        new ConvertNullTo(""), // "age",
-        new FmtDate("dd MMM yyyy"), // "birthDate",
-        new ConvertNullTo(""), // "email",
-        new ConvertNullTo(""), // "phone",
-        new ConvertNullTo(""), // "gender",
-        new ConvertNullTo(""), // "genderCode",
-        new ConvertNullTo(""), // "coupleName",
-        new ConvertNullTo(""), // "householdEmail",
-        new ConvertNullTo(""), // "householdId",
-        new ConvertNullTo(""), // "householdPhone",
-        new FmtBool("true", "false"), // "isAdult",
-        new FmtBool("true", "false"), // "isHead",
-        new FmtBool("true", "false"), // "isSpouse",
-        new FmtBool("true", "false"), // "nonMember",
-        new FmtBool("true", "false"), // "outOfUnitMember",
-        new ConvertNullTo(""), // "priesthood",
-        new ConvertNullTo(""), // "unitNumber",
-        new ConvertNullTo("") // "unitName"
-    };
+    String[] header = { "id", "mrn", "formattedMRN", "name", "givenName", "spokenName", "street", "city", "state", "zip", "age", "birthDate", "email", "phone", "gender", "genderCode", "coupleName",
+          "householdEmail", "householdId", "householdPhone", "isAdult", "isHead", "isSpouse", "nonMember", "outOfUnitMember", "priesthood", "unitNumber", "unitName" };
+    CellProcessor[] processors = DetailedMember.csvProcessors(header, new ConvertNullTo(""), new FmtBool("true", "false"), new ConvertNullTo(""), new FmtDate("dd MMM yyyy"));
 
     try {
       beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
-      String[] header = { "id", "mrn", "formattedMRN", "name", "givenName", "spokenName", "street", "city", "state", "zip", "age", "birthDate", "email", "phone", "gender", "genderCode", "coupleName",
-          "householdEmail", "householdId", "householdPhone", "isAdult", "isHead", "isSpouse", "nonMember", "outOfUnitMember", "priesthood", "unitNumber", "unitName" };
 
       beanWriter.writeHeader(header);
 

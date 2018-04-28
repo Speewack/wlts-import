@@ -225,8 +225,8 @@ public class Household extends AbstractBean {
 	/**
 	 * Add multiple children to the household
 	 *
-	 * @param children
-	 *            List<Member>
+	 * @param children The children to add to the existing children
+	 *
 	 */
 	public void addChildren(List<HouseholdMember> children) {
 		this.children.addAll(children);

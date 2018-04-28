@@ -277,7 +277,10 @@ public class MinisteringKML {
 
   /** Generate .kml file.
   	@param client lds tools client to use for connection
+  	@param relocations a JSONObject that maps coupleName field to various address fields to change
   	@param filePath the path to the .kml file to generate
+  	@throws IOException on io error
+  	@throws ParseException on JSON error
   	Icons for maps can be found at: http://kml4earth.appspot.com/icons.html
   */
   public static void generateMapReport(LdsToolsClient client, JSONObject relocations, String filePath) throws IOException, ParseException {

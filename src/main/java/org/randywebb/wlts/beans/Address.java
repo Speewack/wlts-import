@@ -180,6 +180,8 @@ public class Address extends AbstractBean {
 
   /**
    * Parse an Address String from MLS into separate Address Fields
+   * @param addressString MLS Address String
+   * @return The address parsed
    */
   public static Address toAddress(String addressString) {
     Address a = new Address();

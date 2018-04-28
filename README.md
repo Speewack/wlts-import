@@ -13,7 +13,9 @@ If you have Homebrew (https://brew.sh) you can install Maven via:
 
 To build run:
 
-`mvn clean package assembly:single`
+`mvn clean package assembly:single javadoc:javadoc`
+
+The documentation is at: `target/site/apidocs/index.html`
 
 ## Test
 

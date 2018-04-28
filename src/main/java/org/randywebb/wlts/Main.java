@@ -59,10 +59,8 @@ public class Main {
   }
 
   /**
-   * @param args
-   * @throws Exception
-   * @throws IOException
-   * @throws ClientProtocolException
+   * @param args Arguments to the program. See printUsage()
+   * @throws Exception Just in case we didn't handle an exception in a user-friendly way
    */
   public static void main(String... args) throws Exception {
   	Map<String,String> switches = new HashMap<String,String>();

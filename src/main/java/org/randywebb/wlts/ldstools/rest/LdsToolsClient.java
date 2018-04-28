@@ -51,7 +51,7 @@ public class LdsToolsClient {
 	 * Deliberately package scoped to enable other ldstools api components
 	 * access to a common client
 	 *
-	 * @return
+	 * @return A cached http client
 	 */
 	static CloseableHttpClient getHttpClient() {
 		if (_httpclient == null) {

@@ -16,6 +16,8 @@ import org.randywebb.wlts.beans.AbstractBean;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
+import org.supercsv.cellprocessor.ift.CellProcessor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,11 @@ public class DetailedMember extends AbstractBean {
 	private final static List<String> booleanFields = Arrays.asList(new String[] {"visible", "nonMember", "outOfUnitMember", "isHead", "isSpouse", "isAdult", "fullTimeMissionary", "setApart"});
 	private final static List<String> dateFields = Arrays.asList(new String[] {"birthDate", "sustainedDate"});
 	private final static List<String> integerFields = Arrays.asList(new String[] {"nameOrder", "birthDateSort", "age", "actualAge", "actualAgeInMonths"});
+
+	public static CellProcessor[] csvProcessors(String[] headers,
+			CellProcessor stringProcessor, CellProcessor booleanProcessor, CellProcessor integerProcessor, CellProcessor dateProcessor) {
+		return csvProcessors(headers, booleanFields, dateFields, integerFields, stringProcessor, booleanProcessor, integerProcessor, dateProcessor);
+	}
 
 	public DetailedMember() {
 		super(dateFormat, booleanFields, integerFields, dateFields);

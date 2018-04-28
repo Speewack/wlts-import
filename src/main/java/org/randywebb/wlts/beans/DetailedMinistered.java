@@ -11,6 +11,8 @@ import org.randywebb.wlts.beans.District;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
+import org.supercsv.cellprocessor.ift.CellProcessor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,12 @@ public class DetailedMinistered extends AbstractBean {
 
 	private static void copy(AbstractBean from, String fromName, AbstractBean to, String toName) {
 		to.put(toName, from.get(fromName));
+	}
+
+	public static CellProcessor[] csvProcessors(String[] headers, CellProcessor stringProcessor) {
+		ArrayList<String> none = new ArrayList<String>();
+
+		return csvProcessors(headers, none, none, none, stringProcessor, null, null, null);
 	}
 
 	public static List<DetailedMinistered> fromDistricts(List<District> districts, List<Household> households, JSONObject relocation) {

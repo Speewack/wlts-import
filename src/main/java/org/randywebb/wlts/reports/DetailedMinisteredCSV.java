@@ -61,48 +61,17 @@ public class DetailedMinisteredCSV {
 
   public static void writeCSVFile(String csvFileName, List<DetailedMinistered> members) {
     ICsvMapWriter beanWriter = null;
-    CellProcessor[] processors = new CellProcessor[] {
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo(""),
-        new ConvertNullTo("")
-    };
-
-    try {
-      beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
-      String[] header = {
+    String[] header = {
       	"individualId", "assignmentType", "ministeringCompanionshipId", "auxiliaryId", "districtLeaderId",
       	"districtLeaderIndividualId", "districtName", "districtId", "ministerStartDate", "fullName",
       	"preferredName", "memberId", "surname", "givenName", "phone", "email", "latitude", "longitude",
       	"postalCode", "state", "desc1", "desc2", "desc3", "householdName", "householdPhone",
       	"householdEmailAddress", "householdCoupleName", "ministers", "districtLeaderName", "nearestHouseholdName"
- };
+	 };
+    CellProcessor[] processors = DetailedMinistered.csvProcessors(header, new ConvertNullTo(""));
+
+    try {
+      beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
 
       beanWriter.writeHeader(header);
 
