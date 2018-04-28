@@ -10,6 +10,9 @@
 
 <!-- Note. For some reason, the assembly plugin is not binding to the package goal.
      To build the distributable jar, use mvn clean package assembly:single -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <pluginManagement>
       <plugins>
@@ -24,6 +27,23 @@
             <target>1.8</target>
           </configuration>
         </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <doctitle>My API for ${project.name} ${project.version}</doctitle>
+          <windowtitle>My API for ${project.name} ${project.version}</windowtitle>
+          <show>private</show>
+          <tags>
+            <tag>
+              <name>todo</name>
+              <placement>a</placement>
+              <head>To do something:</head>
+            </tag>
+          </tags>
+        </configuration>
+      </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
