@@ -44,11 +44,13 @@ public class DetailedMinisteredCSV {
 
 	for (String auxiliaryId : priesthood) {
 		List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId));
+
 		ministered.addAll(DetailedMinistered.fromDistricts(districts, household_list, relocations));
 	}
 
 	for (String auxiliaryId : reliefsociety) {
 		List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId));
+
 		ministered.addAll(DetailedMinistered.fromDistricts(districts, household_list, relocations));
 	}
 
@@ -59,7 +61,7 @@ public class DetailedMinisteredCSV {
 
   public static void writeCSVFile(String csvFileName, List<DetailedMinistered> members) {
     ICsvMapWriter beanWriter = null;
-    CellProcessor[] processors = new CellProcessor[] { new ConvertNullTo(""), // "id",
+    CellProcessor[] processors = new CellProcessor[] {
         new ConvertNullTo(""),
         new ConvertNullTo(""),
         new ConvertNullTo(""),

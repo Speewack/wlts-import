@@ -99,6 +99,12 @@ public class Household extends AbstractBean {
 		Address me = relocate(relocation);
 		Address them = other.relocate(relocation);
 
+		if ( (null == other)
+				|| (null == me.getLatitude()) || (null == me.getLongitude())
+				|| (null == them.getLatitude()) || (null == them.getLongitude()) ) {
+			return 0.0;
+		}
+
 		return Math.sqrt(Math.pow((milesPerLat * (me.getLatitudeValue() - them.getLatitudeValue())),2)
 						+ Math.pow((milesPerLon * (me.getLongitudeValue() - them.getLongitudeValue())),2));
 	}

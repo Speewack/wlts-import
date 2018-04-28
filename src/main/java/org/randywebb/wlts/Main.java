@@ -23,6 +23,7 @@ import org.json.simple.parser.ParseException;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.reports.DetailedMemberListCSV;
 import org.randywebb.wlts.reports.MinisteringKML;
+import org.randywebb.wlts.reports.DetailedMinisteredCSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,13 +41,14 @@ public class Main {
   	System.out.println("       Main --help");
   	System.out.println();
   	System.out.println("  Verbs");
-  	System.out.println("    --map       target_file is a .kml file that maps every household");
-  	System.out.println("    --routes    target_file is a .kml file that maps ministering routes (requires Leadership account)");
-  	System.out.println("    --ministers target_file is a .kml file that maps ministers and ministered households (requires Leadership account)");
-  	System.out.println("    --wlts      target_file is a .csv file that contains all households (requires Admin account)");
+  	System.out.println("    --map        target_file is a .kml file that maps every household");
+  	System.out.println("    --routes     target_file is a .kml file that maps ministering routes (requires Leadership account)");
+  	System.out.println("    --ministers  target_file is a .kml file that maps ministers and ministered households (requires Leadership account)");
+  	System.out.println("    --wlts       target_file is a .csv file that contains all households (requires Admin account)");
+  	System.out.println("    --ministered target_file is a .csv file that contains all families being ministered to");
   	System.out.println();
-  	System.out.println("  --help        Display this content");
-  	System.out.println("  --relocate    relcoate_file is a json file that maps coupleName to fields to replace in the Household records");
+  	System.out.println("  --help         Display this content");
+  	System.out.println("  --relocate     relcoate_file is a json file that maps coupleName to fields to replace in the Household records");
   	System.out.println("      ie {\"Smith, Joe & Jane\" : { \"latitude\" : 35.0000,\"longitude\" : -95.0000}}");
   	System.out.println("      Suggested fields");
   	System.out.println("        address    The street address");
@@ -64,7 +66,7 @@ public class Main {
    */
   public static void main(String... args) throws Exception {
   	Map<String,String> switches = new HashMap<String,String>();
-  	String[] outputFileTypes = {"--map", "--routes", "--ministers", "--relocate", "--wlts"};
+  	String[] outputFileTypes = {"--map", "--routes", "--ministers", "--relocate", "--wlts", "--ministered"};
   	String[] onOff = {"--help"};
 	String[] arguments = parseArgs(args, onOff, outputFileTypes, switches);
 	JSONObject relocations = switches.containsKey("--relocate") ? loadJSONFile(switches.get("--relocate")) : null;
@@ -86,9 +88,10 @@ public class Main {
 
 	final boolean ministers = switches.containsKey("--ministers");
 	final boolean routes = switches.containsKey("--routes");
+	final boolean ministered = switches.containsKey("--ministered");
 	final boolean map = switches.containsKey("--map");
 	final boolean wlts = switches.containsKey("--wlts");
-	final boolean verb = ministers || map || routes || wlts;
+	final boolean verb = ministers || map || routes || wlts || ministered;
 	final boolean hasUsername = (verb && arguments.length > 0) || (!verb && arguments.length > 1);
 	final boolean hasPassword = hasUsername && ((verb && arguments.length > 1) || (!verb && arguments.length > 2));
 	final int usernameIndex = 0;
@@ -162,6 +165,10 @@ public class Main {
 
 	if (routes) {
 		MinisteringKML.generateMinistersReport(client, relocations, true, switches.get("--routes"));
+	}
+
+	if (ministered) {
+		DetailedMinisteredCSV.generateMiniseteredReport(client, switches.get("--ministered"), relocations);
 	}
 
   }
