@@ -44,7 +44,7 @@ public class Assignment extends AbstractBean {
 	/** Extract a specific key from an assignment JSON Object.
 		We need to override since visits is not a string but an Array of Visits.
 		For all other fields (simple strings), we just use the default behavior of AbstractBean.
-		@param defintion The JSON assignment object
+		@param definition The JSON assignment object
 		@param key The field of this Assignment to pull from definition
 	*/
 	@Override

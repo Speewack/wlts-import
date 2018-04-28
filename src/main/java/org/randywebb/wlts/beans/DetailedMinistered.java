@@ -52,9 +52,11 @@ public class DetailedMinistered extends AbstractBean {
 		return csvProcessors(headers, none, none, none, stringProcessor, null, null, null);
 	}
 
-	/** Converts a JSON Array of detailed ministered data to a List of DetailedMinistered.
-		@param array JSON Array of JSON detailed ministered data objects
-		@return The DetailedMinistereds from the JSON Array
+	/** Converts a List of District to a List of DetailedMinistered.
+		@param districts The list of ministering districts
+		@param households The households to look up names and addresses
+		@param relocation The data used to redirect the location for specified households
+		@return The DetailedMinistered List
 	*/
 	public static List<DetailedMinistered> fromDistricts(List<District> districts, List<Household> households, JSONObject relocation) {
 		ArrayList<DetailedMinistered> results = new ArrayList<DetailedMinistered>();

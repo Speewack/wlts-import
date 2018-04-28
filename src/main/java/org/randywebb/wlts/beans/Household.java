@@ -1,48 +1,56 @@
-/**
- *
- */
 package org.randywebb.wlts.beans;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
-import org.randywebb.wlts.beans.HouseholdMember;
-import org.randywebb.wlts.beans.Address;
 import org.randywebb.wlts.beans.AbstractBean;
-import org.json.simple.JSONObject;
+import org.randywebb.wlts.beans.Address;
+import org.randywebb.wlts.beans.HouseholdMember;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author randyw
- *
- */
-/**
+/** Represents a household.
  * @author randyw
  *
  */
 public class Household extends AbstractBean {
 
+	/// Can be used for logging debugging messages
 	private static Logger log = LoggerFactory.getLogger(Household.class);
 
-	// estimates for Pflugerville, TX
+	/// estimated miles per degree of latitude for Pflugerville, TX
 	private static double milesPerLat = 68.9;
+	/// estimated miles per degree of longitude for Pflugerville, TX
 	private static double milesPerLon = 59.7;
 
+	/// The head of household
 	private HouseholdMember headOfHousehold;
+	/// The spouse (may be null)
 	private HouseholdMember spouse;
+	/// The children (may be an empty list)
 	private List<HouseholdMember> children = new ArrayList<HouseholdMember>();
+	/// The address of the household
 	private Address householdAddress;
 
+	/** Converts a JSON Array of household to a List of Household.
+		@param array JSON Array of JSON household objects
+		@return The Households from the JSON Array
+	*/
 	public static List<Household> fromArray(JSONArray array) {
 		return fromArray(array, new ArrayList<Household>(), Household.class);
 	}
 
+	/** Given a list of households, get a map from individualId to the household.
+		@param households The list of households
+		@return Map of individualId for each member of the households to their respective household
+	*/
 	public static Map<String,Household> mapIndividualIdsToHousehold(List<Household> households) {
 		Map<String, Household> idToHousehold = new HashMap<String,Household>();
 
@@ -55,14 +63,23 @@ public class Household extends AbstractBean {
 		return idToHousehold;
 	}
 
+	/// default constructor
 	public Household() {
 	}
 
+	/** Convert a household JSON Object to a Household.
+		@param definition A JSON household Object
+	*/
 	public Household(JSONObject definition) {
 		update(definition, new String[] {"householdName", "headOfHouse", "spouse", "children", "phone", "emailAddress", "coupleName", "headOfHouseholdIndividualID"});
 		householdAddress = new Address(definition);
 	}
 
+	/** Find the nearest household to this household.
+		@param households The households to search
+		@param relocation Information to relocate households if needed
+		@return The Household in households that is closest, but not within 0.01 miles, of this household.
+	*/
 	public Household nearest(List<Household> households, JSONObject relocation) {
 		double min = 100000000.0; // circumference of the earth is approximately 24,900
 		Household found = null;
@@ -79,6 +96,11 @@ public class Household extends AbstractBean {
 		return found;
 	}
 
+	/** Find the furthest household from this household.
+		@param households The households to search
+		@param relocation Information to relocate households if needed
+		@return The Household in households that is furthest from this household.
+	*/
 	public Household furthest(List<Household> households, JSONObject relocation) {
 		double max = 0.0;
 		Household found = null;
@@ -95,6 +117,11 @@ public class Household extends AbstractBean {
 		return found;
 	}
 
+	/** Get the approximate distance in miles from one household to another.
+		@param other The household to measure against
+		@param relocation The information to relocate households, if need be
+		@return The approximate miles between the two households
+	*/
 	public double distance(Household other, JSONObject relocation) {
 		Address me = relocate(relocation);
 		Address them = other.relocate(relocation);
@@ -109,6 +136,11 @@ public class Household extends AbstractBean {
 						+ Math.pow((milesPerLon * (me.getLongitudeValue() - them.getLongitudeValue())),2));
 	}
 
+	/** Given relocation information, return the location of this household.
+		Relocation can be useful when incorrect or missing information is retrieved.
+		@param relocation A JSON object mapping coupleName to fields to update for the address
+		@return The relocated address if there is relocation data for the coupleName, otherwise the actual address
+	*/
 	public Address relocate(JSONObject relocation) {
 		JSONObject relocatable = (null == relocation) ? null : (JSONObject) relocation.get(getCoupleName());
 		Address previous = getHouseholdAddress();
@@ -135,6 +167,12 @@ public class Household extends AbstractBean {
 		return previous;
 	}
 
+	/** Extract a specific key from an assignment JSON Object.
+		We need to override since headOfHouse, spouse, and children are not strings but HouseholdMember, HouseholdMember, and an Array of HouseholdMember.
+		For all other fields (simple strings), we just use the default behavior of AbstractBean.
+		@param definition The JSON household object
+		@param key The field of this Household to pull from definition
+	*/
 	@Override
 	protected void setFromJSON(JSONObject definition, String key) {
 
@@ -150,6 +188,10 @@ public class Household extends AbstractBean {
 
 	}
 
+	/** Get the list of individualId that are represented in this household.
+		This would include head of household, spouse, and children.
+		@return The individualId of each member of the household
+	*/
 	public List<String> getIndividualIds() {
 		List<String> ids = new ArrayList<String>();
 
@@ -163,6 +205,10 @@ public class Household extends AbstractBean {
 		return ids;
 	}
 
+	/** Gets the household member for an individualId.
+		@param individualId The individualId to look up
+		@return The HouseholdMember for the individualId, if it is in the household, null otherwise
+	*/
 	public HouseholdMember getMember(String individualId) {
 
 		if (individualId.equals(headOfHousehold.getIndividualId())) {
@@ -182,26 +228,44 @@ public class Household extends AbstractBean {
 		return null;
 	}
 
+	/**
+		@return the name of the household
+	*/
 	public String getHouseholdName() {
 		return get("householdName");
 	}
 
+	/**
+		@param householdName Set the name for the household
+	*/
 	public void setHouseholdName(String householdName) {
 		put("householdName", householdName);
 	}
 
+	/**
+		@return the head of household
+	*/
 	public HouseholdMember getHeadOfHousehold() {
 		return headOfHousehold;
 	}
 
+	/**
+		@param headOfHousehold Set the head of the household
+	*/
 	public void setHeadOfHousehold(HouseholdMember headOfHousehold) {
 		this.headOfHousehold = headOfHousehold;
 	}
 
+	/**
+		@return the spouse of the head of household, or null if none
+	*/
 	public HouseholdMember getSpouse() {
 		return spouse;
 	}
 
+	/**
+		@param spouse Set the spouse of the head of the household
+	*/
 	public void setSpouse(HouseholdMember spouse) {
 		this.spouse = spouse;
 	}
@@ -242,10 +306,17 @@ public class Household extends AbstractBean {
 		this.children.add(child);
 	}
 
+	/**
+	 * @return The address of the household
+	 */
 	public Address getHouseholdAddress() {
 		return householdAddress;
 	}
 
+	/**
+	 * Sets the list of Children, overwriting any existing children
+	 * @param householdAddress The address of the household
+	 */
 	public void setHouseholdAddress(Address householdAddress) {
 		this.householdAddress = householdAddress;
 	}

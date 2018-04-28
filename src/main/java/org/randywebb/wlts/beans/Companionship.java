@@ -48,7 +48,7 @@ public class Companionship extends AbstractBean {
 	/** Extract a specific key from an companionship JSON Object.
 		We need to override since teachers and assignments are not string but an Array of Teachers and Assignments.
 		For all other fields (simple strings), we just use the default behavior of AbstractBean.
-		@param defintion The JSON companionship object
+		@param definition The JSON companionship object
 		@param key The field of this Companionship to pull from definition
 	*/
 	@Override
