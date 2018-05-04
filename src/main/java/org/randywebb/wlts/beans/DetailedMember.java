@@ -113,7 +113,7 @@ public class DetailedMember extends AbstractBean {
 	* @return the nameOrder
 	*/
 	public Integer getNameOrder() {
-		return toInteger(get("nameOrder"));
+		return getInteger("nameOrder");
 	}
 
 	/**
@@ -121,14 +121,14 @@ public class DetailedMember extends AbstractBean {
 	*          the nameOrder to set
 	*/
 	public void setNameOrder(Integer nameOrder) {
-		put("nameOrder", toString(nameOrder));
+		put("nameOrder", nameOrder);
 	}
 
 	/**
 	* @return the birthDate
 	*/
 	public Date getBirthDate() {
-		return toDate(get("birthDate"));
+		return getDate("birthDate");
 	}
 
 	/**
@@ -136,14 +136,14 @@ public class DetailedMember extends AbstractBean {
 	*          the birthDate to set
 	*/
 	public void setBirthDate(Date birthDate) {
-		put("birthDate", toString(birthDate));
+		put("birthDate", birthDate);
 	}
 
 	/**
 	* @return the birthDateSort
 	*/
 	public Integer getBirthDateSort() {
-		return toInteger(get("birthDateSort"));
+		return getInteger("birthDateSort");
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class DetailedMember extends AbstractBean {
 	*          the birthDateSort to set
 	*/
 	public void setBirthDateSort(Integer birthDateSort) {
-		put("birthDateSort", toString(birthDateSort));
+		put("birthDateSort", birthDateSort);
 	}
 
 	/**
@@ -368,7 +368,7 @@ public class DetailedMember extends AbstractBean {
 	* @return the age
 	*/
 	public Integer getAge() {
-		return toInteger(get("age"));
+		return getInteger("age");
 	}
 
 	/**
@@ -376,14 +376,14 @@ public class DetailedMember extends AbstractBean {
 	*          the age to set
 	*/
 	public void setAge(Integer age) {
-		put("age", toString(age));
+		put("age", age);
 	}
 
 	/**
 	* @return the actualAge
 	*/
 	public Integer getActualAge() {
-		return toInteger(get("actualAge"));
+		return getInteger("actualAge");
 	}
 
 	/**
@@ -391,14 +391,14 @@ public class DetailedMember extends AbstractBean {
 	*          the actualAge to set
 	*/
 	public void setActualAge(Integer actualAge) {
-		put("actualAge", toString(actualAge));
+		put("actualAge", actualAge);
 	}
 
 	/**
 	* @return the actualAgeInMonths
 	*/
 	public Integer getActualAgeInMonths() {
-		return toInteger(get("actualAgeInMonths"));
+		return getInteger("actualAgeInMonths");
 	}
 
 	/**
@@ -406,7 +406,7 @@ public class DetailedMember extends AbstractBean {
 	*          the actualAgeInMonths to set
 	*/
 	public void setActualAgeInMonths(Integer actualAgeInMonths) {
-		put("actualAgeInMonths", toString(actualAgeInMonths));
+		put("actualAgeInMonths", actualAgeInMonths);
 	}
 
 	/**
@@ -428,7 +428,7 @@ public class DetailedMember extends AbstractBean {
 	* @return the visible
 	*/
 	public Boolean getVisible() {
-		return toBoolean(get("visible"));
+		return getBoolean("visible");
 	}
 
 	/**
@@ -436,14 +436,14 @@ public class DetailedMember extends AbstractBean {
 	*          the visible to set
 	*/
 	public void setVisible(Boolean visible) {
-		put("visible", toString(visible));
+		put("visible", visible);
 	}
 
 	/**
 	* @return the nonMember
 	*/
 	public Boolean getNonMember() {
-		return toBoolean(get("nonMember"));
+		return getBoolean("nonMember");
 	}
 
 	/**
@@ -451,14 +451,14 @@ public class DetailedMember extends AbstractBean {
 	*          the nonMember to set
 	*/
 	public void setNonMember(Boolean nonMember) {
-		put("nonMember", toString(nonMember));
+		put("nonMember", nonMember);
 	}
 
 	/**
 	* @return the outOfUnitMember
 	*/
 	public Boolean getOutOfUnitMember() {
-		return toBoolean(get("outOfUnitMember"));
+		return getBoolean("outOfUnitMember");
 	}
 
 	/**
@@ -466,7 +466,7 @@ public class DetailedMember extends AbstractBean {
 	*          the outOfUnitMember to set
 	*/
 	public void setOutOfUnitMember(Boolean outOfUnitMember) {
-		put("outOfUnitMember", toString(outOfUnitMember));
+		put("outOfUnitMember", outOfUnitMember);
 	}
 
 	/**
@@ -543,7 +543,7 @@ public class DetailedMember extends AbstractBean {
 	* @return the isHead
 	*/
 	public Boolean getIsHead() {
-		return toBoolean(get("isHead"));
+		return getBoolean("isHead");
 	}
 
 	/**
@@ -551,14 +551,14 @@ public class DetailedMember extends AbstractBean {
 	*          the isHead to set
 	*/
 	public void setIsHead(Boolean isHead) {
-		put("isHead", toString(isHead));
+		put("isHead", isHead);
 	}
 
 	/**
 	* @return the isSpouse
 	*/
 	public Boolean getIsSpouse() {
-		return toBoolean(get("isSpouse"));
+		return getBoolean("isSpouse");
 	}
 
 	/**
@@ -566,14 +566,14 @@ public class DetailedMember extends AbstractBean {
 	*          the isSpouse to set
 	*/
 	public void setIsSpouse(Boolean isSpouse) {
-		put("isSpouse", toString(isSpouse));
+		put("isSpouse", isSpouse);
 	}
 
 	/**
 	* @return the isAdult
 	*/
 	public Boolean getIsAdult() {
-		return toBoolean(get("isAdult"));
+		return getBoolean("isAdult");
 	}
 
 	/**
@@ -581,14 +581,14 @@ public class DetailedMember extends AbstractBean {
 	*          the isAdult to set
 	*/
 	public void setIsAdult(Boolean isAdult) {
-		put("isAdult", toString(isAdult));
+		put("isAdult", isAdult);
 	}
 
 	/**
 	* @return the fullTimeMissionary
 	*/
 	public Boolean getFullTimeMissionary() {
-		return toBoolean(get("fullTimeMissionary"));
+		return getBoolean("fullTimeMissionary");
 	}
 
 	/**
@@ -596,7 +596,7 @@ public class DetailedMember extends AbstractBean {
 	*          the fullTimeMissionary to set
 	*/
 	public void setFullTimeMissionary(Boolean fullTimeMissionary) {
-		put("fullTimeMissionary", toString(fullTimeMissionary));
+		put("fullTimeMissionary", fullTimeMissionary);
 	}
 
 	/**
@@ -618,7 +618,7 @@ public class DetailedMember extends AbstractBean {
 	* @return the setApart
 	*/
 	public Boolean getSetApart() {
-		return toBoolean(get("setApart"));
+		return getBoolean("setApart");
 	}
 
 	/**
@@ -626,7 +626,7 @@ public class DetailedMember extends AbstractBean {
 	*          the setApart to set
 	*/
 	public void setSetApart(Boolean setApart) {
-		put("setApart", toString(setApart));
+		put("setApart", setApart);
 	}
 
 	/**
@@ -648,7 +648,7 @@ public class DetailedMember extends AbstractBean {
 	* @return the sustainedDate
 	*/
 	public Date getSustainedDate() {
-		return toDate(get("sustainedDate"));
+		return getDate("sustainedDate");
 	}
 
 	/**
@@ -656,7 +656,7 @@ public class DetailedMember extends AbstractBean {
 	*          the sustainedDate to set
 	*/
 	public void setSustainedDate(Date sustainedDate) {
-		put("sustainedDate", toString(sustainedDate));
+		put("sustainedDate", sustainedDate);
 	}
 
 	/*

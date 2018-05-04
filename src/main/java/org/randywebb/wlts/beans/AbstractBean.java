@@ -166,6 +166,70 @@ public abstract class AbstractBean extends HashMap<String,String> {
 		return results;
 	}
 
+	/**
+		@param name The name of the field to interpret as an integer
+		@return The integer value of the field, or null if the field does not exist or is null
+	*/
+	public Integer getInteger(String name) {
+		return toInteger(get(name));
+	}
+
+	/**
+		@param name The name of the field to set
+		@param value The integer value for the field
+	*/
+	public void put(String name, Integer value) {
+		put(name, toString(value));
+	}
+
+	/**
+		@param name The name of the field to interpret as a double
+		@return The integer value of the field, or null if the field does not exist or is null
+	*/
+	public Double getDouble(String name) {
+		return toDouble(get(name));
+	}
+
+	/**
+		@param name The name of the field to set
+		@param value The double value for the field
+	*/
+	public void put(String name, Double value) {
+		put(name, toString(value));
+	}
+
+	/**
+		@param name The name of the field to interpret as a boolean
+		@return The boolean value of the field, or null if the field does not exist or is null
+	*/
+	public Boolean getBoolean(String name) {
+		return toBoolean(get(name));
+	}
+
+	/**
+		@param name The name of the field to set
+		@param value The boolean value for the field
+	*/
+	public void put(String name, Boolean value) {
+		put(name, toString(value));
+	}
+
+	/**
+		@param name The name of the field to interpret as a date
+		@return The date value of the field, or null if the field does not exist or is null
+	*/
+	public Date getDate(String name) {
+		return toDate(get(name));
+	}
+
+	/**
+		@param name The name of the field to set
+		@param value The date value for the field
+	*/
+	public void put(String name, Date value) {
+		put(name, toString(value));
+	}
+
 	/** Helper method for subclasses to customize reading fields from JSON.
 		Subclasses should check the key and handle special cases and in standard
 		string cases call super.setFromJSON().
@@ -179,6 +243,22 @@ public abstract class AbstractBean extends HashMap<String,String> {
 			put(key, (null == value) ? null : value.toString());
 		}
 
+	}
+
+	/**
+		@param value String that contains a double value, or null
+		@return The double value of the string
+	*/
+	protected Double toDouble(String value) {
+		return (null == value) ? null : Double.parseDouble(value);
+	}
+
+	/**
+		@param value Double value or null
+		@return The string representation of the double
+	*/
+	protected String toString(Double value) {
+		return (null == value) ? null : value.toString();
 	}
 
 	/** Helper method to convert String values to Boolean.

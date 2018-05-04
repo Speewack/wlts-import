@@ -106,8 +106,8 @@ public class Address extends AbstractBean {
 	/**
 	* @return the longitude
 	*/
-	public double getLongitudeValue() {
-		return null == getLongitude() ? null : Double.parseDouble(getLongitude());
+	public Double getLongitudeValue() {
+		return getDouble("longitude");
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class Address extends AbstractBean {
 	* @return the latitude
 	*/
 	public Double getLatitudeValue() {
-		return null == getLatitude() ? null : Double.parseDouble(getLatitude());
+		return getDouble("latitude");
 	}
 
 	/**
