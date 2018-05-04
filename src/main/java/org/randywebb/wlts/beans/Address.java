@@ -1,184 +1,239 @@
-/**
- *
- */
 package org.randywebb.wlts.beans;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import org.randywebb.wlts.beans.AbstractBean;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author randyw
- *
- */
-public class Address {
-  private static Logger log = LoggerFactory.getLogger(Address.class);
+/** Represents an Address.
+* @author randyw
+*
+*/
+public class Address extends AbstractBean {
 
-  private String streetAddress;
-  private String city;
-  private String State;
-  private String postalCode;
-  private String longitude;
-  private String lattitude;
-  private boolean includeLatLong;
+	/// Log errors
+	private static Logger log = LoggerFactory.getLogger(Address.class);
 
-  /**
-   * @return the streetAddress
-   */
-  public String getStreetAddress() {
-    return streetAddress;
-  }
+	/** Converts a JSON Array of addresses to a List of Address.
+		@param array JSON Array of JSON address objects
+		@return The Addresses from the JSON Array
+	*/
+	public static List<Address> fromArray(JSONArray array) {
+		return fromArray(array, new ArrayList<Address>(), Address.class);
+	}
 
-  /**
-   * @param streetAddress
-   *          the streetAddress to set
-   */
-  public void setStreetAddress(String streetAddress) {
-    this.streetAddress = streetAddress.trim();
-  }
+	/// Default constructor.
+	public Address() {
+	}
 
-  /**
-   * @return the city
-   */
-  public String getCity() {
-    return city;
-  }
+	/** Convert an address JSON Object to an Address.
+		@param definition A JSON address Object
+	*/
+	public Address(JSONObject definition) {
+		update(definition, new String[] {"latitude", "longitude", "postalCode", "state", "desc1", "desc2", "desc3", "includeLatLong"});
 
-  /**
-   * @param city
-   *          the city to set
-   */
-  public void setCity(String city) {
-    this.city = city.trim();
-  }
+		if (!containsKey("streetAddress") || (null != get("desc1")) && (null != get("desc2"))) {
+			setStreetAddress(get("desc1") + ", " + get("desc2"));
+		}
+	}
 
-  /**
-   * @return the state
-   */
-  public String getState() {
-    return State;
-  }
+	/**
+	* @return the streetAddress
+	*/
+	public String getStreetAddress() {
+		return get("streetAddress");
+	}
 
-  /**
-   * @param state
-   *          the state to set
-   */
-  public void setState(String state) {
-    State = state.trim();
-  }
+	/**
+	* @param streetAddress
+	*          the streetAddress to set
+	*/
+	public void setStreetAddress(String streetAddress) {
+		put("streetAddress", null == streetAddress ? null : streetAddress.trim());
+	}
 
-  /**
-   * @return the postalCode
-   */
-  public String getPostalCode() {
-    return postalCode;
-  }
+	/**
+	* @return the city
+	*/
+	public String getCity() {
+		return get("city");
+	}
 
-  /**
-   * @param postalCode
-   *          the postalCode to set
-   */
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode.trim();
-  }
+	/**
+	* @param city
+	*          the city to set
+	*/
+	public void setCity(String city) {
+		put("city", null == city ? null : city.trim());
+	}
 
-  /**
-   * @return the longitude
-   */
-  public String getLongitude() {
-    return longitude;
-  }
+	/**
+	* @return the state
+	*/
+	public String getState() {
+		return get("state");
+	}
 
-  /**
-   * @param longitude
-   *          the longitude to set
-   */
-  public void setLongitude(String longitude) {
-    this.longitude = longitude.trim();
-  }
+	/**
+	* @param state
+	*          the state to set
+	*/
+	public void setState(String state) {
+		put("state", null == state ? null : state.trim());
+	}
 
-  /**
-   * @return the lattitude
-   */
-  public String getLattitude() {
-    return lattitude;
-  }
+	/**
+	* @return the postalCode
+	*/
+	public String getPostalCode() {
+		return get("postalCode");
+	}
 
-  /**
-   * @param lattitude
-   *          the lattitude to set
-   */
-  public void setLattitude(String lattitude) {
-    this.lattitude = lattitude.trim();
-  }
+	/**
+	* @param postalCode
+	*          the postalCode to set
+	*/
+	public void setPostalCode(String postalCode) {
+		put("postalCode", null == postalCode ? null : postalCode.trim());
+	}
 
-  /**
-   * @return the includeLatLong
-   */
-  public boolean isIncludeLatLong() {
-    return includeLatLong;
-  }
+	/**
+	* @return the longitude
+	*/
+	public Double getLongitudeValue() {
+		return getDouble("longitude");
+	}
 
-  /**
-   * @param includeLatLong
-   *          the includeLatLong to set
-   */
-  public void setIncludeLatLong(boolean includeLatLong) {
-    this.includeLatLong = includeLatLong;
-  }
+	/**
+	* @return the longitude
+	*/
+	public String getLongitude() {
+		return get("longitude");
+	}
 
-  /*
-   * (non-Javadoc)
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString() {
-    return "Address [streetAddress=" + streetAddress + ", city=" + city + ", State=" + State + ", postalCode=" + postalCode + ", longitude=" + longitude + ", lattitude=" + lattitude
-        + ", includeLatLong=" + includeLatLong + "]";
-  }
+	/**
+	* @param longitude
+	*          the longitude to set
+	*/
+	public void setLongitude(String longitude) {
+		put("longitude", null == longitude ? null : longitude.trim());
+	}
 
-  /**
-   * Parse an Address String from MLS into separate Address Fields
-   */
-  public static Address toAddress(String addressString) {
-    Address a = new Address();
-    try {
-      StringBuilder sb = new StringBuilder(addressString);
+	/**
+	* @return the latitude
+	*/
+	public Double getLatitudeValue() {
+		return getDouble("latitude");
+	}
 
-      // Delimit address components with comma
-      sb.replace(sb.lastIndexOf(" "), sb.lastIndexOf(" "), ", "); // Fix zipcode
-      sb.replace(sb.lastIndexOf("<"), sb.lastIndexOf(">") + 1, ", "); // Replace last <br /> with
-                                                                      // comma
+	/**
+	* @return the latitude
+	*/
+	public String getLattitude() {
+		return getLatitude();
+	}
 
-      while (sb.indexOf("<") > 0 && sb.indexOf(">") > 0) {
-        sb.replace(sb.indexOf("<"), sb.indexOf(">") + 1, " "); // Replace remaining <br /> with
-                                                               // space
-      }
+	/**
+	* @return the latitude
+	*/
+	public String getLatitude() {
+		return get("latitude");
+	}
 
-      // System.out.println(sb.toString());
+	/**
+	* @param latitude
+	*          the latitude to set
+	*/
+	public void setLattitude(String latitude) {
+		setLatitude(latitude);
+	}
 
-      String[] addrComponent = sb.toString().split(",");
+	/**
+	* @param latitude
+	*          the latitude to set
+	*/
+	public void setLatitude(String latitude) {
+		put("latitude", null == latitude ? null : latitude.trim());
+	}
 
-      // TODO: I may need to make this more robust at some point if the data structure changes or if
-      // we don't always have 4 components
-      a.setStreetAddress(addrComponent[0]);
-      a.setCity(addrComponent[1]);
-      a.setState(addrComponent[2]);
-      a.setPostalCode(addrComponent[3]);
-    } catch (NullPointerException npe) {
-      if (log.isInfoEnabled()) {
-        log.info("Unable to parse address from \"" + addressString + "\"", npe);
-      }
-    } catch (ArrayIndexOutOfBoundsException e) {
-      if (log.isInfoEnabled()) {
-        log.info("Unable to parse address from \"" + addressString + "\"", e);
-      }
-    }
-    return a;
-  }
+	/**
+	* @return the includeLatLong
+	*/
+	public boolean isIncludeLatLong() {
+		return get("includeLatLong").substring(0,1).equalsIgnoreCase("t");
+	}
 
-  public static void main(String[] args) {
-    System.out.println(Address.toAddress("17413 Toyahville Trl<br />Round Rock, Texas 78664"));
-    System.out.println(Address.toAddress("16101 White River Blvd<br />Apt 21101<br />Pflugerville, Texas 78660-0006"));
-  }
+	/**
+	* @param includeLatLong
+	*          the includeLatLong to set
+	*/
+	public void setIncludeLatLong(boolean includeLatLong) {
+		put("includeLatLong", includeLatLong ? "true" : "false");
+	}
+
+	/*
+	* (non-Javadoc)
+	* @see java.lang.Object#toString()
+	*/
+	@Override
+	public String toString() {
+		return "Address [" + super.toString() + "]";
+	}
+
+	/**
+	* Parse an Address String from MLS into separate Address Fields
+	* @todo I may need to make this more robust at some point if the data structure changes or if
+	*			we don't always have 4 components
+	* @param addressString MLS Address String
+	* @return The address parsed
+	*/
+	public static Address toAddress(String addressString) {
+		Address a = new Address();
+
+		try {
+			StringBuilder sb = new StringBuilder(addressString);
+
+			// Delimit address components with comma
+			sb.replace(sb.lastIndexOf(" "), sb.lastIndexOf(" "), ", "); // Fix zipcode
+			sb.replace(sb.lastIndexOf("<"), sb.lastIndexOf(">") + 1, ", "); // Replace last <br /> with
+													  // comma
+
+			while (sb.indexOf("<") > 0 && sb.indexOf(">") > 0) {
+			sb.replace(sb.indexOf("<"), sb.indexOf(">") + 1, " "); // Replace remaining <br /> with
+											   // space
+			}
+
+			// System.out.println(sb.toString());
+
+			String[] addrComponent = sb.toString().split(",");
+
+			// TODO: I may need to make this more robust at some point if the data structure changes or if
+			// we don't always have 4 components
+			a.setStreetAddress(addrComponent[0]);
+			a.setCity(addrComponent[1]);
+			a.setState(addrComponent[2]);
+			a.setPostalCode(addrComponent[3]);
+		} catch (NullPointerException npe) {
+			if (log.isInfoEnabled()) {
+				log.info("Unable to parse address from \"" + addressString + "\"", npe);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			if (log.isInfoEnabled()) {
+				log.info("Unable to parse address from \"" + addressString + "\"", e);
+			}
+		}
+		return a;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(Address.toAddress("17413 Toyahville Trl<br />Round Rock, Texas 78664"));
+		System.out.println(Address.toAddress("16101 White River Blvd<br />Apt 21101<br />Pflugerville, Texas 78660-0006"));
+	}
 
 }

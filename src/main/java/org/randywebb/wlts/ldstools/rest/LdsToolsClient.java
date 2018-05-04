@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.randywebb.wlts.ldstools.rest;
 
@@ -19,14 +19,18 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import org.randywebb.wlts.util.AppConfig;
 import org.randywebb.wlts.util.http.JSONResponseHandler;
 import org.randywebb.wlts.util.http.NoOpResponseHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
+/** Maintains the credentials for a connection to LDS sites.
  * @author randyw
  *
  */
@@ -39,19 +43,18 @@ public class LdsToolsClient {
 
 	private Properties apiCatalog = ApiCatalog.getInstance();
 	private Properties appConfig = AppConfig.getInstance();
-	private String unitNumber = null;
+	private String unitNumber = null; // cache unit number
 
 	public LdsToolsClient(String user, String password) throws AuthenticationException {
 		getHttpClient();
 		signIn(user, password);
-		unitNumber = getUnitNumber();
 	}
 
 	/**
 	 * Deliberately package scoped to enable other ldstools api components
 	 * access to a common client
-	 * 
-	 * @return
+	 *
+	 * @return A cached http client
 	 */
 	static CloseableHttpClient getHttpClient() {
 		if (_httpclient == null) {
@@ -105,37 +108,79 @@ public class LdsToolsClient {
 
 	}
 
+	public boolean leaderReportsAvailable()
+	{
+		return apiCatalog.getProperty("leader-reports-enabled").substring(0,1).equalsIgnoreCase("t");
+	}
+
 	/**
 	 * Assumes user is signed in to LDS Tools API
 	 * Retrieves the signed-in user's unit number
 	 *
 	 * @return String containing the unit number
 	 */
-	private String getUnitNumber()
+	public String getUnitNumber()
 	{
-		String unitNumber = null;
-		
-		HttpGet httpGet = new HttpGet(apiCatalog.getProperty("current-user-unit"));
-		try {
-			JSONObject jsonObj = getHttpClient().execute(httpGet, new JSONResponseHandler());
-			
-			unitNumber =  jsonObj.get("message").toString();
-			if (log.isTraceEnabled())
-			{
-				log.trace("Unit Number Found: " + unitNumber);
-			}
+		if (null == unitNumber) {
+			try {
+				JSONObject jsonObj = getEndpointInfo("current-user-unit");
 
-		} catch (IOException e) {
-			log.error("Error retrieving Unit Number", e);
+				unitNumber =  jsonObj.get("message").toString();
+				if (log.isTraceEnabled())
+				{
+					log.trace("Unit Number Found: " + unitNumber);
+				}
+
+			} catch (IOException e) {
+				log.error("Error retrieving Unit Number", e);
+			}
 		}
 		return unitNumber;
 	}
-	
-	public InputStream getMemberInfo() throws IOException
+
+	public JSONObject getEndpointInfo(String endpointName, String... args) throws IOException
 	{
-		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("mls-report-endpoint"));
+		String url = apiCatalog.getProperty(endpointName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONObject>());
+	}
+
+	public JSONArray getEndpointList(String endpointName, String... args) throws IOException
+	{
+		String url = apiCatalog.getProperty(endpointName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONArray>());
+	}
+
+	public InputStream getAppProperty(String appPropertyName, String... args) throws IOException
+	{
+		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
 		HttpResponse response = getHttpClient().execute(httpGet);
 		return response.getEntity().getContent();
+	}
+
+	public JSONObject getAppPropertyEndpointInfo(String appPropertyName, String... args) throws IOException
+	{
+		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONObject>());
+	}
+
+	public JSONArray getAppPropertyEndpointList(String appPropertyName, String... args) throws IOException
+	{
+		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
+		HttpGet httpGet = new HttpGet(String.format(url, args));
+
+		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONArray>());
+	}
+
+	public InputStream getMemberInfo() throws IOException
+	{
+		return getAppProperty("mls-report-endpoint");
 	}
 
 }
