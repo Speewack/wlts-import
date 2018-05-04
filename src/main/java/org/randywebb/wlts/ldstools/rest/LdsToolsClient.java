@@ -19,15 +19,18 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.simple.JSONObject;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import org.randywebb.wlts.util.AppConfig;
 import org.randywebb.wlts.util.http.JSONResponseHandler;
 import org.randywebb.wlts.util.http.NoOpResponseHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
+/** Maintains the credentials for a connection to LDS sites.
  * @author randyw
  *
  */
