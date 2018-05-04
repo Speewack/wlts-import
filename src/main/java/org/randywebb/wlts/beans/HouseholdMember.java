@@ -1,34 +1,54 @@
 package org.randywebb.wlts.beans;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.randywebb.wlts.beans.AbstractBean;
-import org.json.simple.JSONObject;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/// Represents a member of a household
 public class HouseholdMember extends AbstractBean {
+
+	/// Can be used for logging debugging messages
 	private static Logger log = LoggerFactory.getLogger(HouseholdMember.class);
 
+	/// The full name of the person
 	private String fullName;
+	/// The person's preferred name
 	private String preferredName;
+	/// The person's member id (mrn)
 	private String memberId;
+	/// The person's db id (referenced by other objects)
 	private String individualId;
+	/// The family name
 	private String surname;
+	/// The first given name
 	private String givenName;
+	/// The person's phone number
 	private String phone;
+	/// The person's email
 	private String email;
 
+	/** Converts a JSON Array of household members to a List of HouseholdMember.
+		@param array JSON Array of JSON household objects
+		@return The HouseholdMembers from the JSON Array
+	*/
 	public static List<HouseholdMember> fromArray(JSONArray array) {
 		return fromArray(array, new ArrayList<HouseholdMember>(), HouseholdMember.class);
 	}
 
+	/// Default constructor
 	public HouseholdMember() {
 	}
 
+	/** Convert a household member JSON Object to a HouseholdMember.
+		@param definition A JSON household member Object
+	*/
 	public HouseholdMember(JSONObject definition) {
 		update(definition, new String[] {"fullName", "preferredName", "memberId", "individualId", "surname", "givenName", "phone", "email"});
 	}
