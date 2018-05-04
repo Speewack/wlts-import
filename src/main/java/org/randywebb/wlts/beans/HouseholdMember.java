@@ -17,23 +17,6 @@ public class HouseholdMember extends AbstractBean {
 	/// Can be used for logging debugging messages
 	private static Logger log = LoggerFactory.getLogger(HouseholdMember.class);
 
-	/// The full name of the person
-	private String fullName;
-	/// The person's preferred name
-	private String preferredName;
-	/// The person's member id (mrn)
-	private String memberId;
-	/// The person's db id (referenced by other objects)
-	private String individualId;
-	/// The family name
-	private String surname;
-	/// The first given name
-	private String givenName;
-	/// The person's phone number
-	private String phone;
-	/// The person's email
-	private String email;
-
 	/** Converts a JSON Array of household members to a List of HouseholdMember.
 		@param array JSON Array of JSON household objects
 		@return The HouseholdMembers from the JSON Array
