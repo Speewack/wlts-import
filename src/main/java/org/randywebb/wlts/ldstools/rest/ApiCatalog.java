@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.randywebb.wlts.ldstools.rest;
 
 import java.io.IOException;
@@ -14,29 +11,29 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import org.randywebb.wlts.util.AppConfig;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
+/** List of URL endpoints and settings.
  * @author randyw
  *
  */
 public class ApiCatalog extends Properties {
 
-	private static final long serialVersionUID = 1L;
+	/// Can be used for logging debugging messages
 	private static Logger log = LoggerFactory.getLogger(ApiCatalog.class);
 
-	JSONParser parser = new JSONParser();
-
+	/// Singleton for the API Catalog
 	private static ApiCatalog _instance = null;
 
-	/**
-	 *
-	 */
+	/// Construct the only instance of the ApiCatalog.
 	private ApiCatalog() {
 		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("lds-tools-config"));
 		CloseableHttpResponse apiCatalogResponse;
@@ -81,7 +78,7 @@ public class ApiCatalog extends Properties {
 	private void convertCatalog(InputStream in) {
 
 		try {
-			Object obj = parser.parse(new InputStreamReader(in));
+			Object obj = new JSONParser().parse(new InputStreamReader(in));
 			JSONObject jsonObject = (JSONObject) obj;
 
 			Set<?> keySet = jsonObject.keySet();
