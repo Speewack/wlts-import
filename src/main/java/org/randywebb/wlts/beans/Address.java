@@ -140,6 +140,9 @@ public class Address {
    * Parse an Address String from MLS into separate Address Fields
    */
   public static Address toAddress(String addressString) {
+    if (log.isTraceEnabled()) {
+      log.trace("Address: " + addressString);
+    }
     Address a = new Address();
     try {
       StringBuilder sb = new StringBuilder(addressString);
@@ -164,11 +167,7 @@ public class Address {
       a.setCity(addrComponent[1]);
       a.setState(addrComponent[2]);
       a.setPostalCode(addrComponent[3]);
-    } catch (NullPointerException npe) {
-      if (log.isInfoEnabled()) {
-        log.info("Unable to parse address from \"" + addressString + "\"", npe);
-      }
-    } catch (ArrayIndexOutOfBoundsException e) {
+    } catch (NullPointerException | ArrayIndexOutOfBoundsException | StringIndexOutOfBoundsException e) {
       if (log.isInfoEnabled()) {
         log.info("Unable to parse address from \"" + addressString + "\"", e);
       }
