@@ -19,9 +19,7 @@
 
   <logger name="org.randywebb" level="trace">
     <appender-ref ref="STDOUT" />
-    <!-- 
     <appender-ref ref="FILE" />
-    -->
   </logger>
 
  

@@ -48,9 +48,8 @@ public class DetailedMemberListCSV {
   private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {
     JSONParser parser = new JSONParser();
     Object obj = parser.parse(new InputStreamReader(in));
-    JSONObject jo = (JSONObject) obj;
 
-    return DetailedMember.fromArray( (JSONArray) jo.get("households") );
+    return DetailedMember.fromArray( (JSONArray) obj );
   }
 
   private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {
