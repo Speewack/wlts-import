@@ -143,7 +143,7 @@ public class Main {
 	if (wlts || !verb) {
 		String filePath = wlts ? switches.get("--wlts") : arguments[targetIndex];
 
-		if (!isUserAdmin(client.getEndpointInfo("current-user-detail"))) {
+		if (!isUserAdmin(client.getEndpointInfo("current-user-detail"), null)) {
 			printUsage();
 			System.out.println("You need to have Admin access to generate that report.");
 			System.exit(1);
@@ -171,11 +171,32 @@ public class Main {
 
   }
 
-  private static boolean isUserAdmin(JSONObject response) throws IOException, ParseException {
+  private static boolean isUserAdmin(JSONObject response, String unitNumber) throws IOException, ParseException {
   	JSONArray units = (JSONArray) response.get("units");
-  	JSONObject firstUnit = (JSONObject) units.get(0);
 
-  	return (Boolean) firstUnit.get("hasUnitAdminRights");
+	if (null == unitNumber) {
+		unitNumber = (String) response.get("homeUnitNbr");
+	}
+
+	for (Object unitObject : units) {
+		JSONObject unit = (JSONObject) unitObject;
+
+		if (unitNumber.equals( (String) unit.get("unitNo") ) ) {
+  			return (Boolean) unit.get("hasUnitAdminRights");
+		}
+
+		for (Object localUnitObject : (JSONArray) unit.get("localUnits")) {
+			JSONObject localUnit = (JSONObject) localUnitObject;
+
+			if (unitNumber.equals( (String) localUnit.get("unitNo") ) ) {
+				return (Boolean) localUnit.get("hasUnitAdminRights");
+			}
+
+		}
+
+	}
+
+  	return false;
   }
 
   private static String[] parseArgs(String[] args, String[] onOff, String[] hasValue, Map<String,String> results) {
