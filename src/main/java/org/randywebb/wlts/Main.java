@@ -182,7 +182,7 @@ public class Main {
    * @throws ParseException
    */
   private static boolean isUserAdmin(JSONObject userDetail) throws IOException, ParseException {
-    String unitNumber = (String) userDetail.get("homeUnitNbr");
+    Long unitNumber = (Long) userDetail.get("homeUnitNbr");
     return isUserAdmin(userDetail, unitNumber);
   }
 
@@ -197,11 +197,11 @@ public class Main {
    * @throws IOException
    * @throws ParseException
    */
-  private static boolean isUserAdmin(JSONObject userDetail, String unitNumber) throws IOException, ParseException {
+  private static boolean isUserAdmin(JSONObject userDetail, Long unitNumber) throws IOException, ParseException {
     JSONArray units = (JSONArray) userDetail.get("units");
 
     if (null == unitNumber) {
-      unitNumber = (String) userDetail.get("homeUnitNbr");
+      unitNumber = (Long) userDetail.get("homeUnitNbr");
     }
 
     for (Object unitObject : units) {
