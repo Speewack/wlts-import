@@ -178,11 +178,12 @@ public class Main {
    * @param userDetail
    *          JSONObject containing LDS User Detail
    * @return boolean indicating whether user has Admin permissions for home unit
-   * @throws IOException
-   * @throws ParseException
+   * @throws IOException on io errors
+   * @throws ParseException on JSON errors
    */
   private static boolean isUserAdmin(JSONObject userDetail) throws IOException, ParseException {
     Long unitNumber = (Long) userDetail.get("homeUnitNbr");
+
     return isUserAdmin(userDetail, unitNumber);
   }
 
@@ -194,8 +195,8 @@ public class Main {
    * @param unitNumber
    *          Unit Number for which to fetch data
    * @return boolean indicating whether user has Admin permissions for requested unit
-   * @throws IOException
-   * @throws ParseException
+   * @throws IOException on io errors
+   * @throws ParseException on JSON errors
    */
   private static boolean isUserAdmin(JSONObject userDetail, Long unitNumber) throws IOException, ParseException {
     JSONArray units = (JSONArray) userDetail.get("units");
