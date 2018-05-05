@@ -133,6 +133,11 @@ public class Main {
     LdsToolsClient client = null;
 
     try {
+
+      if (hasUsername || hasPassword) {
+      	System.out.println("Logging '" + username + "' into LDS Tools");
+      }
+
       client = new LdsToolsClient(username, password);
     } catch (AuthenticationException exception) {
       System.out.println("Authentication error: " + exception.getMessage());
