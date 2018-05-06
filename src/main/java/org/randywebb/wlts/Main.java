@@ -268,7 +268,7 @@ public class Main {
 	}
 
 	/** Load a JSON object from a file.
-		@para path The path to the JSON file
+		@param path The path to the JSON file
 		@return The contents of the file as a JSON object
 		@throws IOException on io error
 		@throws FileNotFoundException if the path does not exist
