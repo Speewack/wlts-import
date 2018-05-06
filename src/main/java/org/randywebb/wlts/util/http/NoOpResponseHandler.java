@@ -7,7 +7,8 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 
-public class NoOpResponseHandler implements ResponseHandler <StatusLine> {
+/// When you just want to see if the message was sent.
+public class NoOpResponseHandler implements ResponseHandler<StatusLine> {
 
 	/* (non-Javadoc)
 	 * @see org.apache.http.client.ResponseHandler#handleResponse(org.apache.http.HttpResponse)
