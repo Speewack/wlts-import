@@ -26,6 +26,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/// Utility methods to export the detailed member list as CSV
 public class DetailedMemberListCSV {
 
 	/// Can be used for logging debugging messages
