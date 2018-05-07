@@ -11,10 +11,10 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Represents a member of a household
+/** Represents a member of a household */
 public class HouseholdMember extends AbstractBean {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(HouseholdMember.class);
 
 	/** Converts a JSON Array of household members to a List of HouseholdMember.
@@ -25,7 +25,7 @@ public class HouseholdMember extends AbstractBean {
 		return fromArray(array, new ArrayList<HouseholdMember>(), HouseholdMember.class);
 	}
 
-	/// Default constructor
+	/** Default constructor */
 	public HouseholdMember() {
 	}
 

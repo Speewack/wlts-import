@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 */
 public class Address extends AbstractBean {
 
-	/// Log errors
+	/** Log errors */
 	private static Logger log = LoggerFactory.getLogger(Address.class);
 
 	/** Converts a JSON Array of addresses to a List of Address.
@@ -28,7 +28,7 @@ public class Address extends AbstractBean {
 		return fromArray(array, new ArrayList<Address>(), Address.class);
 	}
 
-	/// Default constructor.
+	/** Default constructor. */
 	public Address() {
 	}
 
@@ -196,6 +196,9 @@ public class Address extends AbstractBean {
 	public static Address toAddress(String addressString) {
 		Address a = new Address();
 
+		if (log.isTraceEnabled()) {
+			log.trace("Address: " + addressString);
+		}
 		try {
 			StringBuilder sb = new StringBuilder(addressString);
 
@@ -219,11 +222,7 @@ public class Address extends AbstractBean {
 			a.setCity(addrComponent[1]);
 			a.setState(addrComponent[2]);
 			a.setPostalCode(addrComponent[3]);
-		} catch (NullPointerException npe) {
-			if (log.isInfoEnabled()) {
-				log.info("Unable to parse address from \"" + addressString + "\"", npe);
-			}
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (NullPointerException | ArrayIndexOutOfBoundsException | StringIndexOutOfBoundsException e) {
 			if (log.isInfoEnabled()) {
 				log.info("Unable to parse address from \"" + addressString + "\"", e);
 			}

@@ -11,10 +11,10 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Represents a ministering visit
+/** Represents a ministering visit */
 public class Visit extends AbstractBean {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(Visit.class);
 
 	/** Converts a JSON Array of visits to a List of Visit.
@@ -25,7 +25,7 @@ public class Visit extends AbstractBean {
 		return fromArray(array, new ArrayList<Visit>(), Visit.class);
 	}
 
-	/// Default constructor
+	/** Default constructor */
 	public Visit() {
 	}
 

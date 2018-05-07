@@ -13,13 +13,13 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Represents a ministering district
+/** Represents a ministering district */
 public class District extends AbstractBean {
 
-	/// To be used for debugging
+	/** To be used for debugging */
 	private static Logger log = LoggerFactory.getLogger(District.class);
 
-	/// Companionships in the district
+	/** Companionships in the district */
 	private List<Companionship> companionships = new ArrayList<Companionship>();
 
 	/** Converts a JSON Array of districts to a List of District.
@@ -30,7 +30,7 @@ public class District extends AbstractBean {
 		return fromArray(array, new ArrayList<District>(), District.class);
 	}
 
-	/// Default constructor
+	/** Default constructor */
 	public District() {
 	}
 

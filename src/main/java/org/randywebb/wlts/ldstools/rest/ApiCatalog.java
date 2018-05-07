@@ -27,13 +27,13 @@ import org.slf4j.LoggerFactory;
  */
 public class ApiCatalog extends Properties {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(ApiCatalog.class);
 
-	/// Singleton for the API Catalog
+	/** Singleton for the API Catalog */
 	private static ApiCatalog _instance = null;
 
-	/// Construct the only instance of the ApiCatalog.
+	/** Construct the only instance of the ApiCatalog. */
 	private ApiCatalog() {
 		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("lds-tools-config"));
 		CloseableHttpResponse apiCatalogResponse;

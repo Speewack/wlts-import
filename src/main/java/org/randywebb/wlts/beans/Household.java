@@ -22,21 +22,21 @@ import org.slf4j.LoggerFactory;
  */
 public class Household extends AbstractBean {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(Household.class);
 
-	/// estimated miles per degree of latitude for Pflugerville, TX
+	/** estimated miles per degree of latitude for Pflugerville, TX */
 	private static double milesPerLat = 68.9;
-	/// estimated miles per degree of longitude for Pflugerville, TX
+	/** estimated miles per degree of longitude for Pflugerville, TX */
 	private static double milesPerLon = 59.7;
 
-	/// The head of household
+	/** The head of household */
 	private HouseholdMember headOfHousehold;
-	/// The spouse (may be null)
+	/** The spouse (may be null) */
 	private HouseholdMember spouse;
-	/// The children (may be an empty list)
+	/** The children (may be an empty list) */
 	private List<HouseholdMember> children = new ArrayList<HouseholdMember>();
-	/// The address of the household
+	/** The address of the household */
 	private Address householdAddress;
 
 	/** Converts a JSON Array of household to a List of Household.
@@ -63,7 +63,7 @@ public class Household extends AbstractBean {
 		return idToHousehold;
 	}
 
-	/// default constructor
+	/** default constructor */
 	public Household() {
 	}
 

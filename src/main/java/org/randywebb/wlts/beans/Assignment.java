@@ -13,13 +13,13 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Represents a ministering assignment.
+/** Represents a ministering assignment. */
 public class Assignment extends AbstractBean {
 
-	/// In case we want to log something
+	/** In case we want to log something */
 	private static Logger log = LoggerFactory.getLogger(Assignment.class);
 
-	/// List of visits to the assigned member(s)
+	/** List of visits to the assigned member(s) */
 	private List<Visit> visits = new ArrayList<Visit>();
 
 	/** Converts a JSON Array of assignments to a List of Assignment.
@@ -30,7 +30,7 @@ public class Assignment extends AbstractBean {
 		return fromArray(array, new ArrayList<Assignment>(), Assignment.class);
 	}
 
-	/// Default Constructor
+	/** Default Constructor */
 	public Assignment() {
 	}
 

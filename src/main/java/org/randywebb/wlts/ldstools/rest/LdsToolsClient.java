@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.randywebb.wlts.ldstools.rest;
 
 import java.io.IOException;
@@ -36,15 +33,25 @@ import org.slf4j.LoggerFactory;
  */
 public class LdsToolsClient {
 
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(LdsToolsClient.class);
 
+	/** Singleton instance */
 	private static CloseableHttpClient _httpclient = null;
 	// private static BasicCookieStore cookieStore = new BasicCookieStore();
 
+	/** The api catalog which lists standard lds endpoints */
 	private Properties apiCatalog = ApiCatalog.getInstance();
+	/** The app config information */
 	private Properties appConfig = AppConfig.getInstance();
-	private String unitNumber = null; // cache unit number
+	/** cache unit number */
+	private String unitNumber = null;
 
+	/** Create a logged in instance of LDS tools client.
+		@param user The LDS Tools username
+		@param password The LDS tools password
+		@throws AuthenticationException In the event username or password is incorrect
+	*/
 	public LdsToolsClient(String user, String password) throws AuthenticationException {
 		getHttpClient();
 		signIn(user, password);
@@ -56,7 +63,7 @@ public class LdsToolsClient {
 	 *
 	 * @return A cached http client
 	 */
-	static CloseableHttpClient getHttpClient() {
+	public static CloseableHttpClient getHttpClient() {
 		if (_httpclient == null) {
 			_httpclient = HttpClients.createDefault();
 
@@ -67,6 +74,11 @@ public class LdsToolsClient {
 		return _httpclient;
 	}
 
+	/** Signs in to LDS tools.
+		@param user LDS authentication username
+		@param password LDS tools password
+		@throws AuthenticationException In the event username or password is incorrect
+	*/
 	private void signIn(String user, String password) throws AuthenticationException {
 
 		try {
@@ -108,6 +120,10 @@ public class LdsToolsClient {
 
 	}
 
+	/** Are leader reports enabled.
+		Checks the API catalog to determine if they are available
+		@return If leader reports are enabled.
+	*/
 	public boolean leaderReportsAvailable()
 	{
 		return apiCatalog.getProperty("leader-reports-enabled").substring(0,1).equalsIgnoreCase("t");
@@ -138,6 +154,12 @@ public class LdsToolsClient {
 		return unitNumber;
 	}
 
+	/** Get the contents of an endpoint from the catalog.
+		@param endpointName The key from the catalog for the endpoint url
+		@param args If endpoint url contains formatting characters. %@ is converted to %s
+		@return The contents from accessing the url as a JSON object
+		@throws IOException on io errors
+	*/
 	public JSONObject getEndpointInfo(String endpointName, String... args) throws IOException
 	{
 		String url = apiCatalog.getProperty(endpointName).replace("%@", "%s");
@@ -146,6 +168,12 @@ public class LdsToolsClient {
 		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONObject>());
 	}
 
+	/** Get the contents of an endpoint from the catalog.
+		@param endpointName The key from the catalog for the endpoint url
+		@param args If endpoint url contains formatting characters. %@ is converted to %s
+		@return The contents from accessing the url as a JSON array
+		@throws IOException on io errors
+	*/
 	public JSONArray getEndpointList(String endpointName, String... args) throws IOException
 	{
 		String url = apiCatalog.getProperty(endpointName).replace("%@", "%s");
@@ -154,6 +182,12 @@ public class LdsToolsClient {
 		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONArray>());
 	}
 
+	/** Get an input stream to a URL in the app properties.
+		@param appPropertyName The name of the app property
+		@param args If endpoint url contains formatting characters. %@ is converted to %s
+		@return The stream to the endpoint referenced by the app property.
+		@throws IOException on io errors
+	*/
 	public InputStream getAppProperty(String appPropertyName, String... args) throws IOException
 	{
 		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
@@ -162,6 +196,12 @@ public class LdsToolsClient {
 		return response.getEntity().getContent();
 	}
 
+	/** Get an input stream to a URL in the app properties.
+		@param appPropertyName The name of the app property
+		@param args If endpoint url contains formatting characters. %@ is converted to %s
+		@return The contents from accessing the url as a JSON object
+		@throws IOException on io errors
+	*/
 	public JSONObject getAppPropertyEndpointInfo(String appPropertyName, String... args) throws IOException
 	{
 		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
@@ -170,6 +210,12 @@ public class LdsToolsClient {
 		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONObject>());
 	}
 
+	/** Get an input stream to a URL in the app properties.
+		@param appPropertyName The name of the app property
+		@param args If endpoint url contains formatting characters. %@ is converted to %s
+		@return The contents from accessing the url as a JSON array
+		@throws IOException on io errors
+	*/
 	public JSONArray getAppPropertyEndpointList(String appPropertyName, String... args) throws IOException
 	{
 		String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
@@ -178,6 +224,10 @@ public class LdsToolsClient {
 		return getHttpClient().execute(httpGet, new JSONResponseHandler<JSONArray>());
 	}
 
+	/** Get the mls-report-endpoint contents stream.
+		@return The stream for mls report
+		@throws IOException on io errors
+	*/
 	public InputStream getMemberInfo() throws IOException
 	{
 		return getAppProperty("mls-report-endpoint");
