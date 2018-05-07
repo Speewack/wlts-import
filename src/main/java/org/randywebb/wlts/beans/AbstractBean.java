@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
     Getters and setters allow the strings to be interpreted in different formats.
     Getters and setters can also be used to allow types that do not easily convert to string.
 */
-public abstract class AbstractBean extends HashMap<String,String> {
+public abstract class AbstractBean extends HashMap<String, String> {
 
-    /** log any errors or warnings */
+    /** log any errors or warnings. */
     private static Logger log = LoggerFactory.getLogger(AbstractBean.class);
 
     /** Field names which are Boolean. See forCSV() */
@@ -37,8 +37,7 @@ public abstract class AbstractBean extends HashMap<String,String> {
     /** Format for Date fields. See forCSV() */
     private SimpleDateFormat dateFormat;
 
-    /** Initialize the default
-    */
+    /** Initialize the default. */
     public AbstractBean() {
         this.booleanFields = new ArrayList<String>();
         this.dateFields = new ArrayList<String>();
@@ -46,16 +45,17 @@ public abstract class AbstractBean extends HashMap<String,String> {
     }
 
     /** Initialize with fields that could be Date, Boolean, or Integer.
-        @param dateFormat Format to use to generate and parse Date strings
-        @param booleanFields The names of the fields that are Booleans
-        @param integerFields The names of the fields which are Integers
-        @param dateFields The names of the fields which are Dates
+        @param dateFrmt Format to use to generate and parse Date strings
+        @param booleanFieldList The names of the fields that are Booleans
+        @param integerFieldList The names of the fields which are Integers
+        @param dateFieldList The names of the fields which are Dates
     */
-    public AbstractBean(SimpleDateFormat dateFormat, List<String> booleanFields, List<String> integerFields, List<String> dateFields) {
-        this.dateFormat = dateFormat;
-        this.booleanFields = null == booleanFields ? new ArrayList<String>() : booleanFields;
-        this.dateFields = null == dateFields ? new ArrayList<String>() : dateFields;
-        this.integerFields = null == integerFields ? new ArrayList<String>() : integerFields;
+    public AbstractBean(SimpleDateFormat dateFrmt, List<String> booleanFieldList,
+                        List<String> integerFieldList, List<String> dateFieldList) {
+        dateFormat = dateFrmt;
+        booleanFields = null == booleanFieldList ? new ArrayList<String>() : booleanFieldList;
+        dateFields = null == dateFieldList ? new ArrayList<String>() : dateFieldList;
+        integerFields = null == integerFieldList ? new ArrayList<String>() : integerFieldList;
     }
 
     /** Helper for subclasses to convert JSON Array to List.
@@ -74,17 +74,17 @@ public abstract class AbstractBean extends HashMap<String,String> {
 
                 for (Object o : array) {
                     try {
-                        toFill.add(constructor.newInstance(new Object[] {(JSONObject)o}));
-                    } catch(InvocationTargetException e) {
+                        toFill.add(constructor.newInstance(new Object[] {(JSONObject) o}));
+                    } catch (InvocationTargetException e) {
                         log.error("Cannot invoke " + clazz.getName() + "(JSONObject)");
-                    } catch(IllegalAccessException e) {
+                    } catch (IllegalAccessException e) {
                         log.error("No permissions to create " + clazz.getName() + "(JSONObject)");
-                    } catch(InstantiationException e) {
+                    } catch (InstantiationException e) {
                         log.error("Unable to create " + clazz.getName() + "(JSONObject)");
                     }
                 }
 
-            } catch(NoSuchMethodException e) {
+            } catch (NoSuchMethodException e) {
                 log.error("No constructor " + clazz.getName() + "(JSONObject)");
             }
         }
@@ -123,7 +123,8 @@ public abstract class AbstractBean extends HashMap<String,String> {
     */
     protected static CellProcessor[] csvProcessors(String[] headers,
             List<String> booleanFields, List<String> dateFields, List<String> integerFields,
-            CellProcessor stringProcessor, CellProcessor booleanProcessor, CellProcessor integerProcessor, CellProcessor dateProcessor) {
+            CellProcessor stringProcessor, CellProcessor booleanProcessor,
+            CellProcessor integerProcessor, CellProcessor dateProcessor) {
 
         ArrayList<CellProcessor> processors = new ArrayList<CellProcessor>();
 
@@ -148,10 +149,10 @@ public abstract class AbstractBean extends HashMap<String,String> {
         See booleanFields, dateFields, integerFields, and dateFormat.
         @return Type-correct map for CSV generation.
     */
-    public Map<String,Object> forCSV() {
-        HashMap<String,Object> results = new HashMap<String,Object>();
+    public Map<String, Object> forCSV() {
+        HashMap<String, Object> results = new HashMap<String, Object>();
 
-        for (Map.Entry<String,String> entry : entrySet()) {
+        for (Map.Entry<String, String> entry : entrySet()) {
             if (booleanFields.contains(entry.getKey())) {
                 results.put(entry.getKey(), toBoolean(entry.getValue()));
             } else if (dateFields.contains(entry.getKey())) {
@@ -239,7 +240,7 @@ public abstract class AbstractBean extends HashMap<String,String> {
     protected void setFromJSON(JSONObject definition, String key) {
         Object value = definition.get(key);
 
-        if ( null != value || !containsKey(key) ) {
+        if (null != value || !containsKey(key)) {
             put(key, (null == value) ? null : value.toString());
         }
 
@@ -302,9 +303,9 @@ public abstract class AbstractBean extends HashMap<String,String> {
 
         try {
             return (null == value) ? null : dateFormat.parse(value);
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             log.error("Error parsing Date (" + value + "): ", e);
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             log.error("Null found when parsing Date (" + value + "): ", e);
         }
 
@@ -327,7 +328,7 @@ public abstract class AbstractBean extends HashMap<String,String> {
     public String toString() {
         String value = "";
 
-        for (HashMap.Entry<String,String> entry : entrySet()) {
+        for (HashMap.Entry<String, String> entry : entrySet()) {
             value += (value.length() == 0 ? "" : ", ") + entry.getKey() + " = " + entry.getValue();
         }
 
