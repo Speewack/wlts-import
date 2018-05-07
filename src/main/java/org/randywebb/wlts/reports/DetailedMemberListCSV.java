@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.randywebb.wlts.beans.DetailedMember;
-import org.randywebb.wlts.beans.Household;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 
 import org.slf4j.Logger;
@@ -22,7 +21,6 @@ import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -71,7 +69,7 @@ public class DetailedMemberListCSV {
 		@return The list of households from the stream
 		@throws IOException on io error
 		@throws ParseException When the JSON is not formatted as expected
-	*/
+	* /
 	private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(new InputStreamReader(in));
@@ -79,6 +77,7 @@ public class DetailedMemberListCSV {
 
 		return Household.fromArray( (JSONArray) jo.get("households") );
 	}
+	*/
 
 	/** Write a list of members as a CSV file.
 		@param csvFileName The path to write the CSV file to

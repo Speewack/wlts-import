@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.randywebb.wlts.beans.Address;
 import org.randywebb.wlts.beans.Assignment;
 import org.randywebb.wlts.beans.Companionship;
-import org.randywebb.wlts.beans.DetailedMember;
 import org.randywebb.wlts.beans.District;
 import org.randywebb.wlts.beans.Household;
 import org.randywebb.wlts.beans.Teacher;
@@ -22,14 +20,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Utility methods to generate KML files from ministering information */
 public class MinisteringKML {
 
 	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(MinisteringKML.class);
+	//private static Logger log = LoggerFactory.getLogger(MinisteringKML.class);
 
 	/** For an assignment, generates a historical view of the visits like: 3/2017 - 2/2018 VVV?....?...VV?
 		@param assignment The assignment to get the visit history for
@@ -44,7 +42,7 @@ public class MinisteringKML {
 			message += visits.get(visits.size() - 1).getMonth() + "/" + visits.get(visits.size() - 1).getYear() + "\n";
 
 			for (Visit visit : visits) {
-				message += (null == visit.getVisited()) ? "?" : (visit.getVisited().substring(0,1).equalsIgnoreCase("t") ? "V" : ".");
+				message += null == visit.getVisited() ? "?" : visit.getVisited().substring(0,1).equalsIgnoreCase("t") ? "V" : ".";
 			}
 
 		}
@@ -106,7 +104,7 @@ public class MinisteringKML {
 					String	individualId = teacher.getIndividualId();
 					Household household = map.get(individualId);
 
-					if (!ministerIndividualIds.contains(individualId) && (companionship.getAssignments().size() > 0) ) {
+					if (!ministerIndividualIds.contains(individualId) && companionship.getAssignments().size() > 0 ) {
 						ministerIndividualIds.add(individualId);
 					}
 
@@ -124,7 +122,7 @@ public class MinisteringKML {
 								startLon = lon;
 								startLat = lat;
 							}
-							distinctCompanionLocations = distinctCompanionLocations || (startLon != lon) || (startLat != lat);
+							distinctCompanionLocations = distinctCompanionLocations || startLon != lon || startLat != lat;
 						} else {
 							System.out.println("WARNING: No location found for " + household.getCoupleName());
 						}
@@ -138,7 +136,7 @@ public class MinisteringKML {
 								.append(new KMLWriter.UseStyle(companionshipName))
 								.append(connection));
 				} else if (companionship.getTeachers().size() > 0) {
-					districtFolder.append((new KMLWriter.Placemark())
+					districtFolder.append(new KMLWriter.Placemark()
 								.append(new KMLWriter.Name(name))
 								.append(new KMLWriter.Description(name))
 								.append(new KMLWriter.UseStyle(ministerName))
@@ -211,7 +209,7 @@ public class MinisteringKML {
 			double lat = household.relocate(relocations).getLatitudeValue();
 			double lon = household.relocate(relocations).getLongitudeValue();
 
-			group.append((new KMLWriter.Placemark())
+			group.append(new KMLWriter.Placemark()
 				.append(new KMLWriter.Name(household.getMember(individualId).getPreferredName()))
 				.append(new KMLWriter.Description(household.getMember(individualId).getPreferredName()))
 				.append(new KMLWriter.UseStyle(ministerName))
@@ -232,7 +230,7 @@ public class MinisteringKML {
 			double lat = household.relocate(relocations).getLatitudeValue();
 			double lon = household.relocate(relocations).getLongitudeValue();
 
-			group.append((new KMLWriter.Placemark())
+			group.append(new KMLWriter.Placemark()
 				.append(new KMLWriter.Name(household.getMember(individualIdAssignment.getKey()).getPreferredName()))
 				.append(new KMLWriter.Description(household.getMember(individualIdAssignment.getKey()).getPreferredName() + "\n"
 						+ getVisitMessage(assignment)))
@@ -262,7 +260,6 @@ public class MinisteringKML {
 		KMLWriter.Document document = new KMLWriter.Document();
 		JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
 		JSONArray households = (JSONArray) ward.get("households");
-		double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
 		List<Household> household_list = Household.fromArray(households);
 		Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(household_list) : null;
 
@@ -274,16 +271,16 @@ public class MinisteringKML {
 		document.append(new KMLWriter.Name((String) ward.get("orgName")))
 				.append(new KMLWriter.Open())
 				.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
-				.append((new KMLWriter.Style("minister"))
+				.append(new KMLWriter.Style("minister")
 				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/capital_big_highlight.png")))
-				.append((new KMLWriter.Style("ministered"))
+				.append(new KMLWriter.Style("ministered")
 				.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/placemark_square.png")))
-				.append((new KMLWriter.Style("companionship"))
+				.append(new KMLWriter.Style("companionship")
 				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(8)).append(new KMLWriter.StyleColor("44000000"))));
 
 		for (int colorIndex = 0; colorIndex < colors.length; ++colorIndex) {
 			document
-				.append((new KMLWriter.Style("ministry"+colorIndex))
+				.append(new KMLWriter.Style("ministry"+colorIndex)
 				.append(new KMLWriter.LineStyle().append(new KMLWriter.StyleWidth(2)).append(new KMLWriter.StyleColor(colors[colorIndex]))));
 		}
 
@@ -321,7 +318,6 @@ public class MinisteringKML {
 		JSONArray households = (JSONArray) ward.get("households");
 		double minLat=0.0, maxLat=0.0, minLon=0.0, maxLon=0.0;
 		List<Household> household_list = Household.fromArray(households);
-		Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(household_list) : null;
 		KMLWriter.Folder folder = new KMLWriter.Folder();
 
 		folder.append(new KMLWriter.Name("Households"))
@@ -345,7 +341,7 @@ public class MinisteringKML {
 				if (minLon == 0.0 || lon > maxLon) {
 					maxLon = lon;
 				}
-				folder.append((new KMLWriter.Placemark())
+				folder.append(new KMLWriter.Placemark()
 					.append(new KMLWriter.Name(household.getHouseholdName()))
 					.append(new KMLWriter.Description(household.getCoupleName()))
 					.append(new KMLWriter.UseStyle("home"))
@@ -361,7 +357,7 @@ public class MinisteringKML {
 		document.append(new KMLWriter.Name((String) ward.get("orgName")))
 		.append(new KMLWriter.Open())
 		.append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
-		.append((new KMLWriter.Style("home"))
+		.append(new KMLWriter.Style("home")
 		.append(new KMLWriter.StyleIcon("http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png")))
 		.append(folder);
 

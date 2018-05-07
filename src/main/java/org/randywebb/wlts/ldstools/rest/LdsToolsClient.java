@@ -42,8 +42,6 @@ public class LdsToolsClient {
 
 	/** The api catalog which lists standard lds endpoints */
 	private Properties apiCatalog = ApiCatalog.getInstance();
-	/** The app config information */
-	private Properties appConfig = AppConfig.getInstance();
 	/** cache unit number */
 	private String unitNumber = null;
 
@@ -104,7 +102,7 @@ public class LdsToolsClient {
 
 	/**
 	 * Signs out of the lds.org Session
-	 */
+	 * /
 	private void signOut() {
 		log.trace("Signing out of LDS Tools API");
 		HttpGet httpGet = new HttpGet(apiCatalog.getProperty("signout-url"));
@@ -119,6 +117,7 @@ public class LdsToolsClient {
 		}
 
 	}
+    */
 
 	/** Are leader reports enabled.
 		Checks the API catalog to determine if they are available

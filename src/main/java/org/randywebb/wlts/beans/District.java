@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.randywebb.wlts.beans.AbstractBean;
-import org.randywebb.wlts.beans.Companionship;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Represents a ministering district */
 public class District extends AbstractBean {
 
 	/** To be used for debugging */
-	private static Logger log = LoggerFactory.getLogger(District.class);
+	//private static Logger log = LoggerFactory.getLogger(District.class);
 
 	/** Companionships in the district */
 	private List<Companionship> companionships = new ArrayList<Companionship>();

@@ -4,21 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.randywebb.wlts.beans.AbstractBean;
-import org.randywebb.wlts.beans.Assignment;
-import org.randywebb.wlts.beans.Teacher;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Represents a Companionship from a District */
 public class Companionship extends AbstractBean {
 
 	/** In case we need to log anything, especially during debugging */
-	private static Logger log = LoggerFactory.getLogger(Companionship.class);
+	//private static Logger log = LoggerFactory.getLogger(Companionship.class);
 
 	/** List of Ministers in the companionship */
 	private List<Teacher> teachers = new ArrayList<Teacher>();

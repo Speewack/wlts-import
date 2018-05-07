@@ -6,15 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.randywebb.wlts.beans.AbstractBean;
-import org.randywebb.wlts.beans.Address;
-import org.randywebb.wlts.beans.HouseholdMember;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Represents a household.
  * @author randyw
@@ -23,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class Household extends AbstractBean {
 
 	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(Household.class);
+	//private static Logger log = LoggerFactory.getLogger(Household.class);
 
 	/** estimated miles per degree of latitude for Pflugerville, TX */
 	private static double milesPerLat = 68.9;
@@ -87,7 +83,7 @@ public class Household extends AbstractBean {
 		for (Household household : households) {
 			double d = distance(household, relocation);
 
-			if ( (0.01 < d) && (d < min) ) { // within hundreth of a mile is the same place
+			if ( 0.01 < d && d < min ) { // within hundreth of a mile is the same place
 				min = d;
 				found = household;
 			}
@@ -126,14 +122,14 @@ public class Household extends AbstractBean {
 		Address me = relocate(relocation);
 		Address them = other.relocate(relocation);
 
-		if ( (null == other)
-				|| (null == me.getLatitude()) || (null == me.getLongitude())
-				|| (null == them.getLatitude()) || (null == them.getLongitude()) ) {
+		if ( null == other
+				|| null == me.getLatitude() || null == me.getLongitude()
+				|| null == them.getLatitude() || null == them.getLongitude() ) {
 			return 0.0;
 		}
 
-		return Math.sqrt(Math.pow((milesPerLat * (me.getLatitudeValue() - them.getLatitudeValue())),2)
-						+ Math.pow((milesPerLon * (me.getLongitudeValue() - them.getLongitudeValue())),2));
+		return Math.sqrt(Math.pow(milesPerLat * (me.getLatitudeValue() - them.getLatitudeValue()),2)
+						+ Math.pow(milesPerLon * (me.getLongitudeValue() - them.getLongitudeValue()),2));
 	}
 
 	/** Given relocation information, return the location of this household.
@@ -153,7 +149,7 @@ public class Household extends AbstractBean {
 			address.setPostalCode( (null == relocatable.get("postalCode")) ? previous.getPostalCode() : relocatable.get("postalCode").toString());
 			address.setState( (null == relocatable.get("state")) ? previous.getState() : relocatable.get("state").toString());
 			if (null == relocatable.get("address")) {
-				address.setStreetAddress( (null == relocatable.get("desc1") || null == relocatable.get("desc2"))
+				address.setStreetAddress( null == relocatable.get("desc1") || null == relocatable.get("desc2")
 										? previous.getLattitude()
 										: relocatable.get("desc1").toString() + ", " + relocatable.get("desc2").toString());
 			} else {
@@ -215,7 +211,7 @@ public class Household extends AbstractBean {
 			return headOfHousehold;
 		}
 
-		if ( (null != spouse) && individualId.equals(spouse.getIndividualId()) ) {
+		if ( null != spouse && individualId.equals(spouse.getIndividualId()) ) {
 			return spouse;
 		}
 

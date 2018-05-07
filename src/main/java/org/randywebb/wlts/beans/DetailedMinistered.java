@@ -4,23 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.randywebb.wlts.beans.AbstractBean;
-import org.randywebb.wlts.beans.District;
-import org.randywebb.wlts.beans.Household;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Detailed information for ministered csv report. */
 public class DetailedMinistered extends AbstractBean {
 
 	/** To use for debugging */
-	private static Logger log = LoggerFactory.getLogger(DetailedMinistered.class);
+	//private static Logger log = LoggerFactory.getLogger(DetailedMinistered.class);
 
 	/** Helper method to copy a field name from one object to another.
 		@param from The object to copy from

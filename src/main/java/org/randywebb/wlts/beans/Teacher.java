@@ -3,19 +3,17 @@ package org.randywebb.wlts.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.randywebb.wlts.beans.AbstractBean;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Represents a minister (previously home or visiting teacher) */
 public class Teacher extends AbstractBean {
 
 	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(Teacher.class);
+	//private static Logger log = LoggerFactory.getLogger(Teacher.class);
 
 	/** Converts a JSON Array of ministers to a List of Teacher.
 		@param array JSON Array of JSON household objects

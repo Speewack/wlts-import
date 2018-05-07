@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.randywebb.wlts.beans.AbstractBean;
-import org.randywebb.wlts.beans.Visit;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Represents a ministering assignment. */
 public class Assignment extends AbstractBean {
 
 	/** In case we want to log something */
-	private static Logger log = LoggerFactory.getLogger(Assignment.class);
+	//private static Logger log = LoggerFactory.getLogger(Assignment.class);
 
 	/** List of visits to the assigned member(s) */
 	private List<Visit> visits = new ArrayList<Visit>();

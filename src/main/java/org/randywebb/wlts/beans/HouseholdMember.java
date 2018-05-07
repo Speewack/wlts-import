@@ -3,19 +3,17 @@ package org.randywebb.wlts.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.randywebb.wlts.beans.AbstractBean;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Represents a member of a household */
 public class HouseholdMember extends AbstractBean {
 
 	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(HouseholdMember.class);
+	//private static Logger log = LoggerFactory.getLogger(HouseholdMember.class);
 
 	/** Converts a JSON Array of household members to a List of HouseholdMember.
 		@param array JSON Array of JSON household objects

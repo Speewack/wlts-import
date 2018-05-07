@@ -3,8 +3,6 @@ package org.randywebb.wlts.beans;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.randywebb.wlts.beans.AbstractBean;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

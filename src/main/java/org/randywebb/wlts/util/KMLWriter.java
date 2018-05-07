@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Makes generating .kml files a bit easier.
 	Note: You still have to know how to format a .kml file, this class just mirrors the XML.
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class KMLWriter {
 
 	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(KMLWriter.class);
+	//private static Logger log = LoggerFactory.getLogger(KMLWriter.class);
 
 	/** Any element that needs to be written to the file. */
 	public interface Item {
@@ -23,7 +23,7 @@ public class KMLWriter {
 			@param output The stream to write the element to
 			@throws IOException on io errors
 		*/
-		public void write(String prefix, FileWriter output) throws IOException;
+		void write(String prefix, FileWriter output) throws IOException;
 	};
 
 	/** A simple tag. It just has &lt;tag&gt;value&lt;tag&gt; */
@@ -362,7 +362,7 @@ public class KMLWriter {
 			@throws IOException on io error
 		*/
 		public void write(String prefix, FileWriter output) throws IOException {
-			output.append(prefix + "<"+tag+(null == attributes ? "" : (" " + attributes))+">\n");
+			output.append(prefix + "<"+tag+null == attributes ? "" : (" " + attributes)+">\n");
 
 			for (Item item : this) {
 				item.write(prefix + "\t", output);

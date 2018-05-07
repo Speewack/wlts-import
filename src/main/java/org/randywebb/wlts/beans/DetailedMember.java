@@ -1,22 +1,18 @@
 package org.randywebb.wlts.beans;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Arrays;
 
-import org.randywebb.wlts.beans.AbstractBean;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Detailed member information for the WLTS report.
 * @author randyw
@@ -25,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public class DetailedMember extends AbstractBean {
 
 	/** For logging if needed during debugging */
-	private static Logger log = LoggerFactory.getLogger(DetailedMember.class);
+	//private static Logger log = LoggerFactory.getLogger(DetailedMember.class);
 	/** The date format for the report */
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 	/** Names of the fields that are boolean values in the report */

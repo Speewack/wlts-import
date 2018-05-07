@@ -3,19 +3,17 @@ package org.randywebb.wlts.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.randywebb.wlts.beans.AbstractBean;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /** Represents a ministering visit */
 public class Visit extends AbstractBean {
 
 	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(Visit.class);
+	//private static Logger log = LoggerFactory.getLogger(Visit.class);
 
 	/** Converts a JSON Array of visits to a List of Visit.
 		@param array JSON Array of JSON visit objects
