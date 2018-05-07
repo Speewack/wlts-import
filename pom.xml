@@ -18,6 +18,32 @@
       <plugins>
         <!-- Configure maven-compiler plugin to use a specific java syntax
           and to generate a binary for a specific jave version. -->
+		 <plugin>
+		   <groupId>org.apache.maven.plugins</groupId>
+		   <artifactId>maven-checkstyle-plugin</artifactId>
+		   <version>3.0.0</version>
+		   <executions>
+			 <execution>
+			   <id>validate</id>
+			   <phase>validate</phase>
+			   <configuration>
+				 <configLocation>checkstyle.xml</configLocation>
+				 <encoding>UTF-8</encoding>
+				 <consoleOutput>true</consoleOutput>
+				 <failsOnError>true</failsOnError>
+				 <linkXRef>false</linkXRef>
+			   </configuration>
+			   <goals>
+				 <goal>check</goal>
+			   </goals>
+			 </execution>
+		   </executions>
+		 </plugin>
+		  <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-pmd-plugin</artifactId>
+			<version>3.9.0</version>
+		  </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
