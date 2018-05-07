@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JSONResponseHandler<JSONType> implements ResponseHandler<JSONType> {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(JSONResponseHandler.class);
 
 	/** Converts an HTTP response into a JSON entity.

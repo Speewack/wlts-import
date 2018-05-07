@@ -7,7 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-/// Helper functions for ministry endpoints.
+/** Helper functions for ministry endpoints. */
 public class MinistryHelpers {
 
 	/** Get the list of ministering brothers and sisters lists.

@@ -11,10 +11,10 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Represents a minister (previously home or visiting teacher)
+/** Represents a minister (previously home or visiting teacher) */
 public class Teacher extends AbstractBean {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(Teacher.class);
 
 	/** Converts a JSON Array of ministers to a List of Teacher.
@@ -25,7 +25,7 @@ public class Teacher extends AbstractBean {
 		return fromArray(array, new ArrayList<Teacher>(), Teacher.class);
 	}
 
-	/// Default constructor
+	/** Default constructor */
 	public Teacher() {
 	}
 

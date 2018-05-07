@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
 */
 public class AppConfig extends Properties {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(AppConfig.class);
 
-	/// singleton instance
+	/** singleton instance */
 	private static AppConfig _instance = null;
 
-	/// Attempts to load the config.properties file. If it fails, this instance has no properties.
+	/** Attempts to load the config.properties file. If it fails, this instance has no properties. */
 	private AppConfig(){
 		try {
 			this.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties"));

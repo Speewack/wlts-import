@@ -33,18 +33,18 @@ import org.slf4j.LoggerFactory;
  */
 public class LdsToolsClient {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(LdsToolsClient.class);
 
-	/// Singleton instance
+	/** Singleton instance */
 	private static CloseableHttpClient _httpclient = null;
 	// private static BasicCookieStore cookieStore = new BasicCookieStore();
 
-	/// The api catalog which lists standard lds endpoints
+	/** The api catalog which lists standard lds endpoints */
 	private Properties apiCatalog = ApiCatalog.getInstance();
-	/// The app config information
+	/** The app config information */
 	private Properties appConfig = AppConfig.getInstance();
-	/// cache unit number
+	/** cache unit number */
 	private String unitNumber = null;
 
 	/** Create a logged in instance of LDS tools client.

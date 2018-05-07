@@ -25,16 +25,16 @@ import org.slf4j.LoggerFactory;
 */
 public abstract class AbstractBean extends HashMap<String,String> {
 
-	/// log any errors or warnings
+	/** log any errors or warnings */
 	private static Logger log = LoggerFactory.getLogger(AbstractBean.class);
 
-	/// Field names which are Boolean. See forCSV()
+	/** Field names which are Boolean. See forCSV() */
 	private List<String> booleanFields;
-	/// Field names which are Date. See forCSV()
+	/** Field names which are Date. See forCSV() */
 	private List<String> dateFields;
-	/// Field names which are Integer. See forCSV()
+	/** Field names which are Integer. See forCSV() */
 	private List<String> integerFields;
-	/// Format for Date fields. See forCSV()
+	/** Format for Date fields. See forCSV() */
 	private SimpleDateFormat dateFormat;
 
 	/** Initialize the default

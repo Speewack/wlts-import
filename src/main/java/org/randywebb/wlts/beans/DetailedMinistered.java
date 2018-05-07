@@ -16,10 +16,10 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Detailed information for ministered csv report.
+/** Detailed information for ministered csv report. */
 public class DetailedMinistered extends AbstractBean {
 
-	/// To use for debugging
+	/** To use for debugging */
 	private static Logger log = LoggerFactory.getLogger(DetailedMinistered.class);
 
 	/** Helper method to copy a field name from one object to another.

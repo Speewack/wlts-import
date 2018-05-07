@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 */
 public class Address extends AbstractBean {
 
-	/// Log errors
+	/** Log errors */
 	private static Logger log = LoggerFactory.getLogger(Address.class);
 
 	/** Converts a JSON Array of addresses to a List of Address.
@@ -28,7 +28,7 @@ public class Address extends AbstractBean {
 		return fromArray(array, new ArrayList<Address>(), Address.class);
 	}
 
-	/// Default constructor.
+	/** Default constructor. */
 	public Address() {
 	}
 

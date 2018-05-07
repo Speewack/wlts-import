@@ -32,10 +32,10 @@ import org.slf4j.LoggerFactory;
 */
 public class Main {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(Main.class);
 
-	/// Display documentation for command line argumnets.
+	/** Display documentation for command line argumnets. */
 	private static void printUsage() {
 		System.out.println("Usage: Main [username [password]] target_file");
 		System.out.println("       Main [username [password]] [--relocate relocate_file] <verb> target_file [<verb> target_file]...");

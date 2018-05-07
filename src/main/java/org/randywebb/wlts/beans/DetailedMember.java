@@ -24,16 +24,16 @@ import org.slf4j.LoggerFactory;
 */
 public class DetailedMember extends AbstractBean {
 
-	/// For logging if needed during debugging
+	/** For logging if needed during debugging */
 	private static Logger log = LoggerFactory.getLogger(DetailedMember.class);
-	/// The date format for the report
+	/** The date format for the report */
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-	/// Names of the fields that are boolean values in the report
+	/** Names of the fields that are boolean values in the report */
 	private final static List<String> booleanFields = Arrays.asList(new String[] {
 		"visible", "nonMember", "outOfUnitMember", "isHead", "isSpouse", "isAdult", "fullTimeMissionary", "setApart"});
-	/// Names of the fields that are date values in the report
+	/** Names of the fields that are date values in the report */
 	private final static List<String> dateFields = Arrays.asList(new String[] {"birthDate", "sustainedDate"});
-	/// Names of the fields that are integers in the report
+	/** Names of the fields that are integers in the report */
 	private final static List<String> integerFields = Arrays.asList(new String[] {
 		"nameOrder", "birthDateSort", "age", "actualAge", "actualAgeInMonths"});
 
@@ -59,7 +59,7 @@ public class DetailedMember extends AbstractBean {
 		return csvProcessors(headers, booleanFields, dateFields, integerFields, stringProcessor, booleanProcessor, integerProcessor, dateProcessor);
 	}
 
-	/// Defaults constructor
+	/** Defaults constructor */
 	public DetailedMember() {
 		super(dateFormat, booleanFields, integerFields, dateFields);
 	}

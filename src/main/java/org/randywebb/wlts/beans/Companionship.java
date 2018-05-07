@@ -14,16 +14,16 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Represents a Companionship from a District
+/** Represents a Companionship from a District */
 public class Companionship extends AbstractBean {
 
-	/// In case we need to log anything, especially during debugging
+	/** In case we need to log anything, especially during debugging */
 	private static Logger log = LoggerFactory.getLogger(Companionship.class);
 
-	/// List of Ministers in the companionship
+	/** List of Ministers in the companionship */
 	private List<Teacher> teachers = new ArrayList<Teacher>();
 
-	/// List of families or individuals that are assigned to this companionship
+	/** List of families or individuals that are assigned to this companionship */
 	private List<Assignment> assignments = new ArrayList<Assignment>();
 
 	/** Converts a JSON Array of companionships to a List of Companionship.
@@ -34,7 +34,7 @@ public class Companionship extends AbstractBean {
 		return fromArray(array, new ArrayList<Companionship>(), Companionship.class);
 	}
 
-	/// Default constructor
+	/** Default constructor */
 	public Companionship() {
 	}
 

@@ -25,10 +25,10 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// Utility methods to generate KML files from ministering information
+/** Utility methods to generate KML files from ministering information */
 public class MinisteringKML {
 
-	/// Can be used for logging debugging messages
+	/** Can be used for logging debugging messages */
 	private static Logger log = LoggerFactory.getLogger(MinisteringKML.class);
 
 	/** For an assignment, generates a historical view of the visits like: 3/2017 - 2/2018 VVV?....?...VV?
