@@ -25,13 +25,13 @@ import org.slf4j.LoggerFactory;
  * @author randyw
  *
  */
-public class ApiCatalog extends Properties {
+public final class ApiCatalog extends Properties {
 
-    /** Can be used for logging debugging messages */
+    /** Can be used for logging debugging messages. */
     private static Logger log = LoggerFactory.getLogger(ApiCatalog.class);
 
-    /** Singleton for the API Catalog */
-    private static ApiCatalog _instance = null;
+    /** Singleton for the API Catalog. */
+    private static ApiCatalog instance = null;
 
     /** Construct the only instance of the ApiCatalog. */
     private ApiCatalog() {
@@ -58,19 +58,19 @@ public class ApiCatalog extends Properties {
     }
 
     /**
-     * Retrieve an instance of the LDS Tools API Catalog
+     * Retrieve an instance of the LDS Tools API Catalog.
      *
      * @return ApiCatalog
      */
     public static ApiCatalog getInstance() {
-        if (_instance == null) {
-            _instance = new ApiCatalog();
+        if (instance == null) {
+            instance = new ApiCatalog();
         }
-        return _instance;
+        return instance;
     }
 
     /**
-     * Convert the JSON API catalog from lds tools to a Properties object
+     * Convert the JSON API catalog from lds tools to a Properties object.
      *
      * @param in
      *            InputStream containing the JSON catalog from LDS-Tools API

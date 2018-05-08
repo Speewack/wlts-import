@@ -8,7 +8,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 /** Helper functions for ministry endpoints. */
-public class MinistryHelpers {
+public final class MinistryHelpers {
+
+    /** Default constructor. */
+    private MinistryHelpers() {
+    }
 
     /** Get the list of ministering brothers and sisters lists.
         Get the contents of the app property ministering-members-endpoint.
@@ -18,7 +22,8 @@ public class MinistryHelpers {
         @throws IOException on io error
         @throws ParseException on JSON error
     */
-    public static void getAuxiliaries(LdsToolsClient client, List<String> htIds, List<String> vtIds) throws IOException, ParseException {
+    public static void getAuxiliaries(LdsToolsClient client, List<String> htIds,
+                                List<String> vtIds) throws IOException, ParseException {
         JSONObject members = client.getAppPropertyEndpointInfo("ministering-members-endpoint");
         JSONArray families = (JSONArray) members.get("families");
 

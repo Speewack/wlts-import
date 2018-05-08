@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-/** Represents a ministering visit */
+/** Represents a ministering visit. */
 public class Visit extends AbstractBean {
 
     /** Can be used for logging debugging messages */
@@ -23,7 +23,7 @@ public class Visit extends AbstractBean {
         return fromArray(array, new ArrayList<Visit>(), Visit.class);
     }
 
-    /** Default constructor */
+    /** Default constructor. */
     public Visit() {
     }
 

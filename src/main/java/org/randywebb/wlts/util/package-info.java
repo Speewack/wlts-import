@@ -1,3 +1,3 @@
-package org.randywebb.wlts.util;
 /** util.
 */
+package org.randywebb.wlts.util;

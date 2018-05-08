@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-/** Represents a member of a household */
+/** Represents a member of a household. */
 public class HouseholdMember extends AbstractBean {
 
     /** Can be used for logging debugging messages */
@@ -23,7 +23,7 @@ public class HouseholdMember extends AbstractBean {
         return fromArray(array, new ArrayList<HouseholdMember>(), HouseholdMember.class);
     }
 
-    /** Default constructor */
+    /** Default constructor. */
     public HouseholdMember() {
     }
 
@@ -31,7 +31,8 @@ public class HouseholdMember extends AbstractBean {
         @param definition A JSON household member Object
     */
     public HouseholdMember(JSONObject definition) {
-        update(definition, new String[] {"fullName", "preferredName", "memberId", "individualId", "surname", "givenName", "phone", "email"});
+        update(definition, new String[] {"fullName", "preferredName", "memberId", "individualId",
+                                            "surname", "givenName", "phone", "email"});
     }
 
     /**

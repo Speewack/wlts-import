@@ -78,7 +78,7 @@ public class DetailedMinistered extends AbstractBean {
                                         ? null
                                         : teacherHousehold.getMember(teacher.getIndividualId());
 
-                    companionshipName += (companionshipName.length() == 0 ? "" : " & ");
+                    companionshipName += companionshipName.length() == 0 ? "" : " & ";
                     companionshipName += teacherMember.getPreferredName();
                 }
 

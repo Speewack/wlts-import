@@ -30,27 +30,38 @@ import org.slf4j.LoggerFactory;
 * @author randyw
 *
 */
-public class Main {
+public final class Main {
 
-    /** Can be used for logging debugging messages */
+    /** Can be used for logging debugging messages. */
     private static Logger log = LoggerFactory.getLogger(Main.class);
+
+    /** default constructor. */
+    private Main() {
+    }
 
     /** Display documentation for command line argumnets. */
     private static void printUsage() {
         System.out.println("Usage: Main [username [password]] target_file");
-        System.out.println("       Main [username [password]] [--relocate relocate_file] <verb> target_file [<verb> target_file]...");
+        System.out.println("       Main [username [password]] "
+                    + "[--relocate relocate_file] <verb> target_file [<verb> target_file]...");
         System.out.println("       Main --help");
         System.out.println();
         System.out.println("  Verbs");
         System.out.println("    --map        target_file is a .kml file that maps every household");
-        System.out.println("    --routes     target_file is a .kml file that maps ministering routes (requires Leadership account)");
-        System.out.println("    --ministers  target_file is a .kml file that maps ministers and ministered households (requires Leadership account)");
-        System.out.println("    --wlts       target_file is a .csv file that contains all households (requires Admin account)");
-        System.out.println("    --ministered target_file is a .csv file that contains all families being ministered to");
+        System.out.println("    --routes     target_file is a .kml file "
+                                + "that maps ministering routes (requires Leadership account)");
+        System.out.println("    --ministers  target_file is a .kml file "
+                + "that maps ministers and ministered households (requires Leadership account)");
+        System.out.println("    --wlts       target_file is a .csv file that "
+                + "contains all households (requires Admin account)");
+        System.out.println("    --ministered target_file is a .csv file "
+                + "that contains all families being ministered to");
         System.out.println();
         System.out.println("  --help         Display this content");
-        System.out.println("  --relocate     relcoate_file is a json file that maps coupleName to fields to replace in the Household records");
-        System.out.println("      ie {\"Smith, Joe & Jane\" : { \"latitude\" : 35.0000,\"longitude\" : -95.0000}}");
+        System.out.println("  --relocate     relcoate_file is a json file "
+                + "that maps coupleName to fields to replace in the Household records");
+        System.out.println("      ie {\"Smith, Joe & Jane\" : "
+                + "{ \"latitude\" : 35.0000,\"longitude\" : -95.0000}}");
         System.out.println("      Suggested fields");
         System.out.println("        address    The street address");
         System.out.println("        state      The state code");
@@ -66,11 +77,15 @@ public class Main {
     *           Just in case we didn't handle an exception in a user-friendly way
     */
     public static void main(String... args) throws Exception {
+        final int maximumUnboundArguments = 3;
         Map<String, String> switches = new HashMap<String, String>();
-        String[] outputFileTypes = { "--map", "--routes", "--ministers", "--relocate", "--wlts", "--ministered" };
-        String[] onOff = { "--help" };
+        String[] outputFileTypes = {"--map", "--routes", "--ministers",
+                                        "--relocate", "--wlts", "--ministered"};
+        String[] onOff = {"--help"};
         String[] arguments = parseArgs(args, onOff, outputFileTypes, switches);
-        JSONObject relocations = switches.containsKey("--relocate") ? loadJSONFile(switches.get("--relocate")) : null;
+        JSONObject relocations = switches.containsKey("--relocate")
+                                    ? loadJSONFile(switches.get("--relocate"))
+                                    : null;
 
         if (switches.containsKey("--help")) {
             printUsage();
@@ -78,7 +93,7 @@ public class Main {
         }
 
         // read input parameters
-        if (arguments.length > 3) {
+        if (arguments.length > maximumUnboundArguments) {
             printUsage();
             log.trace("arguments.length = " + arguments.length);
             for (String argument : arguments) {
@@ -94,7 +109,8 @@ public class Main {
         final boolean wlts = switches.containsKey("--wlts");
         final boolean verb = ministers || map || routes || wlts || ministered;
         final boolean hasUsername = verb && arguments.length > 0 || !verb && arguments.length > 1;
-        final boolean hasPassword = hasUsername && (verb && arguments.length > 1 || !verb && arguments.length > 2);
+        final boolean hasPassword = hasUsername
+                        && (verb && arguments.length > 1 || !verb && arguments.length > 2);
         final int usernameIndex = 0;
         final int targetIndex = (hasUsername ? 1 : 0) + (hasPassword ? 1 : 0);
         final int passwordIndex = 1;
@@ -166,21 +182,25 @@ public class Main {
         }
 
         if (ministers) {
-            MinisteringKML.generateMinistersReport(client, relocations, false, switches.get("--ministers"));
+            MinisteringKML.generateMinistersReport(client, relocations, false,
+                                                        switches.get("--ministers"));
         }
 
         if (routes) {
-            MinisteringKML.generateMinistersReport(client, relocations, true, switches.get("--routes"));
+            MinisteringKML.generateMinistersReport(client, relocations, true,
+                                                        switches.get("--routes"));
         }
 
         if (ministered) {
-            DetailedMinisteredCSV.generateMiniseteredReport(client, switches.get("--ministered"), relocations);
+            DetailedMinisteredCSV.generateMiniseteredReport(client,
+                                            switches.get("--ministered"), relocations);
         }
 
     }
 
     /**
-    * Determine whether the user is an Admin and thus, has access to pull necessary data from home unit
+    * Determine whether the user is an Admin and thus,
+            has access to pull necessary data from home unit.
     *
     * @param userDetail
     *          JSONObject containing LDS User Detail
@@ -195,7 +215,8 @@ public class Main {
     }
 
     /**
-    * Determine whether the user is an Admin and thus, has access to pull necessary data from specified unit
+    * Determine whether the user is an Admin and thus,
+            has access to pull necessary data from specified unit.
     *
     * @param userDetail
     *          JSONObject containing LDS User Detail
@@ -205,7 +226,8 @@ public class Main {
     * @throws IOException on io errors
     * @throws ParseException on JSON errors
     */
-    private static boolean isUserAdmin(JSONObject userDetail, Long unitNumber) throws IOException, ParseException {
+    private static boolean isUserAdmin(JSONObject userDetail, Long unitNumber)
+                                                throws IOException, ParseException {
         JSONArray units = (JSONArray) userDetail.get("units");
 
         if (null == unitNumber) {
@@ -240,7 +262,8 @@ public class Main {
         @param results A map that will receive all the param-values (ie '--map':'path.kml')
         @return The list of command line arguments that were not onOff or hasValue
     */
-    private static String[] parseArgs(String[] args, String[] onOff, String[] hasValue, Map<String, String> results) {
+    private static String[] parseArgs(String[] args, String[] onOff, String[] hasValue,
+                                            Map<String, String> results) {
         String next = null;
         List<String> ordinal = new ArrayList<String>();
         List<String> onOffList = (null == onOff) ? null : Arrays.asList(onOff);
@@ -274,7 +297,8 @@ public class Main {
         @throws FileNotFoundException if the path does not exist
         @throws ParseException if the file does not contain a proper JSON object
     */
-    private static JSONObject loadJSONFile(String path) throws IOException, FileNotFoundException, ParseException {
+    private static JSONObject loadJSONFile(String path)
+                        throws IOException, FileNotFoundException, ParseException {
         return (JSONObject) (new JSONParser()).parse(new FileReader(path));
     }
 

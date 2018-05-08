@@ -1,4 +1,4 @@
-package org.randywebb.wlts.beans;
-
 /** Cool beans.
 */
+package org.randywebb.wlts.beans;
+
