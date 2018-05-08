@@ -61,6 +61,7 @@
           <doctitle>My API for ${project.name} ${project.version}</doctitle>
           <windowtitle>My API for ${project.name} ${project.version}</windowtitle>
           <show>private</show>
+          <quiet>true</quiet>
           <tags>
             <tag>
               <name>todo</name>

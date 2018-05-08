@@ -225,8 +225,8 @@ public class Address extends AbstractBean {
             // data structure changes or if we don't always have 4 components
             a.setStreetAddress(addrComponent[street]);
             a.setCity(addrComponent[city]);
-            a.setState(addrComponent[tsate]);
-            a.setPostalCode(addrComponent[postalcode]);
+            a.setState(addrComponent[state]);
+            a.setPostalCode(addrComponent[postalCode]);
         } catch (NullPointerException
                     | ArrayIndexOutOfBoundsException
                     | StringIndexOutOfBoundsException e) {
