@@ -10,13 +10,13 @@ import org.apache.http.client.ResponseHandler;
 /** When you just want to see if the message was sent. */
 public class NoOpResponseHandler implements ResponseHandler<StatusLine> {
 
-	/* (non-Javadoc)
-	 * @see org.apache.http.client.ResponseHandler#handleResponse(org.apache.http.HttpResponse)
-	 */
-	@Override
-	public StatusLine handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-		StatusLine status = response.getStatusLine();
-		return status;
-	}
+    /* (non-Javadoc)
+     * @see org.apache.http.client.ResponseHandler#handleResponse(org.apache.http.HttpResponse)
+     */
+    @Override
+    public StatusLine handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+        StatusLine status = response.getStatusLine();
+        return status;
+    }
 
 }
