@@ -25,13 +25,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /** Utility methods to export the detailed member list as CSV. */
-public class DetailedMemberListCSV {
+public final class DetailedMemberListCSV {
 
     /** default constructor. */
     private DetailedMemberListCSV() {
     }
 
-    /** Can be used for logging debugging messages */
+    /** Can be used for logging debugging messages. */
     private static Logger log = LoggerFactory.getLogger(DetailedMemberListCSV.class);
 
     /**
