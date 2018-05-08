@@ -14,7 +14,8 @@ public class NoOpResponseHandler implements ResponseHandler<StatusLine> {
      * @see org.apache.http.client.ResponseHandler#handleResponse(org.apache.http.HttpResponse)
      */
     @Override
-    public StatusLine handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+    public StatusLine handleResponse(HttpResponse response)
+                        throws ClientProtocolException, IOException {
         StatusLine status = response.getStatusLine();
         return status;
     }

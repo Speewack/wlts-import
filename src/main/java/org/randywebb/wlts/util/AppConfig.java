@@ -13,18 +13,21 @@ import org.slf4j.LoggerFactory;
 * @author randyw
 *
 */
-public class AppConfig extends Properties {
+public final class AppConfig extends Properties {
 
-    /** Can be used for logging debugging messages */
+    /** Can be used for logging debugging messages. */
     private static Logger log = LoggerFactory.getLogger(AppConfig.class);
 
-    /** singleton instance */
-    private static AppConfig _instance = null;
+    /** singleton instance. */
+    private static AppConfig instance = null;
 
-    /** Attempts to load the config.properties file. If it fails, this instance has no properties. */
-    private AppConfig(){
+    /** Attempts to load the config.properties file.
+            If it fails, this instance has no properties.
+    */
+    private AppConfig() {
         try {
-            this.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties"));
+            this.load(Thread.currentThread().getContextClassLoader()
+                            .getResourceAsStream("config.properties"));
         } catch (IOException e) {
             log.error("Unable to load configuration", e);
         }
@@ -34,11 +37,11 @@ public class AppConfig extends Properties {
         @return The singleton instance. Creates if it doesn't already exist.
     */
     public static AppConfig getInstance() {
-        if(_instance==null) {
-            _instance = new AppConfig();
+        if (instance == null) {
+            instance = new AppConfig();
         }
 
-        return _instance;
+        return instance;
     }
 
 }

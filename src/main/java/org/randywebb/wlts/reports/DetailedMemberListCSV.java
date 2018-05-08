@@ -24,8 +24,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/** Utility methods to export the detailed member list as CSV */
+/** Utility methods to export the detailed member list as CSV. */
 public class DetailedMemberListCSV {
+
+    /** default constructor. */
+    private DetailedMemberListCSV() {
+    }
 
     /** Can be used for logging debugging messages */
     private static Logger log = LoggerFactory.getLogger(DetailedMemberListCSV.class);
@@ -36,15 +40,22 @@ public class DetailedMemberListCSV {
         @throws IOException on network errors
         @throws ParseException If the JSON was not the format that was expected
     */
-    public static void generateWLTSReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
+    public static void generateWLTSReport(LdsToolsClient client, String filePath)
+                                                throws IOException, ParseException {
         // Parse JSON Membership file into beans
 
         InputStream in = client.getMemberInfo();
 
         List<DetailedMember> members = processDetailMembers(in);
 
-        // List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
-        // List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
+        /*
+        List<DetailedMember> members = processDetailMembers(
+            Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("detailedmembership.json"));
+        List<Household> households = processHouseholds(
+            Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("membership.json"));
+        */
 
         writeCSVFile(filePath, members);
 
@@ -57,11 +68,12 @@ public class DetailedMemberListCSV {
         @throws IOException on io error
         @throws ParseException When the JSON is not formatted as expected
     */
-    private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {
+    private static List<DetailedMember> processDetailMembers(InputStream in)
+                                                throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(new InputStreamReader(in));
 
-        return DetailedMember.fromArray( (JSONArray) obj );
+        return DetailedMember.fromArray((JSONArray) obj);
     }
 
     /** Parse a list of households from a JSON array stream.
@@ -70,7 +82,8 @@ public class DetailedMemberListCSV {
         @throws IOException on io error
         @throws ParseException When the JSON is not formatted as expected
     * /
-    private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {
+    private static List<Household> processHouseholds(InputStream in)
+                                            throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(new InputStreamReader(in));
         JSONObject jo = (JSONObject) obj;
@@ -85,12 +98,21 @@ public class DetailedMemberListCSV {
     */
     public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
         ICsvMapWriter beanWriter = null;
-        String[] header = { "id", "mrn", "formattedMRN", "name", "givenName", "spokenName", "street", "city", "state", "zip", "age", "birthDate", "email", "phone", "gender", "genderCode", "coupleName",
-        "householdEmail", "householdId", "householdPhone", "isAdult", "isHead", "isSpouse", "nonMember", "outOfUnitMember", "priesthood", "unitNumber", "unitName" };
-        CellProcessor[] processors = DetailedMember.csvProcessors(header, new ConvertNullTo(""), new FmtBool("true", "false"), new ConvertNullTo(""), new FmtDate("dd MMM yyyy"));
+        String[] header = {"id", "mrn", "formattedMRN", "name", "givenName", "spokenName",
+                            "street", "city", "state", "zip", "age", "birthDate", "email",
+                            "phone", "gender", "genderCode", "coupleName", "householdEmail",
+                            "householdId", "householdPhone", "isAdult", "isHead", "isSpouse",
+                            "nonMember", "outOfUnitMember", "priesthood", "unitNumber",
+                            "unitName"};
+        CellProcessor[] processors = DetailedMember.csvProcessors(header,
+                                                    new ConvertNullTo(""),
+                                                    new FmtBool("true", "false"),
+                                                    new ConvertNullTo(""),
+                                                    new FmtDate("dd MMM yyyy"));
 
         try {
-            beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
+            beanWriter = new CsvMapWriter(new FileWriter(csvFileName),
+                                            CsvPreference.STANDARD_PREFERENCE);
 
             beanWriter.writeHeader(header);
 
