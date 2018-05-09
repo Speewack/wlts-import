@@ -9,11 +9,32 @@ If you have Homebrew (https://brew.sh) you can install Maven via:
 
 `brew install maven`
 
+## Set your toolchain
+
+Create or edit ~/.m2/toolchains.xml
+
+<?xml version="1.0" encoding="UTF8"?>
+<toolchains>
+  <!-- JDK toolchains -->
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>1.8</version>
+      <vendor>sun</vendor>
+    </provides>
+    <configuration>
+      <jdkHome>/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home</jdkHome>
+    </configuration>
+  </toolchain>
+</toolchains>
+
+To find the value for <jdkHome> you can run on the command line: echo $(/usr/libexec/java_home)
+
 ## Build
 
 To build run:
 
-`mvn clean package assembly:single javadoc:javadoc pmd:pmd pmd:cpd checkstyle:check`
+`mvn clean package javadoc:javadoc pmd:pmd pmd:cpd`
 
 The documentation is at: `target/site/apidocs/index.html`
 

@@ -8,14 +8,45 @@
   <name>WLTS Membership Data</name>
   <description>Export membership data from lds.org using LDS Tools API and convert it for import to WLTS</description>
 
-<!-- Note. For some reason, the assembly plugin is not binding to the package goal.
-     To build the distributable jar, use mvn clean package assembly:single -->
+  <!-- Note. For some reason, the assembly plugin is not binding to the package
+    goal. To build the distributable jar, use mvn clean package assembly:single -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Configure JDK version for various Maven Plugins -->
+    <targetJDK>1.8</targetJDK>
+    <!-- sourceJDK must be <= targetJDK -->
+    <sourceJDK>${targetJDK}</sourceJDK>
+    <!-- Specify the vendor for the JDK you are using (needed for toolchains
+      plugin) -->
+    <targetJDK.vendor>sun</targetJDK.vendor>
   </properties>
+
   <build>
-    <pluginManagement>
       <plugins>
+      <!-- Maven Toolchains Plugin selects the correct JDK to use for build
+        and Javadoc as well as other plugins that support plugins. Configure to use
+        the ${targetJDK} to compile the project independently of the JDK used to
+        run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <toolchains>
+            <jdk>
+              <version>${targetJDK}</version>
+              <vendor>${targetJDK.vendor}</vendor>
+            </jdk>
+          </toolchains>
+        </configuration>
+      </plugin>
         <!-- Configure maven-compiler plugin to use a specific java syntax
           and to generate a binary for a specific jave version. -->
 		 <plugin>
@@ -46,14 +77,14 @@
 			<configuration>
 			  <rulesets>
 				<!-- A rule set, that comes bundled with PMD -->
-				<ruleset>${project.basedir}/src/main/resources/pmd.xml</ruleset>
-				<ruleset>/category/java/security.xml</ruleset>
-				<!-- <ruleset>/category/java/performance.xml</ruleset> -->
-				<!-- <ruleset>/category/java/codestyle.xml</ruleset> -->
-				<!-- <ruleset>/category/java/design.xml</ruleset> -->
-				<!-- <ruleset>/category/java/documentation.xml</ruleset> -->
-				<!-- <ruleset>/category/java/errorprone.xml</ruleset> -->
-				<!-- <ruleset>/category/java/multithreading.xml</ruleset> -->
+			   <ruleset>${project.basedir}/src/main/resources/pmd.xml</ruleset>
+			   <ruleset>/category/java/security.xml</ruleset>
+			   <!-- <ruleset>/category/java/performance.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/codestyle.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/design.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/documentation.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/errorprone.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/multithreading.xml</ruleset> -->
 			  </rulesets>
 			</configuration>
 		  </plugin>
@@ -62,11 +93,9 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.7.0</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-			  <compilerArgs>
-				<arg>-Xlint:all</arg>
-			  </compilerArgs>
+          <!-- Use the project properties sourceJDK and targetJDK for values -->
+          <source>${sourceJDK}</source>
+          <target>${targetJDK}</target>
           </configuration>
         </plugin>
       <plugin>
@@ -74,6 +103,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
+          <source>${sourceJDK}</source>
           <doctitle>My API for ${project.name} ${project.version}</doctitle>
           <windowtitle>My API for ${project.name} ${project.version}</windowtitle>
           <show>private</show>
@@ -112,7 +142,6 @@
           </executions>
         </plugin>
       </plugins>
-    </pluginManagement>
   </build>
 
   <dependencies>
