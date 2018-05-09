@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthenticationException;
@@ -16,14 +17,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import org.randywebb.wlts.util.AppConfig;
 import org.randywebb.wlts.util.http.JSONResponseHandler;
 import org.randywebb.wlts.util.http.NoOpResponseHandler;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +76,6 @@ public class LdsToolsClient {
         @throws AuthenticationException In the event username or password is incorrect
     */
     private void signIn(String user, String password) throws AuthenticationException {
-        final int httpOk = 200;
 
         try {
             HttpPost httpPost = new HttpPost(apiCatalog.getProperty("auth-url"));
@@ -93,7 +90,7 @@ public class LdsToolsClient {
                 log.trace("Sign-in Status: " + status.toString());
             }
 
-            if (status.getStatusCode() != httpOk) {
+            if (status.getStatusCode() != HttpStatus.SC_OK) {
                 throw new AuthenticationException("Unable to sign in to LDS Tools API");
             }
         } catch (IOException e) {

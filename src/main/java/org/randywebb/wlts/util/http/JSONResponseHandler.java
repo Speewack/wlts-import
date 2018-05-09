@@ -7,12 +7,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
-
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +37,6 @@ public class JSONResponseHandler<JSONType> implements ResponseHandler<JSONType> 
     @Override
     public JSONType handleResponse(HttpResponse response)
                                             throws ClientProtocolException, IOException {
-        final int httpOk = 200;
         JSONParser parser = new JSONParser();
         JSONType jsonObj = null;
 
@@ -46,7 +44,7 @@ public class JSONResponseHandler<JSONType> implements ResponseHandler<JSONType> 
             log.trace("Response Status: " + response.getStatusLine().toString());
         }
 
-        if (response.getStatusLine().getStatusCode() != httpOk) {
+        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             throw new ClientProtocolException("Unable to retrieve response. Server returned: "
                                                     + response.getStatusLine().toString());
         }
