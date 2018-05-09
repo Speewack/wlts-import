@@ -108,14 +108,13 @@ public final class Main {
         final boolean map = switches.containsKey("--map");
         final boolean wlts = switches.containsKey("--wlts");
         final boolean verb = ministers || map || routes || wlts || ministered;
-        final boolean hasUsername = verb && arguments.length > 0 || !verb && arguments.length > 1;
-        final boolean hasPassword = hasUsername
-                        && (verb && arguments.length > 1 || !verb && arguments.length > 2);
+        final boolean hasUsername = (verb && arguments.length > 0) || (!verb && arguments.length > 1);
+        final boolean hasPassword = hasUsername && ((verb && arguments.length > 1) || (!verb && arguments.length > 2));
         final int usernameIndex = 0;
         final int targetIndex = (hasUsername ? 1 : 0) + (hasPassword ? 1 : 0);
         final int passwordIndex = 1;
 
-        if (!verb && arguments.length < 1) {
+        if (!verb && (arguments.length < 1)) {
             printUsage();
             log.trace("arguments.length = " + arguments.length);
             for (String argument : arguments) {
@@ -273,9 +272,9 @@ public final class Main {
             if (null != next) {
                 results.put(next, arg);
                 next = null;
-            } else if (null != onOff && onOffList.contains(arg)) {
+            } else if ((null != onOff) && onOffList.contains(arg)) {
                 results.put(arg, "true");
-            } else if (null != hasValue && hasValueList.contains(arg)) {
+            } else if ((null != hasValue) && hasValueList.contains(arg)) {
                 next = arg;
             } else {
                 ordinal.add(arg);

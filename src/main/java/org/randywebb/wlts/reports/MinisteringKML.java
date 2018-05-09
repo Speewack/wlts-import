@@ -23,8 +23,12 @@ import org.json.simple.parser.ParseException;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-/** Utility methods to generate KML files from ministering information */
-public class MinisteringKML {
+/** Utility methods to generate KML files from ministering information. */
+public final class MinisteringKML {
+
+    /** default constructor. */
+    private MinisteringKML() {
+    }
 
     /** Can be used for logging debugging messages */
     //private static Logger log = LoggerFactory.getLogger(MinisteringKML.class);
@@ -299,10 +303,13 @@ public class MinisteringKML {
         final int thickLine = 8;
         final int thinLine = 2;
         KMLWriter.Document document = new KMLWriter.Document();
-        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
+        JSONObject ward = client.getEndpointInfo(
+                                    "unit-members-and-callings-v2", client.getUnitNumber());
         JSONArray households = (JSONArray) ward.get("households");
         List<Household> householdList = Household.fromArray(households);
-        Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(householdList) : null;
+        Map<String, Household> idToHousehold = client.leaderReportsAvailable()
+                                            ? Household.mapIndividualIdsToHousehold(householdList)
+                                            : null;
 
         String[] colors = {"7fff0000", "7f0000ff", "7fffff00",
                             "7f00ffff", "7fff00ff", "7f7f7f7f",

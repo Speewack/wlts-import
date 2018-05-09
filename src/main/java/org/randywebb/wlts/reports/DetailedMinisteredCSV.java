@@ -25,13 +25,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 /** Utility methods to export detailed ministered families in CSV. */
-public class DetailedMinisteredCSV {
+public final class DetailedMinisteredCSV {
 
-    /** default constructor */
+    /** default constructor. */
     private DetailedMinisteredCSV() {
     }
 
-    /** Can be used for logging debugging messages */
+    /** Can be used for logging debugging messages. */
     private static Logger log = LoggerFactory.getLogger(DetailedMinisteredCSV.class);
 
     /** Generates a CSV file of all the families on the ministering lists the user has access to.

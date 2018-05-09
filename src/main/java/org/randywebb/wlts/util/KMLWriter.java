@@ -11,9 +11,13 @@ import java.util.List;
 /** Makes generating .kml files a bit easier.
     Note: You still have to know how to format a .kml file, this class just mirrors the XML.
 */
-public class KMLWriter {
+public final class KMLWriter {
 
-    /** Can be used for logging debugging messages */
+    /** default constructor. */
+    private KMLWriter() {
+    }
+
+    /** Can be used for logging debugging messages. */
     //private static Logger log = LoggerFactory.getLogger(KMLWriter.class);
 
     /** Any element that needs to be written to the file. */
@@ -30,12 +34,12 @@ public class KMLWriter {
     public static class Simple implements Item {
 
         /**
-            @param tag The tag type
-            @param value the value for the tag
+            @param tagType The tag type
+            @param tagValue the value for the tag
         */
-        public Simple(String tag, String value) {
-            this.tag = tag;
-            this.value = value;
+        public Simple(String tagType, String tagValue) {
+            tag = tagType;
+            value = tagValue;
         }
 
         /** Writes the tag to the output.
@@ -44,10 +48,10 @@ public class KMLWriter {
             @throws IOException on io errors
         */
         public void write(String prefix, FileWriter output) throws IOException {
-            output.append(prefix + "<"+tag+"><![CDATA["+value+"]]></"+tag+">\n");
+            output.append(prefix + "<" + tag + "><![CDATA[" + value + "]]></" + tag + ">\n");
         }
 
-        /** The type of tag */
+        /** The type of tag. */
         private String tag;
         /** The value for the tag. */
         private String value;
@@ -62,7 +66,7 @@ public class KMLWriter {
         }
     }
 
-    /** Description element */
+    /** Description element. */
     public static class Description extends Simple {
         /** @param description The description to add */
         public Description(String description) {
@@ -70,28 +74,28 @@ public class KMLWriter {
         }
     }
 
-    /** Mark the current object invisible */
+    /** Mark the current object invisible. */
     public static class Invisible extends Simple {
-        /** visibility defaults to 1, so to make invisible, add a visibility=0 tag */
+        /** visibility defaults to 1, so to make invisible, add a visibility=0 tag. */
         public Invisible() {
             super("visibility", "0");
         }
     }
 
-    /** Use a style URL */
+    /** Use a style URL. */
     public static class UseStyle extends Simple {
         /** @param name the name of the style (will use anchor url, ie #name) */
         public UseStyle(String name) {
-            super("styleUrl", "#"+name);
+            super("styleUrl", "#" + name);
         }
     }
 
-    /** General category for items that have altitude mode */
-    public static abstract class TerrainElement implements Item {
+    /** General category for items that have altitude mode. */
+    public abstract static class TerrainElement implements Item {
 
-        /** A line that does not tessellate and has no altitude mode and no coordinates */
+        /** A line that does not tessellate and has no altitude mode and no coordinates. */
         public TerrainElement() {
-            altitude_mode = null;
+            altitudeMode = null;
         }
 
         /** Sets the altitude mode.
@@ -100,7 +104,7 @@ public class KMLWriter {
             @return this for call chaining.
         */
         public TerrainElement altitudeMode(String mode) {
-            altitude_mode = mode;
+            altitudeMode = mode;
             return this;
         }
 
@@ -132,19 +136,19 @@ public class KMLWriter {
             @throws IOException on io error
         */
         public void write(String prefix, FileWriter output) throws IOException {
-            if (null != altitude_mode) {
-                output.append(prefix + "\t<altitudeMode>"+altitude_mode+"</altitudeMode>\n");
+            if (null != altitudeMode) {
+                output.append(prefix + "\t<altitudeMode>" + altitudeMode + "</altitudeMode>\n");
             }
         }
 
-        /** What altitude mode should we use (or null for do not specify) */
-        protected String altitude_mode;
+        /** What altitude mode should we use (or null for do not specify). */
+        private String altitudeMode;
     }
 
     /** Add a LineString to the map. */
     public static class Line extends TerrainElement {
 
-        /** A line that does not tessellate and has no altitude mode and no coordinates */
+        /** A line that does not tessellate and has no altitude mode and no coordinates. */
         public Line() {
             tessellate = false;
             coordinates = new ArrayList<String>();
@@ -166,7 +170,7 @@ public class KMLWriter {
             @return this for call chaining.
         */
         public Line add(double latitude, double longitude, double altitude) {
-            coordinates.add(""+longitude+","+latitude+","+altitude);
+            coordinates.add("" + longitude + "," + latitude + "," + altitude);
             return this;
         }
 
@@ -198,9 +202,9 @@ public class KMLWriter {
             output.append(prefix + "</LineString>\n");
         }
 
-        /** Should we tessellate (or follow the contour of the terrain)? */
+        /** Should we tessellate (or follow the contour of the terrain)?. */
         private boolean tessellate;
-        /** List of coordinate strings in "long, lat, alt" format */
+        /** List of coordinate strings in "long, lat, alt" format. */
         private ArrayList<String> coordinates;
     }
 
@@ -208,14 +212,14 @@ public class KMLWriter {
     public static class Point extends TerrainElement {
 
         /**
-            @param latitude the latitude of the point
-            @param longitude the longitude of the point
-            @param altitude the altitude of the point
+            @param latitudePoint the latitude of the point
+            @param longitudePoint the longitude of the point
+            @param altitudePoint the altitude of the point
         */
-        public Point(double latitude, double longitude, double altitude) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.altitude = altitude;
+        public Point(double latitudePoint, double longitudePoint, double altitudePoint) {
+            latitude = latitudePoint;
+            longitude = longitudePoint;
+            altitude = altitudePoint;
             extrude = false;
         }
 
@@ -247,70 +251,74 @@ public class KMLWriter {
 
             super.write(prefix + "\t", output);
 
-            output.append(prefix + "\t<coordinates>"+longitude+","+latitude+","+altitude+"</coordinates>\n");
+            output.append(prefix + "\t<coordinates>" + longitude
+                        + "," + latitude
+                        + "," + altitude
+                        + "</coordinates>\n");
             output.append(prefix + "</Point>\n");
         }
 
-        /** The latitude of the icon */
+        /** The latitude of the icon. */
         private double latitude;
-        /** The longitude of the icon */
+        /** The longitude of the icon. */
         private double longitude;
-        /** The altitude of the icon */
+        /** The altitude of the icon. */
         private double altitude;
-        /** Connect the point to the ground */
+        /** Connect the point to the ground. */
         private boolean extrude;
     }
 
-    /** The area to look at */
+    /** The area to look at. */
     public static class LookAt implements Item {
 
         /**
             Defaults to a range of 100. Heading defaults to 0.
-            @param latitude center latitude to look at
-            @param longitude center longitude to look at
+            @param latitudeCenter center latitude to look at
+            @param longitudeCenter center longitude to look at
         */
-        public LookAt(double latitude, double longitude) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.heading = 0;
-            this.tilt = 0;
-            this.range = 100;
-            this.altitude = 0;
+        public LookAt(double latitudeCenter, double longitudeCenter) {
+            final int oneHundredMileRange = 100;
+            latitude = latitudeCenter;
+            longitude = longitudeCenter;
+            heading = 0;
+            tilt = 0;
+            range = oneHundredMileRange;
+            altitude = 0;
         }
 
         /**
-            @param heading the heading to use.
+            @param newHeading the heading to use.
             @return this for call chaining
         */
-        public LookAt setHeading(double heading) {
-            this.heading = heading;
+        public LookAt setHeading(double newHeading) {
+            heading = newHeading;
             return this;
         }
 
         /**
-            @param range the range to use.
+            @param newRange the range to use.
             @return this for call chaining
         */
-        public LookAt setRange(double range) {
-            this.range = range;
+        public LookAt setRange(double newRange) {
+            range = newRange;
             return this;
         }
 
         /**
-            @param tilt the tilt to use.
+            @param newTilt the tilt to use.
             @return this for call chaining
         */
-        public LookAt setTilt(double tilt) {
-            this.tilt = tilt;
+        public LookAt setTilt(double newTilt) {
+            tilt = newTilt;
             return this;
         }
 
         /**
-            @param altitude the altitude to use.
+            @param newAltitude the altitude to use.
             @return this for call chaining
         */
-        public LookAt setAltitude(double altitude) {
-            this.altitude = altitude;
+        public LookAt setAltitude(double newAltitude) {
+            altitude = newAltitude;
             return this;
         }
 
@@ -321,39 +329,40 @@ public class KMLWriter {
         */
         public void write(String prefix, FileWriter output) throws IOException {
             output.append(prefix + "<LookAt>\n");
-            output.append(prefix + "\t<longitude>"+longitude+"</longitude>\n");
-            output.append(prefix + "\t<latitude>"+latitude+"</latitude>\n");
-            output.append(prefix + "\t<altitude>"+altitude+"</altitude>\n");
-            output.append(prefix + "\t<heading>"+heading+"</heading>\n");
-            output.append(prefix + "\t<tilt>"+tilt+"</tilt>\n");
-            output.append(prefix + "\t<range>"+range+"</range>\n");
+            output.append(prefix + "\t<longitude>" + longitude + "</longitude>\n");
+            output.append(prefix + "\t<latitude>" + latitude + "</latitude>\n");
+            output.append(prefix + "\t<altitude>" + altitude + "</altitude>\n");
+            output.append(prefix + "\t<heading>" + heading + "</heading>\n");
+            output.append(prefix + "\t<tilt>" + tilt + "</tilt>\n");
+            output.append(prefix + "\t<range>" + range + "</range>\n");
             output.append(prefix + "</LookAt>\n");
         }
 
-        /** The center latitude */
+        /** The center latitude. */
         private double latitude;
-        /** The center longitude */
+        /** The center longitude. */
         private double longitude;
-        /** The center altitude */
+        /** The center altitude. */
         private double altitude;
-        /** The heading */
+        /** The heading. */
         private double heading;
-        /** The tilt */
+        /** The tilt. */
         private double tilt;
         /** The range. Defaults to 100. */
         private double range;
     }
 
-    /** Parent for tags that contain other items */
-    public static abstract class List extends ArrayList<Item> implements Item {
+    /** Parent for tags that contain other items. */
+    public abstract static class List extends ArrayList<Item> implements Item {
 
         /**
-            @param tag The tag type
-            @param attributes The attributes to use, or null if there are no attributes. Attributes are of the form x="y".
+            @param tagType The tag type
+            @param tagAttributes The attributes to use,
+                    or null if there are no attributes. Attributes are of the form x="y".
         */
-        public List(String tag, String attributes) {
-            this.tag = tag;
-            this.attributes = attributes;
+        public List(String tagType, String tagAttributes) {
+            tag = tagType;
+            attributes = tagAttributes;
         }
 
         /** Writes out the tag and its contained items.
@@ -362,23 +371,28 @@ public class KMLWriter {
             @throws IOException on io error
         */
         public void write(String prefix, FileWriter output) throws IOException {
-            output.append(prefix + "<"+tag+null == attributes ? "" : (" " + attributes)+">\n");
+            output.append(prefix + "<" + tag + null == attributes
+                                                    ? ""
+                                                    : (" " + attributes)
+                                + ">\n");
 
             for (Item item : this) {
                 item.write(prefix + "\t", output);
             }
 
-            output.append(prefix + "</"+tag+">\n");
+            output.append(prefix + "</" + tag + ">\n");
         }
 
+        /** The tag type. */
         private String tag;
+        /** The attributes for the tag of the form 'attribute="value"'. */
         private String attributes;
     }
 
-    /** Folder tag */
+    /** Folder tag. */
     public static class Folder extends List {
 
-        /** Create a new folder tag */
+        /** Create a new folder tag. */
         public Folder() {
             super("Folder", null);
         }
@@ -394,10 +408,10 @@ public class KMLWriter {
 
     }
 
-    /** Placemark tag (used for icons) */
+    /** Placemark tag (used for icons). */
     public static class Placemark extends List {
 
-        /** Create Placemark tag */
+        /** Create Placemark tag. */
         public Placemark() {
             super("Placemark", null);
         }
@@ -413,14 +427,14 @@ public class KMLWriter {
 
     }
 
-    /** IconStyle tag */
+    /** IconStyle tag. */
     public static class StyleIcon implements Item {
 
         /**
-            @param url The url of the icon
+            @param iconUrl The url of the icon
         */
-        public StyleIcon(String url) {
-            this.url = url;
+        public StyleIcon(String iconUrl) {
+            url = iconUrl;
         }
 
         /** Writes out the IconStyle.
@@ -431,29 +445,29 @@ public class KMLWriter {
         public void write(String prefix, FileWriter output) throws IOException {
             output.append(prefix + "<IconStyle>\n");
             output.append(prefix + "\t<Icon>\n");
-            output.append(prefix + "\t\t<href><![CDATA["+url+"]]></href>\n");
+            output.append(prefix + "\t\t<href><![CDATA[" + url + "]]></href>\n");
             output.append(prefix + "\t</Icon>\n");
             output.append(prefix + "</IconStyle>\n");
         }
 
-        /** The url of the icon */
+        /** The url of the icon. */
         private String url;
 
     }
 
-    /** Width tag (for lines) */
+    /** Width tag (for lines). */
     public static class StyleWidth extends Simple {
 
         /**
             @param width The width of the line for style.
         */
         public StyleWidth(double width) {
-            super("width", ""+width);
+            super("width", "" + width);
         }
 
     }
 
-    /** Color tag (for lines) */
+    /** Color tag (for lines). */
     public static class StyleColor extends Simple {
 
         /**
@@ -465,10 +479,10 @@ public class KMLWriter {
 
     }
 
-    /** LineStyle container */
+    /** LineStyle container. */
     public static class LineStyle extends List {
 
-        /** New LineStyle tag */
+        /** New LineStyle tag. */
         public LineStyle() {
             super("LineStyle", null);
         }
@@ -487,7 +501,7 @@ public class KMLWriter {
     /** Style for polygons. */
     public static class PolyStyle extends List {
 
-        /** New PolyStyle tag */
+        /** New PolyStyle tag. */
         public PolyStyle() {
             super("PolyStyle", null);
         }
@@ -503,14 +517,14 @@ public class KMLWriter {
 
     }
 
-    /** Style definition tag */
+    /** Style definition tag. */
     public static class Style extends List {
 
         /**
             @param name The id name for the style
         */
         public Style(String name) {
-            super("Style", "id=\""+name+"\"");
+            super("Style", "id=\"" + name + "\"");
         }
 
         /**
@@ -524,20 +538,20 @@ public class KMLWriter {
 
     }
 
-    /** Open = true tag */
+    /** Open = true tag. */
     public static class Open extends Simple {
 
-        /** Creates a &lt;open&gt;1&lt;/open&gt; tag */
+        /** Creates a &lt;open&gt;1&lt;/open&gt; tag. */
         public Open() {
             super("open", "1");
         }
 
     }
 
-    /** Document definition */
+    /** Document definition. */
     public static class Document extends List {
 
-        /** Create new document */
+        /** Create new document. */
         public Document() {
             super("Document", null);
         }
