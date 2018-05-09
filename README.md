@@ -13,7 +13,7 @@ If you have Homebrew (https://brew.sh) you can install Maven via:
 
 To build run:
 
-`mvn clean package assembly:single javadoc:javadoc pmd:pmd pmd:cpd checkstyle:check`
+`mvn clean package javadoc:javadoc pmd:pmd pmd:cpd checkstyle:check`
 
 The documentation is at: `target/site/apidocs/index.html`
 
