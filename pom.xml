@@ -8,62 +8,95 @@
   <name>WLTS Membership Data</name>
   <description>Export membership data from lds.org using LDS Tools API and convert it for import to WLTS</description>
 
-<!-- Note. For some reason, the assembly plugin is not binding to the package goal.
-     To build the distributable jar, use mvn clean package assembly:single -->
+  <!-- Note. For some reason, the assembly plugin is not binding to the package 
+    goal. To build the distributable jar, use mvn clean package assembly:single -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Configure JDK version for various Maven Plugins -->
+    <targetJDK>1.8</targetJDK>
+    <!-- sourceJDK must be <= targetJDK -->
+    <sourceJDK>${targetJDK}</sourceJDK>
+    <!-- Specify the vendor for the JDK you are using (needed for toolchains 
+      plugin) -->
+    <targetJDK.vendor>sun</targetJDK.vendor>
   </properties>
+
   <build>
-    <pluginManagement>
-      <plugins>
-        <!-- Configure maven-compiler plugin to use a specific java syntax
-          and to generate a binary for a specific jave version. -->
-		 <plugin>
-		   <groupId>org.apache.maven.plugins</groupId>
-		   <artifactId>maven-checkstyle-plugin</artifactId>
-		   <version>3.0.0</version>
-		   <configuration>
-			 <configLocation>${project.basedir}/src/main/resources/checkstyle.xml</configLocation>
-			 <encoding>UTF-8</encoding>
-			 <consoleOutput>true</consoleOutput>
-			 <failsOnError>true</failsOnError>
-			 <linkXRef>false</linkXRef>
-		   </configuration>
-		   <executions>
-			 <execution>
-			   <id>validate</id>
-			   <phase>validate</phase>
-			   <goals>
-				 <goal>check</goal>
-			   </goals>
-			 </execution>
-		   </executions>
-		 </plugin>
-		  <plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-pmd-plugin</artifactId>
-			<version>3.9.0</version>
-			<configuration>
-			  <rulesets>
-				<!-- A rule set, that comes bundled with PMD -->
-				<ruleset>/category/java/bestpractices.xml</ruleset>
-			  </rulesets>
-			</configuration>
-		  </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.7.0</version>
-          <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-          </configuration>
-        </plugin>
+    <plugins>
+      <!-- Maven Toolchains Plugin selects the correct JDK to use for build 
+        and Javadoc as well as other plugins that support plugins. Configure to use 
+        the ${targetJDK} to compile the project independently of the JDK used to 
+        run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <toolchains>
+            <jdk>
+              <version>${targetJDK}</version>
+              <vendor>${targetJDK.vendor}</vendor>
+            </jdk>
+          </toolchains>
+        </configuration>
+      </plugin>
+      <!-- Configure maven-compiler plugin to use a specific java syntax 
+        and to generate a binary for a specific jave version. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <configLocation>${project.basedir}/src/main/resources/checkstyle.xml</configLocation>
+          <encoding>UTF-8</encoding>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+          <linkXRef>false</linkXRef>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.9.0</version>
+        <configuration>
+          <rulesets>
+            <!-- A rule set, that comes bundled with PMD -->
+            <ruleset>/category/java/bestpractices.xml</ruleset>
+          </rulesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <!-- Use the project properties sourceJDK and targetJDK for values -->
+          <source>${sourceJDK}</source>
+          <target>${targetJDK}</target>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
+          <source>${sourceJDK}</source>
           <doctitle>My API for ${project.name} ${project.version}</doctitle>
           <windowtitle>My API for ${project.name} ${project.version}</windowtitle>
           <show>private</show>
@@ -77,32 +110,31 @@
           </tags>
         </configuration>
       </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.1.0</version>
-          <configuration>
-            <descriptorRefs>
-              <descriptorRef>jar-with-dependencies</descriptorRef>
-            </descriptorRefs>
-            <archive>
-              <manifest>
-                <mainClass>org.randywebb.wlts.Main</mainClass>
-              </manifest>
-            </archive>
-          </configuration>
-          <executions>
-            <execution>
-              <id>make-assembly</id> <!-- this is used for inheritance merges -->
-              <phase>package</phase> <!-- bind to the packaging phase -->
-              <goals>
-                <goal>single</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>org.randywebb.wlts.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+            <phase>package</phase> <!-- bind to the packaging phase -->
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
@@ -120,14 +152,14 @@
       <version>1.7.21</version>
     </dependency>
 
-    <!-- Pull in current version of apache http client (updated dependency
+    <!-- Pull in current version of apache http client (updated dependency 
       for Google API Client) -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.2</version>
       <exclusions>
-        <!-- Eclude commons-logging as we are using jcl-over-slf4j to provide
+        <!-- Eclude commons-logging as we are using jcl-over-slf4j to provide 
           the commons-logging implementation -->
         <exclusion>
           <groupId>commons-logging</groupId>
