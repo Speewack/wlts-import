@@ -667,13 +667,22 @@ public class DetailedMember extends AbstractBean {
         @param builder the builder to append to
         @param name The name of the value
         @param value The value to add
+        @param first true if this is the first non-null entry (no comma needed before it)
+        @return true if first was true and the value is null, false otherwise
     */
-    private static <Type> void appendIfNotNull(StringBuilder builder, String name, Type value) {
+    private static <Type> boolean appendIfNotNull(StringBuilder builder, String name, Type value, boolean first) {
         if (value != null) {
+
+            if (!first) {
+                builder.append(", ");
+            }
+
             builder.append(name + "=");
             builder.append(value);
-            builder.append(", ");
+            return false;
         }
+
+        return first;
     }
 
     /**
@@ -683,49 +692,50 @@ public class DetailedMember extends AbstractBean {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
+        boolean first = true;
 
         builder.append("DetailedMember [");
-        appendIfNotNull(builder, "name", getName());
-        appendIfNotNull(builder, "spokenName", getSpokenName());
-        appendIfNotNull(builder, "nameOrder", getNameOrder());
-        appendIfNotNull(builder, "birthDate", getBirthDate());
-        appendIfNotNull(builder, "birthDateSort", getBirthDateSort());
-        appendIfNotNull(builder, "formattedBirthdate", getFormattedBirthDate());
-        appendIfNotNull(builder, "gender", getGender());
-        appendIfNotNull(builder, "genderCode", getGenderCode());
-        appendIfNotNull(builder, "mrn", getMrn());
-        appendIfNotNull(builder, "id", getId());
-        appendIfNotNull(builder, "email", getEmail());
-        appendIfNotNull(builder, "householdEmail", getHouseholdEmail());
-        appendIfNotNull(builder, "phone", getPhone());
-        appendIfNotNull(builder, "householdPhone", getHouseholdPhone());
-        appendIfNotNull(builder, "unitNumber", getUnitNumber());
-        appendIfNotNull(builder, "unitName", getUnitName());
-        appendIfNotNull(builder, "priesthood", getPriesthood());
-        appendIfNotNull(builder, "priesthoodCode", getPriesthoodCode());
-        appendIfNotNull(builder, "priesthoodType", getPriesthoodType());
-        appendIfNotNull(builder, "age", getAge());
-        appendIfNotNull(builder, "actualAge", getActualAge());
-        appendIfNotNull(builder, "actualAgeInMonths", getActualAgeInMonths());
-        appendIfNotNull(builder, "genderLabelShort", getGenderLabelShort());
-        appendIfNotNull(builder, "visible", getVisible());
-        appendIfNotNull(builder, "nonMember", getNonMember());
-        appendIfNotNull(builder, "outOfUnitMember", getOutOfUnitMember());
-        appendIfNotNull(builder, "street", getStreet());
-        appendIfNotNull(builder, "city", getCity());
-        appendIfNotNull(builder, "state", getState());
-        appendIfNotNull(builder, "zip", getZip());
-        appendIfNotNull(builder, "givenName", getGivenName());
-        appendIfNotNull(builder, "coupleName", getCoupleName());
-        appendIfNotNull(builder, "householdId", getHouseholdId());
-        appendIfNotNull(builder, "isHead", getIsHead());
-        appendIfNotNull(builder, "isSpouse", getIsSpouse());
-        appendIfNotNull(builder, "isAdult", getIsAdult());
-        appendIfNotNull(builder, "fullTimeMissionary", getFullTimeMissionary());
-        appendIfNotNull(builder, "formattedMRN", getFormattedMRN());
-        appendIfNotNull(builder, "setApart", getSetApart());
-        appendIfNotNull(builder, "formattedBirthDateFull", getFormattedBirthDateFull());
-        appendIfNotNull(builder, "sustainedDate", getFormattedBirthDateFull());
+        first = appendIfNotNull(builder, "name", getName(), first);
+        first = appendIfNotNull(builder, "spokenName", getSpokenName(), first);
+        first = appendIfNotNull(builder, "nameOrder", getNameOrder(), first);
+        first = appendIfNotNull(builder, "birthDate", getBirthDate(), first);
+        first = appendIfNotNull(builder, "birthDateSort", getBirthDateSort(), first);
+        first = appendIfNotNull(builder, "formattedBirthdate", getFormattedBirthDate(), first);
+        first = appendIfNotNull(builder, "gender", getGender(), first);
+        first = appendIfNotNull(builder, "genderCode", getGenderCode(), first);
+        first = appendIfNotNull(builder, "mrn", getMrn(), first);
+        first = appendIfNotNull(builder, "id", getId(), first);
+        first = appendIfNotNull(builder, "email", getEmail(), first);
+        first = appendIfNotNull(builder, "householdEmail", getHouseholdEmail(), first);
+        first = appendIfNotNull(builder, "phone", getPhone(), first);
+        first = appendIfNotNull(builder, "householdPhone", getHouseholdPhone(), first);
+        first = appendIfNotNull(builder, "unitNumber", getUnitNumber(), first);
+        first = appendIfNotNull(builder, "unitName", getUnitName(), first);
+        first = appendIfNotNull(builder, "priesthood", getPriesthood(), first);
+        first = appendIfNotNull(builder, "priesthoodCode", getPriesthoodCode(), first);
+        first = appendIfNotNull(builder, "priesthoodType", getPriesthoodType(), first);
+        first = appendIfNotNull(builder, "age", getAge(), first);
+        first = appendIfNotNull(builder, "actualAge", getActualAge(), first);
+        first = appendIfNotNull(builder, "actualAgeInMonths", getActualAgeInMonths(), first);
+        first = appendIfNotNull(builder, "genderLabelShort", getGenderLabelShort(), first);
+        first = appendIfNotNull(builder, "visible", getVisible(), first);
+        first = appendIfNotNull(builder, "nonMember", getNonMember(), first);
+        first = appendIfNotNull(builder, "outOfUnitMember", getOutOfUnitMember(), first);
+        first = appendIfNotNull(builder, "street", getStreet(), first);
+        first = appendIfNotNull(builder, "city", getCity(), first);
+        first = appendIfNotNull(builder, "state", getState(), first);
+        first = appendIfNotNull(builder, "zip", getZip(), first);
+        first = appendIfNotNull(builder, "givenName", getGivenName(), first);
+        first = appendIfNotNull(builder, "coupleName", getCoupleName(), first);
+        first = appendIfNotNull(builder, "householdId", getHouseholdId(), first);
+        first = appendIfNotNull(builder, "isHead", getIsHead(), first);
+        first = appendIfNotNull(builder, "isSpouse", getIsSpouse(), first);
+        first = appendIfNotNull(builder, "isAdult", getIsAdult(), first);
+        first = appendIfNotNull(builder, "fullTimeMissionary", getFullTimeMissionary(), first);
+        first = appendIfNotNull(builder, "formattedMRN", getFormattedMRN(), first);
+        first = appendIfNotNull(builder, "setApart", getSetApart(), first);
+        first = appendIfNotNull(builder, "formattedBirthDateFull", getFormattedBirthDateFull(), first);
+        first = appendIfNotNull(builder, "sustainedDate", getFormattedBirthDateFull(), first);
         builder.append("]");
         return builder.toString();
     }
