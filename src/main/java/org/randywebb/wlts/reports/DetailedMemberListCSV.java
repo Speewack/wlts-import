@@ -48,14 +48,8 @@ public final class DetailedMemberListCSV {
 
         List<DetailedMember> members = processDetailMembers(in);
 
-        /*
-        List<DetailedMember> members = processDetailMembers(
-            Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("detailedmembership.json"));
-        List<Household> households = processHouseholds(
-            Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("membership.json"));
-        */
+        // List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
+        // List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
 
         writeCSVFile(filePath, members);
 

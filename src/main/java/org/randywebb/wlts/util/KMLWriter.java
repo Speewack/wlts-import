@@ -268,6 +268,9 @@ public final class KMLWriter {
         private boolean extrude;
     }
 
+    /** Default range for LookAt. */
+    private static final int ONE_HUNDRED_MILE_RANGE = 100;
+
     /** The area to look at. */
     public static class LookAt implements Item {
 
@@ -277,12 +280,11 @@ public final class KMLWriter {
             @param longitudeCenter center longitude to look at
         */
         public LookAt(double latitudeCenter, double longitudeCenter) {
-            final int oneHundredMileRange = 100;
             latitude = latitudeCenter;
             longitude = longitudeCenter;
             heading = 0;
             tilt = 0;
-            range = oneHundredMileRange;
+            range = ONE_HUNDRED_MILE_RANGE;
             altitude = 0;
         }
 

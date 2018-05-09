@@ -54,8 +54,6 @@ public class LdsToolsClient {
     }
 
     /**
-     * Deliberately package scoped to enable other ldstools api components.
-     * access to a common client
      *
      * @return A cached http client
      */

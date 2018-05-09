@@ -71,6 +71,12 @@ public class Household extends AbstractBean {
         householdAddress = new Address(definition);
     }
 
+    /** circumference of the earth is approximately 24,900. */
+    private static final double BIGGER_THAN_THE_EARTH = 100000000.0;
+
+    /** The minimum distance to consider not in the same household. */
+    private static final double NOT_IN_SAME_HOUSE_DISTANCE = 0.01;
+
     /** Find the nearest household to this household.
         @param households The households to search
         @param relocation Information to relocate households if needed
@@ -78,17 +84,14 @@ public class Household extends AbstractBean {
                     but not within 0.01 miles, of this household.
     */
     public Household nearest(List<Household> households, JSONObject relocation) {
-        // circumference of the earth is approximately 24,900
-        final double biggerThanTheEarth = 100000000.0;
-        double min = biggerThanTheEarth;
-        final double hundrethOfAMile = 0.01;
+        double min = BIGGER_THAN_THE_EARTH;
         Household found = null;
 
         for (Household household : households) {
             double d = distance(household, relocation);
 
             // within hundreth of a mile is the same place
-            if (hundrethOfAMile < d && d < min) {
+            if (NOT_IN_SAME_HOUSE_DISTANCE < d && d < min) {
                 min = d;
                 found = household;
             }
