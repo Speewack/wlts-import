@@ -31,7 +31,7 @@ public class Teacher extends AbstractBean {
         @param definition A JSON minister Object
     */
     public Teacher(JSONObject definition) {
-        update(definition, new String[] {"id", "companionshipId", "individualId"});
+        update(definition, "id", "companionshipId", "individualId");
     }
 
     /**

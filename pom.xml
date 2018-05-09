@@ -8,7 +8,7 @@
   <name>WLTS Membership Data</name>
   <description>Export membership data from lds.org using LDS Tools API and convert it for import to WLTS</description>
 
-  <!-- Note. For some reason, the assembly plugin is not binding to the package 
+  <!-- Note. For some reason, the assembly plugin is not binding to the package
     goal. To build the distributable jar, use mvn clean package assembly:single -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,16 +16,16 @@
     <targetJDK>1.8</targetJDK>
     <!-- sourceJDK must be <= targetJDK -->
     <sourceJDK>${targetJDK}</sourceJDK>
-    <!-- Specify the vendor for the JDK you are using (needed for toolchains 
+    <!-- Specify the vendor for the JDK you are using (needed for toolchains
       plugin) -->
     <targetJDK.vendor>sun</targetJDK.vendor>
   </properties>
 
   <build>
-    <plugins>
-      <!-- Maven Toolchains Plugin selects the correct JDK to use for build 
-        and Javadoc as well as other plugins that support plugins. Configure to use 
-        the ${targetJDK} to compile the project independently of the JDK used to 
+      <plugins>
+      <!-- Maven Toolchains Plugin selects the correct JDK to use for build
+        and Javadoc as well as other plugins that support plugins. Configure to use
+        the ${targetJDK} to compile the project independently of the JDK used to
         run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -47,50 +47,57 @@
           </toolchains>
         </configuration>
       </plugin>
-      <!-- Configure maven-compiler plugin to use a specific java syntax 
-        and to generate a binary for a specific jave version. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <configLocation>${project.basedir}/src/main/resources/checkstyle.xml</configLocation>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <failsOnError>true</failsOnError>
-          <linkXRef>false</linkXRef>
-        </configuration>
-        <executions>
-          <execution>
-            <id>validate</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.9.0</version>
-        <configuration>
-          <rulesets>
-            <!-- A rule set, that comes bundled with PMD -->
-            <ruleset>/category/java/bestpractices.xml</ruleset>
-          </rulesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
-        <configuration>
+        <!-- Configure maven-compiler plugin to use a specific java syntax
+          and to generate a binary for a specific jave version. -->
+		 <plugin>
+		   <groupId>org.apache.maven.plugins</groupId>
+		   <artifactId>maven-checkstyle-plugin</artifactId>
+		   <version>3.0.0</version>
+		   <configuration>
+			 <configLocation>${project.basedir}/src/main/resources/checkstyle.xml</configLocation>
+			 <encoding>UTF-8</encoding>
+			 <consoleOutput>true</consoleOutput>
+			 <failsOnError>true</failsOnError>
+			 <linkXRef>false</linkXRef>
+		   </configuration>
+		   <executions>
+			 <execution>
+			   <id>validate</id>
+			   <phase>validate</phase>
+			   <goals>
+				 <goal>check</goal>
+			   </goals>
+			 </execution>
+		   </executions>
+		 </plugin>
+		  <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-pmd-plugin</artifactId>
+			<version>3.9.0</version>
+			<configuration>
+			  <rulesets>
+				<!-- A rule set, that comes bundled with PMD -->
+			   <ruleset>${project.basedir}/src/main/resources/pmd.xml</ruleset>
+			   <ruleset>/category/java/security.xml</ruleset>
+			   <!-- <ruleset>/category/java/performance.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/codestyle.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/design.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/documentation.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/errorprone.xml</ruleset> -->
+			   <!-- <ruleset>/category/java/multithreading.xml</ruleset> -->
+			  </rulesets>
+			</configuration>
+		  </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.7.0</version>
+          <configuration>
           <!-- Use the project properties sourceJDK and targetJDK for values -->
           <source>${sourceJDK}</source>
           <target>${targetJDK}</target>
-        </configuration>
-      </plugin>
+          </configuration>
+        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -110,31 +117,31 @@
           </tags>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.1.0</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass>org.randywebb.wlts.Main</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id> <!-- this is used for inheritance merges -->
-            <phase>package</phase> <!-- bind to the packaging phase -->
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <archive>
+              <manifest>
+                <mainClass>org.randywebb.wlts.Main</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id> <!-- this is used for inheritance merges -->
+              <phase>package</phase> <!-- bind to the packaging phase -->
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
   </build>
 
   <dependencies>

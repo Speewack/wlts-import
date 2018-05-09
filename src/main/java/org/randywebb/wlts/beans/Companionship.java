@@ -38,8 +38,7 @@ public class Companionship extends AbstractBean {
         @param definition A JSON companionship Object
     */
     public Companionship(JSONObject definition) {
-        update(definition, new String[] {"id", "districtId", "startDate",
-                                            "teachers", "assignments"});
+        update(definition, "id", "districtId", "startDate", "teachers", "assignments");
     }
 
     /** Extract a specific key from an companionship JSON Object.
@@ -52,9 +51,9 @@ public class Companionship extends AbstractBean {
     @Override
     protected void setFromJSON(JSONObject definition, String key) {
 
-        if (key.equals("teachers")) {
+        if ("teachers".equals(key)) {
             addTeachers(Teacher.fromArray((JSONArray) definition.get(key)));
-        } else if (key.equals("assignments")) {
+        } else if ("assignments".equals(key)) {
             addAssignments(Assignment.fromArray((JSONArray) definition.get(key)));
         } else {
             super.setFromJSON(definition, key);

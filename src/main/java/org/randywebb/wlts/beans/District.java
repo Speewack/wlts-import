@@ -35,8 +35,7 @@ public class District extends AbstractBean {
         @param definition A JSON district Object
     */
     public District(JSONObject definition) {
-        update(definition, new String[] {"id", "auxiliaryId", "districtLeaderId",
-                                "districtLeaderIndividualId", "name", "companionships"});
+        update(definition, "id", "auxiliaryId", "districtLeaderId", "districtLeaderIndividualId", "name", "companionships");
     }
 
     /** Extract a specific key from a district JSON Object.
@@ -48,7 +47,7 @@ public class District extends AbstractBean {
     @Override
     protected void setFromJSON(JSONObject definition, String key) {
 
-        if (key.equals("companionships")) {
+        if ("companionships".equals(key)) {
             addCompanionships(Companionship.fromArray((JSONArray) definition.get(key)));
         } else {
             super.setFromJSON(definition, key);

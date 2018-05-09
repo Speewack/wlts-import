@@ -35,8 +35,7 @@ public class Assignment extends AbstractBean {
         @param definition A JSON assignment Object
     */
     public Assignment(JSONObject definition) {
-        update(definition, new String[] {"id", "companionshipId", "individualId",
-                                            "assignmentType", "visits"});
+        update(definition, "id", "companionshipId", "individualId", "assignmentType", "visits");
     }
 
     /** Extract a specific key from an assignment JSON Object.
@@ -48,7 +47,7 @@ public class Assignment extends AbstractBean {
     @Override
     protected void setFromJSON(JSONObject definition, String key) {
 
-        if (key.equals("visits")) {
+        if ("visits".equals(key)) {
             addVisits(Visit.fromArray((JSONArray) definition.get(key)));
         } else {
             super.setFromJSON(definition, key);

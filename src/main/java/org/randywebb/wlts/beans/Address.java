@@ -34,9 +34,7 @@ public class Address extends AbstractBean {
         @param definition A JSON address Object
     */
     public Address(JSONObject definition) {
-        update(definition, new String[] {
-                "latitude", "longitude", "postalCode", "state",
-                     "desc1", "desc2", "desc3", "includeLatLong"});
+        update(definition, "latitude", "longitude", "postalCode", "state", "desc1", "desc2", "desc3", "includeLatLong");
 
         if (!containsKey("streetAddress") || (null != get("desc1")) && (null != get("desc2"))) {
             setStreetAddress(get("desc1") + ", " + get("desc2"));

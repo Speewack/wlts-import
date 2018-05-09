@@ -38,6 +38,7 @@ public class JSONResponseHandler<JSONType> implements ResponseHandler<JSONType> 
     public JSONType handleResponse(HttpResponse response)
                                             throws ClientProtocolException, IOException {
         JSONParser parser = new JSONParser();
+
         JSONType jsonObj = null;
 
         if (log.isTraceEnabled()) {
@@ -52,7 +53,10 @@ public class JSONResponseHandler<JSONType> implements ResponseHandler<JSONType> 
         try {
             Object obj = parser.parse(new InputStreamReader(response.getEntity().getContent()));
 
-            jsonObj = (JSONType) obj;
+            @SuppressWarnings("unchecked")
+            JSONType asJSON = (JSONType) obj;
+
+            jsonObj = asJSON;
 
         } catch (UnsupportedOperationException | ParseException e) {
             log.error("Unable to parse JSON response", e);

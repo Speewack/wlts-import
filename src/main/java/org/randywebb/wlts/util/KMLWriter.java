@@ -205,7 +205,7 @@ public final class KMLWriter {
         /** Should we tessellate (or follow the contour of the terrain)?. */
         private boolean tessellate;
         /** List of coordinate strings in "long, lat, alt" format. */
-        private ArrayList<String> coordinates;
+        private java.util.List<String> coordinates;
     }
 
     /** A point or icon on the map. */

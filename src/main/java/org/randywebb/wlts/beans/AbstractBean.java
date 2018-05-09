@@ -76,16 +76,24 @@ public abstract class AbstractBean extends HashMap<String, String> {
                     try {
                         toFill.add(constructor.newInstance(new Object[] {(JSONObject) o}));
                     } catch (InvocationTargetException e) {
-                        log.error("Cannot invoke " + clazz.getName() + "(JSONObject)");
+                        if (log.isErrorEnabled()) {
+                            log.error("Cannot invoke " + clazz.getName() + "(JSONObject)", e);
+                        }
                     } catch (IllegalAccessException e) {
-                        log.error("No permissions to create " + clazz.getName() + "(JSONObject)");
+                        if (log.isErrorEnabled()) {
+                            log.error("No permissions to create " + clazz.getName() + "(JSONObject)", e);
+                        }
                     } catch (InstantiationException e) {
-                        log.error("Unable to create " + clazz.getName() + "(JSONObject)");
+                        if (log.isErrorEnabled()) {
+                            log.error("Unable to create " + clazz.getName() + "(JSONObject)", e);
+                        }
                     }
                 }
 
             } catch (NoSuchMethodException e) {
-                log.error("No constructor " + clazz.getName() + "(JSONObject)");
+                if (log.isErrorEnabled()) {
+                    log.error("No constructor " + clazz.getName() + "(JSONObject)");
+                }
             }
         }
 
@@ -100,7 +108,7 @@ public abstract class AbstractBean extends HashMap<String, String> {
         @param expectedKeys The keys to pull from the JSON
         @return Returns this for call chaining
     */
-    public AbstractBean update(JSONObject definition, String[] expectedKeys) {
+    public AbstractBean update(JSONObject definition, String... expectedKeys) {
 
         for (String key : expectedKeys) {
             setFromJSON(definition, key);
@@ -304,9 +312,13 @@ public abstract class AbstractBean extends HashMap<String, String> {
         try {
             return (null == value) ? null : dateFormat.parse(value);
         } catch (ParseException e) {
-            log.error("Error parsing Date (" + value + "): ", e);
+            if (log.isErrorEnabled()) {
+                log.error("Error parsing Date (" + value + "): ", e);
+            }
         } catch (NullPointerException e) {
-            log.error("Null found when parsing Date (" + value + "): ", e);
+            if (log.isErrorEnabled()) {
+                log.error("Null found when parsing Date (" + value + "): ", e);
+            }
         }
 
         return null;
