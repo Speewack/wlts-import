@@ -159,14 +159,14 @@
       <version>1.7.21</version>
     </dependency>
 
-    <!-- Pull in current version of apache http client (updated dependency
+    <!-- Pull in current version of apache http client (updated dependency 
       for Google API Client) -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.2</version>
       <exclusions>
-        <!-- Eclude commons-logging as we are using jcl-over-slf4j to provide
+        <!-- Eclude commons-logging as we are using jcl-over-slf4j to provide 
           the commons-logging implementation -->
         <exclusion>
           <groupId>commons-logging</groupId>
