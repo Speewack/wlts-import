@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
 /** Represents a Companionship from a District. */
 public class Companionship extends AbstractBean {
 
-    /** In case we need to log anything, especially during debugging. */
+    // In case we need to log anything, especially during debugging.
     //private static Logger log = LoggerFactory.getLogger(Companionship.class);
 
     /** List of Ministers in the companionship. */

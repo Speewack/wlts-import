@@ -30,7 +30,7 @@ public final class MinisteringKML {
     private MinisteringKML() {
     }
 
-    /** Can be used for logging debugging messages */
+    // Can be used for logging debugging messages
     //private static Logger log = LoggerFactory.getLogger(MinisteringKML.class);
 
     /** For an assignment, generates a historical view of the visits like:

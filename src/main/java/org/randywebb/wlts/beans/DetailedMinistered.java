@@ -14,7 +14,7 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 /** Detailed information for ministered csv report. */
 public class DetailedMinistered extends AbstractBean {
 
-    /** To use for debugging */
+    // To use for debugging
     //private static Logger log = LoggerFactory.getLogger(DetailedMinistered.class);
 
     /** Helper method to copy a field name from one object to another.

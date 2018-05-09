@@ -17,7 +17,7 @@ public final class KMLWriter {
     private KMLWriter() {
     }
 
-    /** Can be used for logging debugging messages. */
+    // Can be used for logging debugging messages.
     //private static Logger log = LoggerFactory.getLogger(KMLWriter.class);
 
     /** Any element that needs to be written to the file. */

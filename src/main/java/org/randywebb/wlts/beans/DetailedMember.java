@@ -20,8 +20,9 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 */
 public class DetailedMember extends AbstractBean {
 
-    /** For logging if needed during debugging. */
+    // For logging if needed during debugging.
     //private static Logger log = LoggerFactory.getLogger(DetailedMember.class);
+
     /** The date format for the report. */
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
     /** Names of the fields that are boolean values in the report. */

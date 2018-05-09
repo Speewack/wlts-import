@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
 /** Represents a ministering assignment. */
 public class Assignment extends AbstractBean {
 
-    /** In case we want to log something */
+    // In case we want to log something
     //private static Logger log = LoggerFactory.getLogger(Assignment.class);
 
     /** List of visits to the assigned member(s). */

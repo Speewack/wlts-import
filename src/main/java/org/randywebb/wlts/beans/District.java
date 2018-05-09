@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
 /** Represents a ministering district. */
 public class District extends AbstractBean {
 
-    /** To be used for debugging */
+    // To be used for debugging
     //private static Logger log = LoggerFactory.getLogger(District.class);
 
     /** Companionships in the district. */

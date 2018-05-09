@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 /** Represents a minister (previously home or visiting teacher). */
 public class Teacher extends AbstractBean {
 
-    /** Can be used for logging debugging messages */
+    // Can be used for logging debugging messages
     //private static Logger log = LoggerFactory.getLogger(Teacher.class);
 
     /** Converts a JSON Array of ministers to a List of Teacher.

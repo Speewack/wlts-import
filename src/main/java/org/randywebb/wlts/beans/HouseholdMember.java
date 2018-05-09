@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 /** Represents a member of a household. */
 public class HouseholdMember extends AbstractBean {
 
-    /** Can be used for logging debugging messages */
+    // Can be used for logging debugging messages
     //private static Logger log = LoggerFactory.getLogger(HouseholdMember.class);
 
     /** Converts a JSON Array of household members to a List of HouseholdMember.

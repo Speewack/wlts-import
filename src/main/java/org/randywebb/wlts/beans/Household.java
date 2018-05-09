@@ -18,7 +18,7 @@ import org.json.simple.JSONObject;
  */
 public class Household extends AbstractBean {
 
-    /** Can be used for logging debugging messages. */
+    // Can be used for logging debugging messages.
     //private static Logger log = LoggerFactory.getLogger(Household.class);
 
     /** estimated miles per degree of latitude for Pflugerville, TX. */
