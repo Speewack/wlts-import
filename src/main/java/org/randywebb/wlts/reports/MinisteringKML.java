@@ -49,9 +49,7 @@ public final class MinisteringKML {
             message += "/" + visits.get(visits.size() - 1).getYear() + "\n";
 
             for (Visit visit : visits) {
-                message += null == visit.getVisited()
-                            ? "?"
-                            : visit.getVisited().substring(0, 1).equalsIgnoreCase("t") ? "V" : ".";
+                message += null == visit.getVisited() ? "?" : visit.getVisited().substring(0, 1).equalsIgnoreCase("t") ? "V" : ".";
             }
 
         }
@@ -309,9 +307,7 @@ public final class MinisteringKML {
                                     "unit-members-and-callings-v2", client.getUnitNumber());
         JSONArray households = (JSONArray) ward.get("households");
         List<Household> householdList = Household.fromArray(households);
-        Map<String, Household> idToHousehold = client.leaderReportsAvailable()
-                                            ? Household.mapIndividualIdsToHousehold(householdList)
-                                            : null;
+        Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(householdList) : null;
 
         String[] colors = {"7fff0000", "7f0000ff", "7fffff00",
                             "7f00ffff", "7fff00ff", "7f7f7f7f",

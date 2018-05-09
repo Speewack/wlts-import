@@ -60,23 +60,15 @@ public class DetailedMinistered extends AbstractBean {
         Map<String, Household> idToHousehold = Household.mapIndividualIdsToHousehold(households);
 
         for (District district : districts) {
-            Household districtHousehold = null == district.getDistrictLeaderIndividualId()
-                        ? null
-                        : idToHousehold.get(district.getDistrictLeaderIndividualId());
-            HouseholdMember districtLeader = null == districtHousehold
-                        ? null
-                        : districtHousehold.getMember(district.getDistrictLeaderIndividualId());
+            Household districtHousehold = null == district.getDistrictLeaderIndividualId() ? null : idToHousehold.get(district.getDistrictLeaderIndividualId());
+            HouseholdMember districtLeader = null == districtHousehold ? null : districtHousehold.getMember(district.getDistrictLeaderIndividualId());
 
             for (Companionship companionship : district.getCompanionships()) {
                 String companionshipName = "";
 
                 for (Teacher teacher : companionship.getTeachers()) {
-                    Household teacherHousehold = null == teacher.getIndividualId()
-                                        ? null
-                                        : idToHousehold.get(teacher.getIndividualId());
-                    HouseholdMember teacherMember = null == teacherHousehold
-                                        ? null
-                                        : teacherHousehold.getMember(teacher.getIndividualId());
+                    Household teacherHousehold = null == teacher.getIndividualId() ? null : idToHousehold.get(teacher.getIndividualId());
+                    HouseholdMember teacherMember = null == teacherHousehold ? null : teacherHousehold.getMember(teacher.getIndividualId());
 
                     companionshipName += companionshipName.length() == 0 ? "" : " & ";
                     companionshipName += teacherMember.getPreferredName();

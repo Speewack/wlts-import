@@ -371,10 +371,7 @@ public final class KMLWriter {
             @throws IOException on io error
         */
         public void write(String prefix, FileWriter output) throws IOException {
-            output.append(prefix + "<" + tag + null == attributes
-                                                    ? ""
-                                                    : (" " + attributes)
-                                + ">\n");
+            output.append(prefix + "<" + tag + null == attributes ? "" : (" " + attributes) + ">\n");
 
             for (Item item : this) {
                 item.write(prefix + "\t", output);

@@ -145,32 +145,19 @@ public class Household extends AbstractBean {
                     otherwise the actual address
     */
     public Address relocate(JSONObject relocation) {
-        JSONObject relocatable = (null == relocation)
-                                    ? null
-                                    : (JSONObject) relocation.get(getCoupleName());
+        JSONObject relocatable = (null == relocation) ? null : (JSONObject) relocation.get(getCoupleName());
         Address previous = getHouseholdAddress();
 
         if (null != relocatable) {
             Address address = new Address();
 
-            address.setLattitude((null == relocatable.get("latitude"))
-                                    ? previous.getLattitude()
-                                    : relocatable.get("latitude").toString());
-            address.setLongitude((null == relocatable.get("longitude"))
-                                    ? previous.getLongitude()
-                                    : relocatable.get("longitude").toString());
-            address.setPostalCode((null == relocatable.get("postalCode"))
-                                    ? previous.getPostalCode()
-                                    : relocatable.get("postalCode").toString());
-            address.setState((null == relocatable.get("state"))
-                                    ? previous.getState()
-                                    : relocatable.get("state").toString());
+            address.setLattitude((null == relocatable.get("latitude")) ? previous.getLattitude() : relocatable.get("latitude").toString());
+            address.setLongitude((null == relocatable.get("longitude")) ? previous.getLongitude() : relocatable.get("longitude").toString());
+            address.setPostalCode((null == relocatable.get("postalCode")) ? previous.getPostalCode() : relocatable.get("postalCode").toString());
+            address.setState((null == relocatable.get("state")) ? previous.getState() : relocatable.get("state").toString());
             if (null == relocatable.get("address")) {
-                address.setStreetAddress(null == relocatable.get("desc1")
-                                        || null == relocatable.get("desc2")
-                                        ? previous.getLattitude()
-                                        : relocatable.get("desc1").toString() + ", "
-                                            + relocatable.get("desc2").toString());
+                address.setStreetAddress((null == relocatable.get("desc1")) || (null == relocatable.get("desc2"))
+                                            ? previous.getLattitude() : relocatable.get("desc1").toString() + ", " + relocatable.get("desc2").toString());
             } else {
                 address.setStreetAddress(relocatable.get("address").toString());
             }
@@ -194,13 +181,9 @@ public class Household extends AbstractBean {
     protected void setFromJSON(JSONObject definition, String key) {
 
         if ("headOfHouse".equals(key)) {
-            setHeadOfHousehold((null == definition.get(key))
-                                ? null
-                                : new HouseholdMember((JSONObject) definition.get(key)));
+            setHeadOfHousehold((null == definition.get(key)) ? null : new HouseholdMember((JSONObject) definition.get(key)));
         } else if ("spouse".equals(key)) {
-            setSpouse((null == definition.get(key))
-                            ? null
-                            : new HouseholdMember((JSONObject) definition.get(key)));
+            setSpouse((null == definition.get(key)) ? null : new HouseholdMember((JSONObject) definition.get(key)));
         } else if ("children".equals(key)) {
             addChildren(HouseholdMember.fromArray((JSONArray) definition.get(key)));
         } else {

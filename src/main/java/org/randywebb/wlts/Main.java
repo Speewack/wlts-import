@@ -83,9 +83,7 @@ public final class Main {
                                         "--relocate", "--wlts", "--ministered"};
         String[] onOff = {"--help"};
         String[] arguments = parseArgs(args, onOff, outputFileTypes, switches);
-        JSONObject relocations = switches.containsKey("--relocate")
-                                    ? loadJSONFile(switches.get("--relocate"))
-                                    : null;
+        JSONObject relocations = switches.containsKey("--relocate") ? loadJSONFile(switches.get("--relocate")) : null;
 
         if (switches.containsKey("--help")) {
             printUsage();
