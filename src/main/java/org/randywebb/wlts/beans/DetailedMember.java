@@ -70,7 +70,7 @@ public class DetailedMember extends AbstractBean {
     */
     public DetailedMember(JSONObject definition) {
         super(DATE_FORMAT, BOOLEAN_FIELDS, INTEGER_FIELDS, DATE_FIELDS);
-        update(definition, new String[] {
+        update(definition,
             "name", "spokenName", "nameOrder", "birthDate", "birthDateSort", "formattedBirthDate",
             "gender", "genderCode", "mrn", "id", "email", "householdEmail", "phone",
             "householdPhone", "unitNumber", "unitName", "priesthood", "priesthoodCode",
@@ -78,7 +78,7 @@ public class DetailedMember extends AbstractBean {
             "visible", "nonMember", "outOfUnitMember", "street", "city", "state", "zip",
             "givenName", "coupleName", "householdId", "isHead", "isSpouse", "isAdult",
             "fullTimeMissionary", "formattedMRN", "setApart", "formattedBirthDateFull",
-            "sustainedDate" });
+            "sustainedDate");
     }
 
     /**

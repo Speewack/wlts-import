@@ -95,9 +95,11 @@ public final class Main {
         // read input parameters
         if (arguments.length > maximumUnboundArguments) {
             printUsage();
-            log.trace("arguments.length = " + arguments.length);
-            for (String argument : arguments) {
-                log.trace("\t" + argument);
+            if (log.isTraceEnabled()) {
+                log.trace("arguments.length = " + arguments.length);
+                for (String argument : arguments) {
+                    log.trace("\t" + argument);
+                }
             }
             System.exit(1);
         }
@@ -116,9 +118,11 @@ public final class Main {
 
         if (!verb && (arguments.length < 1)) {
             printUsage();
-            log.trace("arguments.length = " + arguments.length);
-            for (String argument : arguments) {
-                log.trace("\t" + argument);
+            if (log.isTraceEnabled()) {
+                log.trace("arguments.length = " + arguments.length);
+                for (String argument : arguments) {
+                    log.trace("\t" + argument);
+                }
             }
             System.exit(1);
         }
@@ -228,22 +232,19 @@ public final class Main {
     private static boolean isUserAdmin(JSONObject userDetail, Long unitNumber)
                                                 throws IOException, ParseException {
         JSONArray units = (JSONArray) userDetail.get("units");
-
-        if (null == unitNumber) {
-            unitNumber = (Long) userDetail.get("homeUnitNbr");
-        }
+        Long unitNumberToUse = (null == unitNumber) ? (Long) userDetail.get("homeUnitNbr") : unitNumber;
 
         for (Object unitObject : units) {
             JSONObject unit = (JSONObject) unitObject;
 
-            if (unitNumber.equals(unit.get("unitNo"))) {
+            if (unitNumberToUse.equals(unit.get("unitNo"))) {
                 return (Boolean) unit.get("hasUnitAdminRights");
             }
 
             for (Object localUnitObject : (JSONArray) unit.get("localUnits")) {
                 JSONObject localUnit = (JSONObject) localUnitObject;
 
-                if (unitNumber.equals(localUnit.get("unitNo"))) {
+                if (unitNumberToUse.equals(localUnit.get("unitNo"))) {
                     return (Boolean) localUnit.get("hasUnitAdminRights");
                 }
 

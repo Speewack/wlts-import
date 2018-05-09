@@ -43,7 +43,7 @@ public final class MinisteringKML {
         List<Visit> visits = assignment.getVisits();
         String message = "";
 
-        if (visits.size() > 0) {
+        if (!visits.isEmpty()) {
             message = visits.get(0).getMonth() + "/" + visits.get(0).getYear() + " - ";
             message += visits.get(visits.size() - 1).getMonth();
             message += "/" + visits.get(visits.size() - 1).getYear() + "\n";
@@ -112,8 +112,10 @@ public final class MinisteringKML {
             int ministryIndex = 0;
 
             for (Companionship companionship : district.getCompanionships()) {
-                String name = "", prefix;
-                double startLon = 0.0, startLat = 0.0;
+                String name = "";
+                String prefix;
+                double startLon = 0.0;
+                double startLat = 0.0;
                 boolean haveStart = false;
                 KMLWriter.Placemark connected = new KMLWriter.Placemark();
                 KMLWriter.Line connection = new KMLWriter.Line();
@@ -374,7 +376,10 @@ public final class MinisteringKML {
         JSONObject ward = client.getEndpointInfo(
                                 "unit-members-and-callings-v2", client.getUnitNumber());
         JSONArray households = (JSONArray) ward.get("households");
-        double minLat = 0.0, maxLat = 0.0, minLon = 0.0, maxLon = 0.0;
+        double minLat = 0.0;
+        double maxLat = 0.0;
+        double minLon = 0.0;
+        double maxLon = 0.0;
         List<Household> householdList = Household.fromArray(households);
         KMLWriter.Folder folder = new KMLWriter.Folder();
 

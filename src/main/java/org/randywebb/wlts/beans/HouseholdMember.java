@@ -31,8 +31,7 @@ public class HouseholdMember extends AbstractBean {
         @param definition A JSON household member Object
     */
     public HouseholdMember(JSONObject definition) {
-        update(definition, new String[] {"fullName", "preferredName", "memberId", "individualId",
-                                            "surname", "givenName", "phone", "email"});
+        update(definition, "fullName", "preferredName", "memberId", "individualId", "surname", "givenName", "phone", "email");
     }
 
     /**

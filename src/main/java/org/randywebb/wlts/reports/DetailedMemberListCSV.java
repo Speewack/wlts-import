@@ -121,13 +121,17 @@ public final class DetailedMemberListCSV {
             }
 
         } catch (IOException ex) {
-            log.error("Error writing the CSV file: " + ex);
+            if (log.isErrorEnabled()) {
+                log.error("Error writing the CSV file: " + ex);
+            }
         } finally {
             if (beanWriter != null) {
                 try {
                     beanWriter.close();
                 } catch (IOException ex) {
-                    log.error("Error closing the writer: " + ex);
+                    if (log.isErrorEnabled()) {
+                        log.error("Error closing the writer: " + ex);
+                    }
                 }
             }
         }

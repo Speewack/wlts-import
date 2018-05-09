@@ -67,9 +67,7 @@ public class Household extends AbstractBean {
         @param definition A JSON household Object
     */
     public Household(JSONObject definition) {
-        update(definition, new String[] {"householdName", "headOfHouse", "spouse",
-                                        "children", "phone", "emailAddress", "coupleName",
-                                        "headOfHouseholdIndividualID"});
+        update(definition, "householdName", "headOfHouse", "spouse", "children", "phone", "emailAddress", "coupleName", "headOfHouseholdIndividualID");
         householdAddress = new Address(definition);
     }
 
@@ -195,15 +193,15 @@ public class Household extends AbstractBean {
     @Override
     protected void setFromJSON(JSONObject definition, String key) {
 
-        if (key.equals("headOfHouse")) {
+        if ("headOfHouse".equals(key)) {
             setHeadOfHousehold((null == definition.get(key))
                                 ? null
                                 : new HouseholdMember((JSONObject) definition.get(key)));
-        } else if (key.equals("spouse")) {
+        } else if ("spouse".equals(key)) {
             setSpouse((null == definition.get(key))
                             ? null
                             : new HouseholdMember((JSONObject) definition.get(key)));
-        } else if (key.equals("children")) {
+        } else if ("children".equals(key)) {
             addChildren(HouseholdMember.fromArray((JSONArray) definition.get(key)));
         } else {
             super.setFromJSON(definition, key);

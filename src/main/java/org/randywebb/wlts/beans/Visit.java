@@ -31,7 +31,7 @@ public class Visit extends AbstractBean {
         @param definition A JSON visit Object
     */
     public Visit(JSONObject definition) {
-        update(definition, new String[] {"id", "assignmentId", "visited", "year", "month"});
+        update(definition, "id", "assignmentId", "visited", "year", "month");
     }
 
     /**
