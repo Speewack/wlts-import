@@ -101,7 +101,7 @@ public final class DetailedMinisteredCSV {
 
         } catch (IOException ex) {
             if (log.isErrorEnabled()) {
-                log.error("Error writing the CSV file: " + ex);
+                log.error("Error writing the CSV file", ex);
             }
         } finally {
 
@@ -110,7 +110,7 @@ public final class DetailedMinisteredCSV {
                     beanWriter.close();
                 } catch (IOException ex) {
                     if (log.isErrorEnabled()) {
-                        log.error("Error closing the writer: " + ex);
+                        log.error("Error closing the writer", ex);
                     }
                 }
             }

@@ -76,22 +76,6 @@ public final class DetailedMemberListCSV {
         return DetailedMember.fromArray((JSONArray) obj);
     }
 
-    /** Parse a list of households from a JSON array stream.
-        @param in The household info stream
-        @return The list of households from the stream
-        @throws IOException on io error
-        @throws ParseException When the JSON is not formatted as expected
-    * /
-    private static List<Household> processHouseholds(InputStream in)
-                                            throws IOException, ParseException {
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new InputStreamReader(in));
-        JSONObject jo = (JSONObject) obj;
-
-        return Household.fromArray( (JSONArray) jo.get("households") );
-    }
-    */
-
     /** Write a list of members as a CSV file.
         @param csvFileName The path to write the CSV file to
         @param members The list of members to write to the CSV file
@@ -122,7 +106,7 @@ public final class DetailedMemberListCSV {
 
         } catch (IOException ex) {
             if (log.isErrorEnabled()) {
-                log.error("Error writing the CSV file: " + ex);
+                log.error("Error writing the CSV file", ex);
             }
         } finally {
             if (beanWriter != null) {
@@ -130,7 +114,7 @@ public final class DetailedMemberListCSV {
                     beanWriter.close();
                 } catch (IOException ex) {
                     if (log.isErrorEnabled()) {
-                        log.error("Error closing the writer: " + ex);
+                        log.error("Error closing the writer", ex);
                     }
                 }
             }

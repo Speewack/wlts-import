@@ -92,7 +92,7 @@ public abstract class AbstractBean extends HashMap<String, String> {
 
             } catch (NoSuchMethodException e) {
                 if (log.isErrorEnabled()) {
-                    log.error("No constructor " + clazz.getName() + "(JSONObject)");
+                    log.error("No constructor " + clazz.getName() + "(JSONObject)", e);
                 }
             }
         }
