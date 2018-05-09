@@ -96,25 +96,6 @@ public class LdsToolsClient {
         }
     }
 
-    /**
-     * Signs out of the lds.org Session
-     * /
-    private void signOut() {
-        log.trace("Signing out of LDS Tools API");
-        HttpGet httpGet = new HttpGet(apiCatalog.getProperty("signout-url"));
-        try {
-            StatusLine status = getHttpClient().execute(httpGet, new NoOpResponseHandler());
-            if (log.isTraceEnabled()) {
-                log.trace("Sign-out Status: " + status.toString());
-            }
-
-        } catch (IOException e) {
-            log.error("Error signing out of LDS Tools API", e);
-        }
-
-    }
-    */
-
     /** Are leader reports enabled.
         Checks the API catalog to determine if they are available
         @return If leader reports are enabled.
