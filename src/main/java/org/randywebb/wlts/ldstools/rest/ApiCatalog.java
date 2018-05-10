@@ -25,71 +25,71 @@ import org.slf4j.LoggerFactory;
  * @author randyw
  *
  */
-public class ApiCatalog extends Properties {
+public final class ApiCatalog extends Properties {
 
-	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(ApiCatalog.class);
+    /** Can be used for logging debugging messages. */
+    private static Logger log = LoggerFactory.getLogger(ApiCatalog.class);
 
-	/** Singleton for the API Catalog */
-	private static ApiCatalog _instance = null;
+    /** Singleton for the API Catalog. */
+    private static ApiCatalog instance = null;
 
-	/** Construct the only instance of the ApiCatalog. */
-	private ApiCatalog() {
-		HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("lds-tools-config"));
-		CloseableHttpResponse apiCatalogResponse;
-		try {
-			CloseableHttpClient httpclient = LdsToolsClient.getHttpClient();
-			apiCatalogResponse = httpclient.execute(httpGet);
+    /** Construct the only instance of the ApiCatalog. */
+    private ApiCatalog() {
+        HttpGet httpGet = new HttpGet(AppConfig.getInstance().getProperty("lds-tools-config"));
+        CloseableHttpResponse apiCatalogResponse;
+        try {
+            CloseableHttpClient httpclient = LdsToolsClient.getHttpClient();
+            apiCatalogResponse = httpclient.execute(httpGet);
 
-			try {
-				HttpEntity catalogEntity = apiCatalogResponse.getEntity();
-				// do something useful with the response body
-				// and ensure it is fully consumed
+            try {
+                HttpEntity catalogEntity = apiCatalogResponse.getEntity();
+                // do something useful with the response body
+                // and ensure it is fully consumed
 
-				convertCatalog(catalogEntity.getContent());
+                convertCatalog(catalogEntity.getContent());
 
-				EntityUtils.consume(catalogEntity);
-			} finally {
-				apiCatalogResponse.close();
-			}
-		} catch (IOException e) {
-			log.error("Unable to retrieve API Catalog", e);
-		}
-	}
+                EntityUtils.consume(catalogEntity);
+            } finally {
+                apiCatalogResponse.close();
+            }
+        } catch (IOException e) {
+            log.error("Unable to retrieve API Catalog", e);
+        }
+    }
 
-	/**
-	 * Retrieve an instance of the LDS Tools API Catalog
-	 *
-	 * @return ApiCatalog
-	 */
-	public static ApiCatalog getInstance() {
-		if (_instance == null) {
-			_instance = new ApiCatalog();
-		}
-		return _instance;
-	}
+    /**
+     * Retrieve an instance of the LDS Tools API Catalog.
+     *
+     * @return ApiCatalog
+     */
+    public static ApiCatalog getInstance() {
+        if (instance == null) {
+            instance = new ApiCatalog();
+        }
+        return instance;
+    }
 
-	/**
-	 * Convert the JSON API catalog from lds tools to a Properties object
-	 *
-	 * @param in
-	 *            InputStream containing the JSON catalog from LDS-Tools API
-	 */
-	private void convertCatalog(InputStream in) {
+    /**
+     * Convert the JSON API catalog from lds tools to a Properties object.
+     *
+     * @param in
+     *            InputStream containing the JSON catalog from LDS-Tools API
+     */
+    private void convertCatalog(InputStream in) {
 
-		try {
-			Object obj = new JSONParser().parse(new InputStreamReader(in));
-			JSONObject jsonObject = (JSONObject) obj;
+        try {
+            Object obj = new JSONParser().parse(new InputStreamReader(in));
+            JSONObject jsonObject = (JSONObject) obj;
 
-			Set<?> keySet = jsonObject.keySet();
+            Set<?> keySet = jsonObject.keySet();
 
-			for (Object key : keySet) {
-				setProperty(key.toString(), jsonObject.get(key).toString());
-			}
+            for (Object key : keySet) {
+                setProperty(key.toString(), jsonObject.get(key).toString());
+            }
 
-		} catch (IOException | ParseException e) {
-			log.error("Unable to parse JSON Catalog", e);
-		}
-	}
+        } catch (IOException | ParseException e) {
+            log.error("Unable to parse JSON Catalog", e);
+        }
+    }
 
 }

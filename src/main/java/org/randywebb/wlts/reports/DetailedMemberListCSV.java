@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.randywebb.wlts.beans.DetailedMember;
-import org.randywebb.wlts.beans.Household;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 
 import org.slf4j.Logger;
@@ -22,95 +21,96 @@ import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/** Utility methods to export the detailed member list as CSV */
-public class DetailedMemberListCSV {
+/** Utility methods to export the detailed member list as CSV. */
+public final class DetailedMemberListCSV {
 
-	/** Can be used for logging debugging messages */
-	private static Logger log = LoggerFactory.getLogger(DetailedMemberListCSV.class);
+    /** default constructor. */
+    private DetailedMemberListCSV() {
+    }
 
-	/**
-		@param client LDS Tools client to use
-		@param filePath The path to the CSV file to generate
-		@throws IOException on network errors
-		@throws ParseException If the JSON was not the format that was expected
-	*/
-	public static void generateWLTSReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
-		// Parse JSON Membership file into beans
+    /** Can be used for logging debugging messages. */
+    private static Logger log = LoggerFactory.getLogger(DetailedMemberListCSV.class);
 
-		InputStream in = client.getMemberInfo();
+    /**
+        @param client LDS Tools client to use
+        @param filePath The path to the CSV file to generate
+        @throws IOException on network errors
+        @throws ParseException If the JSON was not the format that was expected
+    */
+    public static void generateWLTSReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
+        // Parse JSON Membership file into beans
 
-		List<DetailedMember> members = processDetailMembers(in);
+        InputStream in = client.getMemberInfo();
 
-		// List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
-		// List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
+        List<DetailedMember> members = processDetailMembers(in);
 
-		writeCSVFile(filePath, members);
+        // List<DetailedMember> members = processDetailMembers(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedmembership.json"));
+        // List<Household> households = processHouseholds(Thread.currentThread().getContextClassLoader().getResourceAsStream("membership.json"));
 
-		System.out.println("Export complete");
-	}
+        writeCSVFile(filePath, members);
 
-	/** Parse a list of members from a JSON array stream.
-		@param in The member info stream
-		@return The list of members from the stream
-		@throws IOException on io error
-		@throws ParseException When the JSON is not formatted as expected
-	*/
-	private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(new InputStreamReader(in));
+        System.out.println("Export complete");
+    }
 
-		return DetailedMember.fromArray( (JSONArray) obj );
-	}
+    /** Parse a list of members from a JSON array stream.
+        @param in The member info stream
+        @return The list of members from the stream
+        @throws IOException on io error
+        @throws ParseException When the JSON is not formatted as expected
+    */
+    private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new InputStreamReader(in));
 
-	/** Parse a list of households from a JSON array stream.
-		@param in The household info stream
-		@return The list of households from the stream
-		@throws IOException on io error
-		@throws ParseException When the JSON is not formatted as expected
-	*/
-	private static List<Household> processHouseholds(InputStream in) throws IOException, ParseException {
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(new InputStreamReader(in));
-		JSONObject jo = (JSONObject) obj;
+        return DetailedMember.fromArray((JSONArray) obj);
+    }
 
-		return Household.fromArray( (JSONArray) jo.get("households") );
-	}
+    /** Write a list of members as a CSV file.
+        @param csvFileName The path to write the CSV file to
+        @param members The list of members to write to the CSV file
+    */
+    public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
+        ICsvMapWriter beanWriter = null;
+        String[] header = {"id", "mrn", "formattedMRN", "name", "givenName", "spokenName",
+                            "street", "city", "state", "zip", "age", "birthDate", "email",
+                            "phone", "gender", "genderCode", "coupleName", "householdEmail",
+                            "householdId", "householdPhone", "isAdult", "isHead", "isSpouse",
+                            "nonMember", "outOfUnitMember", "priesthood", "unitNumber",
+                            "unitName"};
+        CellProcessor[] processors = DetailedMember.csvProcessors(header,
+                                                    new ConvertNullTo(""),
+                                                    new FmtBool("true", "false"),
+                                                    new ConvertNullTo(""),
+                                                    new FmtDate("dd MMM yyyy"));
 
-	/** Write a list of members as a CSV file.
-		@param csvFileName The path to write the CSV file to
-		@param members The list of members to write to the CSV file
-	*/
-	public static void writeCSVFile(String csvFileName, List<DetailedMember> members) {
-		ICsvMapWriter beanWriter = null;
-		String[] header = { "id", "mrn", "formattedMRN", "name", "givenName", "spokenName", "street", "city", "state", "zip", "age", "birthDate", "email", "phone", "gender", "genderCode", "coupleName",
-		"householdEmail", "householdId", "householdPhone", "isAdult", "isHead", "isSpouse", "nonMember", "outOfUnitMember", "priesthood", "unitNumber", "unitName" };
-		CellProcessor[] processors = DetailedMember.csvProcessors(header, new ConvertNullTo(""), new FmtBool("true", "false"), new ConvertNullTo(""), new FmtDate("dd MMM yyyy"));
+        try {
+            beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
 
-		try {
-			beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
+            beanWriter.writeHeader(header);
 
-			beanWriter.writeHeader(header);
+            for (DetailedMember member : members) {
+                beanWriter.write(member.forCSV(), header, processors);
+            }
 
-			for (DetailedMember member : members) {
-				beanWriter.write(member.forCSV(), header, processors);
-			}
+        } catch (IOException ex) {
+            if (log.isErrorEnabled()) {
+                log.error("Error writing the CSV file", ex);
+            }
+        } finally {
+            if (beanWriter != null) {
+                try {
+                    beanWriter.close();
+                } catch (IOException ex) {
+                    if (log.isErrorEnabled()) {
+                        log.error("Error closing the writer", ex);
+                    }
+                }
+            }
+        }
 
-		} catch (IOException ex) {
-			log.error("Error writing the CSV file: " + ex);
-		} finally {
-			if (beanWriter != null) {
-				try {
-					beanWriter.close();
-				} catch (IOException ex) {
-					log.error("Error closing the writer: " + ex);
-				}
-			}
-		}
-
-	}
+    }
 
 }
