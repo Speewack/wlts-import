@@ -12,7 +12,7 @@ If you have Homebrew (https://brew.sh) you can install Maven via:
 ## Set your toolchain
 
 Create or edit ~/.m2/toolchains.xml
-
+```xml
 <?xml version="1.0" encoding="UTF8"?>
 <toolchains>
   <!-- JDK toolchains -->
@@ -23,10 +23,11 @@ Create or edit ~/.m2/toolchains.xml
       <vendor>sun</vendor>
     </provides>
     <configuration>
-      <jdkHome>/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home</jdkHome>
+      <jdkHome>/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home</jdkHome>
     </configuration>
   </toolchain>
 </toolchains>
+```
 
 To find the value for <jdkHome> you can run on the command line: echo $(/usr/libexec/java_home)
 
@@ -43,11 +44,13 @@ The documentation is at: `target/site/apidocs/index.html`
 If you have admin access on LDS Tools:
 
 `java -jar target/lds-tools-export-1.1-jar-with-dependencies.jar output.csv`
+
 `java -jar target/lds-tools-export-1.1-jar-with-dependencies.jar --wlts output.csv`
 
 The following require leader access:
 
 `java -jar target/lds-tools-export-1.1-jar-with-dependencies.jar --routes map.kml`
+
 `java -jar target/lds-tools-export-1.1-jar-with-dependencies.jar --ministers map.kml`
 
 The following do not require special access:
@@ -62,7 +65,7 @@ For `--routes`, `--ministers` and `--map` you can override location of household
 	(which may not have latitude/longitude, or may have incorrect location) by passing `--relocate`
 	and then the path to a JSON file of the format:
 
-`
+```JSON
 {
 	"coupleName" : {
 		"address" : "100 North Street",
@@ -77,7 +80,7 @@ For `--routes`, `--ministers` and `--map` you can override location of household
 		"longitude" : -95.0000
 	}
 }
-`
+```
 
 You only need to provide the information that is incorrect. Everything else will be gotten from the original source.
 
