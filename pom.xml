@@ -8,8 +8,6 @@
   <name>WLTS Membership Data</name>
   <description>Export membership data from lds.org using LDS Tools API and convert it for import to WLTS</description>
 
-  <!-- Note. For some reason, the assembly plugin is not binding to the package
-    goal. To build the distributable jar, use mvn clean package assembly:single -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Configure JDK version for various Maven Plugins -->
@@ -159,14 +157,14 @@
       <version>1.7.21</version>
     </dependency>
 
-    <!-- Pull in current version of apache http client (updated dependency 
+    <!-- Pull in current version of apache http client (updated dependency
       for Google API Client) -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.2</version>
       <exclusions>
-        <!-- Eclude commons-logging as we are using jcl-over-slf4j to provide 
+        <!-- Eclude commons-logging as we are using jcl-over-slf4j to provide
           the commons-logging implementation -->
         <exclusion>
           <groupId>commons-logging</groupId>
