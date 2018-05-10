@@ -79,8 +79,7 @@ public final class Main {
     public static void main(String... args) throws Exception {
         final int maximumUnboundArguments = 3;
         Map<String, String> switches = new HashMap<String, String>();
-        String[] outputFileTypes = {"--map", "--routes", "--ministers",
-                                        "--relocate", "--wlts", "--ministered"};
+        String[] outputFileTypes = {"--map", "--routes", "--ministers", "--relocate", "--wlts", "--ministered"};
         String[] onOff = {"--help"};
         String[] arguments = parseArgs(args, onOff, outputFileTypes, switches);
         JSONObject relocations = switches.containsKey("--relocate") ? loadJSONFile(switches.get("--relocate")) : null;
@@ -183,18 +182,15 @@ public final class Main {
         }
 
         if (ministers) {
-            MinisteringKML.generateMinistersReport(client, relocations, false,
-                                                        switches.get("--ministers"));
+            MinisteringKML.generateMinistersReport(client, relocations, false, switches.get("--ministers"));
         }
 
         if (routes) {
-            MinisteringKML.generateMinistersReport(client, relocations, true,
-                                                        switches.get("--routes"));
+            MinisteringKML.generateMinistersReport(client, relocations, true, switches.get("--routes"));
         }
 
         if (ministered) {
-            DetailedMinisteredCSV.generateMiniseteredReport(client,
-                                            switches.get("--ministered"), relocations);
+            DetailedMinisteredCSV.generateMiniseteredReport(client, switches.get("--ministered"), relocations);
         }
 
     }
@@ -227,8 +223,7 @@ public final class Main {
     * @throws IOException on io errors
     * @throws ParseException on JSON errors
     */
-    private static boolean isUserAdmin(JSONObject userDetail, Long unitNumber)
-                                                throws IOException, ParseException {
+    private static boolean isUserAdmin(JSONObject userDetail, Long unitNumber) throws IOException, ParseException {
         JSONArray units = (JSONArray) userDetail.get("units");
         Long unitNumberToUse = (null == unitNumber) ? (Long) userDetail.get("homeUnitNbr") : unitNumber;
 
@@ -260,8 +255,7 @@ public final class Main {
         @param results A map that will receive all the param-values (ie '--map':'path.kml')
         @return The list of command line arguments that were not onOff or hasValue
     */
-    private static String[] parseArgs(String[] args, String[] onOff, String[] hasValue,
-                                            Map<String, String> results) {
+    private static String[] parseArgs(String[] args, String[] onOff, String[] hasValue, Map<String, String> results) {
         String next = null;
         List<String> ordinal = new ArrayList<String>();
         List<String> onOffList = (null == onOff) ? null : Arrays.asList(onOff);

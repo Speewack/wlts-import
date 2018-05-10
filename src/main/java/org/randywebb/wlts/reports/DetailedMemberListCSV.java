@@ -40,8 +40,7 @@ public final class DetailedMemberListCSV {
         @throws IOException on network errors
         @throws ParseException If the JSON was not the format that was expected
     */
-    public static void generateWLTSReport(LdsToolsClient client, String filePath)
-                                                throws IOException, ParseException {
+    public static void generateWLTSReport(LdsToolsClient client, String filePath) throws IOException, ParseException {
         // Parse JSON Membership file into beans
 
         InputStream in = client.getMemberInfo();
@@ -62,8 +61,7 @@ public final class DetailedMemberListCSV {
         @throws IOException on io error
         @throws ParseException When the JSON is not formatted as expected
     */
-    private static List<DetailedMember> processDetailMembers(InputStream in)
-                                                throws IOException, ParseException {
+    private static List<DetailedMember> processDetailMembers(InputStream in) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(new InputStreamReader(in));
 
@@ -89,8 +87,7 @@ public final class DetailedMemberListCSV {
                                                     new FmtDate("dd MMM yyyy"));
 
         try {
-            beanWriter = new CsvMapWriter(new FileWriter(csvFileName),
-                                            CsvPreference.STANDARD_PREFERENCE);
+            beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
 
             beanWriter.writeHeader(header);
 

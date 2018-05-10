@@ -172,8 +172,7 @@ public class LdsToolsClient {
         @return The contents from accessing the url as a JSON object
         @throws IOException on io errors
     */
-    public JSONObject getAppPropertyEndpointInfo(String appPropertyName,
-                                                    String... args) throws IOException {
+    public JSONObject getAppPropertyEndpointInfo(String appPropertyName, String... args) throws IOException {
         String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
         HttpGet httpGet = new HttpGet(String.format(url, args));
 
@@ -186,8 +185,7 @@ public class LdsToolsClient {
         @return The contents from accessing the url as a JSON array
         @throws IOException on io errors
     */
-    public JSONArray getAppPropertyEndpointList(String appPropertyName,
-                                                    String... args) throws IOException {
+    public JSONArray getAppPropertyEndpointList(String appPropertyName, String... args) throws IOException {
         String url = AppConfig.getInstance().getProperty(appPropertyName).replace("%@", "%s");
         HttpGet httpGet = new HttpGet(String.format(url, args));
 

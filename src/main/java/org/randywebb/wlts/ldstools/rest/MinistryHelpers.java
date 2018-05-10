@@ -22,8 +22,7 @@ public final class MinistryHelpers {
         @throws IOException on io error
         @throws ParseException on JSON error
     */
-    public static void getAuxiliaries(LdsToolsClient client, List<String> htIds,
-                                List<String> vtIds) throws IOException, ParseException {
+    public static void getAuxiliaries(LdsToolsClient client, List<String> htIds, List<String> vtIds) throws IOException, ParseException {
         JSONObject members = client.getAppPropertyEndpointInfo("ministering-members-endpoint");
         JSONArray families = (JSONArray) members.get("families");
 

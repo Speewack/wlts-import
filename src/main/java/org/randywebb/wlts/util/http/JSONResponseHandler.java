@@ -16,8 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Handle a JSON response.
-    @param <JSONType> This is the type of JSON entity expected to be returned,
-                            either JSONObject or JSONArray.
+    @param <JSONType> This is the type of JSON entity expected to be returned, either JSONObject or JSONArray.
  * @author randyw
  *
  */
@@ -28,15 +27,12 @@ public class JSONResponseHandler<JSONType> implements ResponseHandler<JSONType> 
 
     /** Converts an HTTP response into a JSON entity.
         @param response The HTTP repsonse
-        @return The JSON entity that was returned.
-                            If there is a problem parsing the JSON, this may be null.
-        @throws ClientProtocolException If it wasn't an HTTP connection,
-                                        or we didn't get 200 OK response from the server.
+        @return The JSON entity that was returned. If there is a problem parsing the JSON, this may be null.
+        @throws ClientProtocolException If it wasn't an HTTP connection, or we didn't get 200 OK response from the server.
         @throws IOException on network error
     */
     @Override
-    public JSONType handleResponse(HttpResponse response)
-                                            throws ClientProtocolException, IOException {
+    public JSONType handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
         JSONParser parser = new JSONParser();
 
         JSONType jsonObj = null;
@@ -46,8 +42,7 @@ public class JSONResponseHandler<JSONType> implements ResponseHandler<JSONType> 
         }
 
         if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-            throw new ClientProtocolException("Unable to retrieve response. Server returned: "
-                                                    + response.getStatusLine().toString());
+            throw new ClientProtocolException("Unable to retrieve response. Server returned: " + response.getStatusLine().toString());
         }
 
         try {

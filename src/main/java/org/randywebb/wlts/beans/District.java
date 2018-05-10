@@ -126,8 +126,7 @@ public class District extends AbstractBean {
     }
 
     /**
-        @param companionshipsToSet Set the companionships.
-                                    Clears out any existing companionships first.
+        @param companionshipsToSet Set the companionships. Clears out any existing companionships first.
     */
     public void setCompanionships(List<Companionship> companionshipsToSet) {
         companionships.clear();

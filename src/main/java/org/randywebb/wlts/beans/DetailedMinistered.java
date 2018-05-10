@@ -54,8 +54,7 @@ public class DetailedMinistered extends AbstractBean {
         @param relocation The data used to redirect the location for specified households
         @return The DetailedMinistered List
     */
-    public static List<DetailedMinistered> fromDistricts(List<District> districts,
-                                    List<Household> households, JSONObject relocation) {
+    public static List<DetailedMinistered> fromDistricts(List<District> districts, List<Household> households, JSONObject relocation) {
         ArrayList<DetailedMinistered> results = new ArrayList<DetailedMinistered>();
         Map<String, Household> idToHousehold = Household.mapIndividualIdsToHousehold(households);
 

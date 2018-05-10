@@ -85,15 +85,12 @@ public final class MinisteringKML {
                     String companionshipName,
                     String ministryPrefix,
                     String ministerName, String ministeredName,
-                    Map<String, Household> map, KMLWriter.List container)
-                                        throws IOException, ParseException {
-        JSONArray districtsJSON = client.getAppPropertyEndpointList(
-                                    "ministering-companionships-endpoint", auxiliaryId);
+                    Map<String, Household> map, KMLWriter.List container) throws IOException, ParseException {
+        JSONArray districtsJSON = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
         List<District> districts = District.fromArray(districtsJSON);
         KMLWriter.Folder folder = new KMLWriter.Folder()
                                     .append(new KMLWriter.Name(auxiliaryName))
-                                    .append(new KMLWriter.Description(
-                                        "Map of ministering companionships for " + auxiliaryName));
+                                    .append(new KMLWriter.Description("Map of ministering companionships for " + auxiliaryName));
         List<String> ministerIndividualIds = new ArrayList<String>();
         Map<String, Assignment> ministeredIndividualIds = new HashMap<String, Assignment>();
 
@@ -104,9 +101,7 @@ public final class MinisteringKML {
         for (District district : districts) {
             KMLWriter.Folder districtFolder = new KMLWriter.Folder()
                                             .append(new KMLWriter.Name(district.getName()))
-                                            .append(new KMLWriter.Description(
-                                                "Map of ministering companionships for "
-                                                    + district.getName()));
+                                            .append(new KMLWriter.Description("Map of ministering companionships for " + district.getName()));
             int ministryIndex = 0;
 
             for (Companionship companionship : district.getCompanionships()) {
@@ -124,8 +119,7 @@ public final class MinisteringKML {
                     String    individualId = teacher.getIndividualId();
                     Household household = map.get(individualId);
 
-                    if (!ministerIndividualIds.contains(individualId)
-                                && companionship.getAssignments().size() > 0) {
+                    if (!ministerIndividualIds.contains(individualId) && companionship.getAssignments().size() > 0) {
                         ministerIndividualIds.add(individualId);
                     }
 
@@ -133,8 +127,7 @@ public final class MinisteringKML {
                         name = name + prefix + household.getMember(individualId).getPreferredName();
                         prefix = " - ";
 
-                        if (null != household.relocate(relocations).getLattitude()
-                                    && null != household.relocate(relocations).getLongitude()) {
+                        if (null != household.relocate(relocations).getLattitude() && null != household.relocate(relocations).getLongitude()) {
                             double lat = household.relocate(relocations).getLatitudeValue();
                             double lon = household.relocate(relocations).getLongitudeValue();
 
@@ -144,12 +137,9 @@ public final class MinisteringKML {
                                 startLon = lon;
                                 startLat = lat;
                             }
-                            distinctCompanionLocations = distinctCompanionLocations
-                                                            || startLon != lon
-                                                            || startLat != lat;
+                            distinctCompanionLocations = distinctCompanionLocations || (startLon != lon) || (startLat != lat);
                         } else {
-                            System.out.println("WARNING: No location found for "
-                                                            + household.getCoupleName());
+                            System.out.println("WARNING: No location found for " + household.getCoupleName());
                         }
                     }
                 }
@@ -157,8 +147,7 @@ public final class MinisteringKML {
                 if (distinctCompanionLocations) {
                     districtFolder.append(connected
                                 .append(new KMLWriter.Name(name))
-                                .append(new KMLWriter.Description("Ministering Companionship: "
-                                                                        + name))
+                                .append(new KMLWriter.Description("Ministering Companionship: " + name))
                                 .append(new KMLWriter.UseStyle(companionshipName))
                                 .append(connection));
                 } else if (companionship.getTeachers().size() > 0) {
@@ -177,8 +166,7 @@ public final class MinisteringKML {
                         ministeredIndividualIds.put(familyId, assignment);
                     }
 
-                    if (null != family.relocate(relocations).getLattitude()
-                                && null != family.relocate(relocations).getLongitude()) {
+                    if (null != family.relocate(relocations).getLattitude() && null != family.relocate(relocations).getLongitude()) {
                         connected = new KMLWriter.Placemark();
                         connection = new KMLWriter.Line();
                         double latFamily = family.relocate(relocations).getLatitudeValue();
@@ -194,8 +182,7 @@ public final class MinisteringKML {
 
                             name += prefix + household.getMember(individualId).getPreferredName();
                             prefix = ", ";
-                            if (null != household.relocate(relocations).getLattitude()
-                                    && null != household.relocate(relocations).getLongitude()) {
+                            if ((null != household.relocate(relocations).getLattitude()) && (null != household.relocate(relocations).getLongitude())) {
                                 double lat = household.relocate(relocations).getLatitudeValue();
                                 double lon = household.relocate(relocations).getLongitudeValue();
 
@@ -208,16 +195,13 @@ public final class MinisteringKML {
                         districtFolder.append(connected
                                         .append(new KMLWriter.Name(name))
                                         .append(new KMLWriter.Description("Family Ministered: "
-                                                    + family.getMember(familyId).getPreferredName()
-                                                    + "\n"
+                                                    + family.getMember(familyId).getPreferredName() + "\n"
                                                     + getVisitMessage(assignment)))
-                                        .append(new KMLWriter.UseStyle(ministryPrefix
-                                                                        + ministryIndex))
+                                        .append(new KMLWriter.UseStyle(ministryPrefix + ministryIndex))
                                         .append(connection));
 
                     } else {
-                        System.out.println("WARNING: No location found for "
-                                                            + family.getCoupleName());
+                        System.out.println("WARNING: No location found for " + family.getCoupleName());
                     }
 
                 }
@@ -234,8 +218,7 @@ public final class MinisteringKML {
 
         KMLWriter.Folder group = new KMLWriter.Folder()
                                 .append(new KMLWriter.Name("Ministers"))
-                                .append(new KMLWriter.Description(
-                                    "All persons assigned to minister that have assignments"));
+                                .append(new KMLWriter.Description("All persons assigned to minister that have assignments"));
 
         for (String individualId : ministerIndividualIds) {
             Household household = map.get(individualId);
@@ -303,8 +286,7 @@ public final class MinisteringKML {
         final int thickLine = 8;
         final int thinLine = 2;
         KMLWriter.Document document = new KMLWriter.Document();
-        JSONObject ward = client.getEndpointInfo(
-                                    "unit-members-and-callings-v2", client.getUnitNumber());
+        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
         JSONArray households = (JSONArray) ward.get("households");
         List<Household> householdList = Household.fromArray(households);
         Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(householdList) : null;
@@ -317,8 +299,7 @@ public final class MinisteringKML {
 
         document.append(new KMLWriter.Name((String) ward.get("orgName")))
                 .append(new KMLWriter.Open())
-                .append(new KMLWriter.Description("Map of the "
-                                    + (String) ward.get("orgName"))) // put date in here
+                .append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
                 .append(new KMLWriter.Style("minister")
                 .append(new KMLWriter.StyleIcon(url1)))
                 .append(new KMLWriter.Style("ministered")
@@ -359,18 +340,15 @@ public final class MinisteringKML {
         This requires no special privileges to generate.
         Icons for maps can be found at: http://kml4earth.appspot.com/icons.html
         @param client lds tools client to use for connection
-        @param relocations a JSONObject that maps coupleName field to various address
-                            fields to change
+        @param relocations a JSONObject that maps coupleName field to various address fields to change
         @param filePath the path to the .kml file to generate
         @throws IOException on io error
         @throws ParseException on JSON error
     */
-    public static void generateMapReport(LdsToolsClient client, JSONObject relocations,
-                                    String filePath) throws IOException, ParseException {
+    public static void generateMapReport(LdsToolsClient client, JSONObject relocations, String filePath) throws IOException, ParseException {
         String url = "http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png";
         KMLWriter.Document document = new KMLWriter.Document();
-        JSONObject ward = client.getEndpointInfo(
-                                "unit-members-and-callings-v2", client.getUnitNumber());
+        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
         JSONArray households = (JSONArray) ward.get("households");
         double minLat = 0.0;
         double maxLat = 0.0;
@@ -408,8 +386,7 @@ public final class MinisteringKML {
                     .append(new KMLWriter.Point(lat, lon, 0.0)));
 
             } else {
-                System.out.println("WARNING: We don't have lat/lon for "
-                                                        + household.getCoupleName());
+                System.out.println("WARNING: We don't have lat/lon for " + household.getCoupleName());
                 // TODO: figure out where these are
             }
 
@@ -417,8 +394,7 @@ public final class MinisteringKML {
 
         document.append(new KMLWriter.Name((String) ward.get("orgName")))
         .append(new KMLWriter.Open())
-        .append(new KMLWriter.Description("Map of the "
-                                    + (String) ward.get("orgName"))) // put date in here
+        .append(new KMLWriter.Description("Map of the " + (String) ward.get("orgName"))) // put date in here
         .append(new KMLWriter.Style("home")
         .append(new KMLWriter.StyleIcon(url)))
         .append(folder);

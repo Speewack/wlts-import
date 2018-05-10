@@ -35,8 +35,7 @@ public final class AppConfig extends Properties {
     */
     private AppConfig() {
         try {
-            this.load(Thread.currentThread().getContextClassLoader()
-                            .getResourceAsStream("config.properties"));
+            this.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties"));
         } catch (IOException e) {
             log.error("Unable to load configuration", e);
         }

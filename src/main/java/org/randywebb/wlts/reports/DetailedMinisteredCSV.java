@@ -42,10 +42,8 @@ public final class DetailedMinisteredCSV {
         @throws IOException on network error
         @throws ParseException When the JSON is not as we expected
     */
-    public static void generateMiniseteredReport(LdsToolsClient client, String filePath,
-                                JSONObject relocations) throws IOException, ParseException {
-        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2",
-                                                        client.getUnitNumber());
+    public static void generateMiniseteredReport(LdsToolsClient client, String filePath, JSONObject relocations) throws IOException, ParseException {
+        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
         List<Household> householdList = Household.fromArray((JSONArray) ward.get("households"));
         List<String> priesthood = new ArrayList<String>();
         List<String> reliefsociety = new ArrayList<String>();
@@ -54,19 +52,15 @@ public final class DetailedMinisteredCSV {
         MinistryHelpers.getAuxiliaries(client, priesthood, reliefsociety);
 
         for (String auxiliaryId : priesthood) {
-            List<District> districts = District.fromArray(client.getAppPropertyEndpointList(
-                                        "ministering-companionships-endpoint", auxiliaryId));
+            List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId));
 
-            ministered.addAll(DetailedMinistered.fromDistricts(
-                                                districts, householdList, relocations));
+            ministered.addAll(DetailedMinistered.fromDistricts(districts, householdList, relocations));
         }
 
         for (String auxiliaryId : reliefsociety) {
-            List<District> districts = District.fromArray(client.getAppPropertyEndpointList(
-                                        "ministering-companionships-endpoint", auxiliaryId));
+            List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId));
 
-            ministered.addAll(DetailedMinistered.fromDistricts(
-                                                districts, householdList, relocations));
+            ministered.addAll(DetailedMinistered.fromDistricts(districts, householdList, relocations));
         }
 
         writeCSVFile(filePath, ministered);
@@ -86,12 +80,10 @@ public final class DetailedMinisteredCSV {
                 "state", "desc1", "desc2", "desc3", "householdName", "householdPhone",
                 "householdEmailAddress", "householdCoupleName", "ministers", "districtLeaderName",
                 "nearestHouseholdName"};
-        CellProcessor[] processors = DetailedMinistered.csvProcessors(header,
-                                                            new ConvertNullTo(""));
+        CellProcessor[] processors = DetailedMinistered.csvProcessors(header, new ConvertNullTo(""));
 
         try {
-            beanWriter = new CsvMapWriter(new FileWriter(csvFileName),
-                                            CsvPreference.STANDARD_PREFERENCE);
+            beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
 
             beanWriter.writeHeader(header);
 

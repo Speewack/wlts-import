@@ -30,8 +30,7 @@ public class DetailedMember extends AbstractBean {
         "visible", "nonMember", "outOfUnitMember", "isHead", "isSpouse", "isAdult",
         "fullTimeMissionary", "setApart"});
     /** Names of the fields that are date values in the report. */
-    private static final List<String> DATE_FIELDS = Arrays.asList(new String[]
-                                                        {"birthDate", "sustainedDate"});
+    private static final List<String> DATE_FIELDS = Arrays.asList(new String[] {"birthDate", "sustainedDate"});
     /** Names of the fields that are integers in the report. */
     private static final List<String> INTEGER_FIELDS = Arrays.asList(new String[] {
         "nameOrder", "birthDateSort", "age", "actualAge", "actualAgeInMonths"});
@@ -57,8 +56,7 @@ public class DetailedMember extends AbstractBean {
             CellProcessor stringProcessor, CellProcessor booleanProcessor,
             CellProcessor integerProcessor, CellProcessor dateProcessor) {
 
-        return csvProcessors(headers, BOOLEAN_FIELDS, DATE_FIELDS, INTEGER_FIELDS,
-                            stringProcessor, booleanProcessor, integerProcessor, dateProcessor);
+        return csvProcessors(headers, BOOLEAN_FIELDS, DATE_FIELDS, INTEGER_FIELDS, stringProcessor, booleanProcessor, integerProcessor, dateProcessor);
     }
 
     /** Defaults constructor. */

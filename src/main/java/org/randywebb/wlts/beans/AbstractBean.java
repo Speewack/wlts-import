@@ -50,8 +50,7 @@ public abstract class AbstractBean extends HashMap<String, String> {
         @param integerFieldList The names of the fields which are Integers
         @param dateFieldList The names of the fields which are Dates
     */
-    public AbstractBean(SimpleDateFormat dateFrmt, List<String> booleanFieldList,
-                        List<String> integerFieldList, List<String> dateFieldList) {
+    public AbstractBean(SimpleDateFormat dateFrmt, List<String> booleanFieldList, List<String> integerFieldList, List<String> dateFieldList) {
         dateFormat = dateFrmt;
         booleanFields = null == booleanFieldList ? new ArrayList<String>() : booleanFieldList;
         dateFields = null == dateFieldList ? new ArrayList<String>() : dateFieldList;
