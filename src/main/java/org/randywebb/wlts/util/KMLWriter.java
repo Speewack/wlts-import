@@ -268,11 +268,11 @@ public final class KMLWriter {
         private boolean extrude;
     }
 
-    /** Default range for LookAt. */
-    private static final int ONE_HUNDRED_MILE_RANGE = 100;
-
     /** The area to look at. */
     public static class LookAt implements Item {
+
+        /** Default range for LookAt. */
+        private static final int ONE_HUNDRED_MILE_RANGE = 100;
 
         /**
             Defaults to a range of 100. Heading defaults to 0.
