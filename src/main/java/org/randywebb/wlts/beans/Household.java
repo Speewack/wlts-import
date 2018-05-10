@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.randywebb.wlts.util.AppConfig;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -129,6 +131,8 @@ public class Household extends AbstractBean {
     public double distance(Household other, JSONObject relocation) {
         Address me = relocate(relocation);
         Address them = other.relocate(relocation);
+        final double milesPerLat = AppConfig.getInstance().getProperty("miles-per-lat", MILES_PER_LAT);
+        final double milesPerLon = AppConfig.getInstance().getProperty("miles-per-lon", MILES_PER_LON);
 
         if (null == other
                 || null == me.getLatitude() || null == me.getLongitude()
@@ -137,8 +141,8 @@ public class Household extends AbstractBean {
         }
 
         return Math.sqrt(
-            Math.pow(MILES_PER_LAT * (me.getLatitudeValue() - them.getLatitudeValue()), 2)
-            + Math.pow(MILES_PER_LON * (me.getLongitudeValue() - them.getLongitudeValue()), 2));
+            Math.pow(milesPerLat * (me.getLatitudeValue() - them.getLatitudeValue()), 2)
+            + Math.pow(milesPerLon * (me.getLongitudeValue() - them.getLongitudeValue()), 2));
     }
 
     /** Given relocation information, return the location of this household.

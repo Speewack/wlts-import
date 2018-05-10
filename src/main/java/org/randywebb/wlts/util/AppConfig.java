@@ -21,6 +21,15 @@ public final class AppConfig extends Properties {
     /** singleton instance. */
     private static AppConfig instance = null;
 
+    /** Get a property as a double.
+        @param name The name of the property
+        @param defaultValue The default value to use if name has not been set
+        @return The value of name as a double, or defaultValue if name has not been set
+    */
+    public double getProperty(String name, double defaultValue) {
+        return Double.parseDouble(getProperty(name, new Double(defaultValue).toString()));
+    }
+
     /** Attempts to load the config.properties file.
             If it fails, this instance has no properties.
     */
