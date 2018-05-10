@@ -27,6 +27,7 @@ Create or edit ~/.m2/toolchains.xml
     </configuration>
   </toolchain>
 </toolchains>
+```
 
 To find the value for <jdkHome> you can run on the command line: echo $(/usr/libexec/java_home)
 
