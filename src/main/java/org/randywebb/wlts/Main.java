@@ -289,8 +289,7 @@ public final class Main {
         @throws FileNotFoundException if the path does not exist
         @throws ParseException if the file does not contain a proper JSON object
     */
-    private static JSONObject loadJSONFile(String path)
-                        throws IOException, FileNotFoundException, ParseException {
+    private static JSONObject loadJSONFile(String path) throws IOException, FileNotFoundException, ParseException {
         return (JSONObject) (new JSONParser()).parse(new FileReader(path));
     }
 

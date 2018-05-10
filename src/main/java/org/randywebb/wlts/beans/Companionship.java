@@ -156,11 +156,12 @@ public class Companionship extends AbstractBean {
         String valueAssignment = "";
 
         for (Teacher teacher : teachers) {
-            valueTeacher += (valueTeacher.length() == 0 ? "" : ", ") + teacher.toString();
+            valueTeacher += (valueTeacher.length() == 0) ? "" : ", ";
+            valueTeacher += teacher.toString();
         }
 
         for (Assignment assignment : assignments) {
-            valueAssignment += valueAssignment.length() == 0 ? "" : ", ";
+            valueAssignment += (valueAssignment.length() == 0) ? "" : ", ";
             valueAssignment += assignment.toString();
         }
 

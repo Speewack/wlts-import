@@ -247,7 +247,7 @@ public abstract class AbstractBean extends HashMap<String, String> {
     protected void setFromJSON(JSONObject definition, String key) {
         Object value = definition.get(key);
 
-        if (null != value || !containsKey(key)) {
+        if ((null != value) || !containsKey(key)) {
             put(key, (null == value) ? null : value.toString());
         }
 
@@ -282,7 +282,7 @@ public abstract class AbstractBean extends HashMap<String, String> {
         @return "true" or "false" or null if value is null
     */
     protected String toString(Boolean value) {
-        return null == value ? null : value ? "true" : "false";
+        return (null == value) ? null : (value ? "true" : "false");
     }
 
     /** Helper method to convert String values to Integer.
