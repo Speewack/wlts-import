@@ -1,0 +1,5 @@
+Format: 'message', 'address data', 'valid output'
+"Missing Street Address", "Marble Falls, Texas 78654", "Address []"
+"Full Address", "1313 Mockingbird Lane<br />Dallas, Texas 90210", "Address [streetAddress = 1313 Mockingbird Lane, city = Dallas, postalCode = 90210, state = Texas]"
+"Line Breaks in Address", "12345 Louisville Trl<br />Round Rock, Texas 78664", "Address [streetAddress = 12345 Louisville Trl, city = Round Rock, postalCode = 78664, state = Texas]"
+"Apartment", "96554 Purple Blvd<br />Apt 21101<br />Pflugerville, Texas 78660-0006", "Address [streetAddress = 96554 Purple Blvd Apt 21101, city = Pflugerville, postalCode = 78660-0006, state = Texas]"
