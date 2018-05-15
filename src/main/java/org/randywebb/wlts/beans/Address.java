@@ -1,11 +1,10 @@
 package org.randywebb.wlts.beans;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -234,14 +233,4 @@ public class Address extends AbstractBean {
         }
         return a;
     }
-
-    /** Test entry point.
-        @param args ignored
-    */
-    public static void main(String[] args) {
-        System.out.println(Address.toAddress("17413 Toyahville Trl<br />Round Rock, Texas 78664"));
-        System.out.println(Address.toAddress("16101 White River Blvd<br />"
-                        + "Apt 21101<br />Pflugerville, Texas 78660-0006"));
-    }
-
 }
