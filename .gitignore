@@ -24,3 +24,4 @@ Desktop.ini
 /target/
 
 *.log
+/logs/
