@@ -86,7 +86,7 @@ public final class MinisteringKML {
                     String ministryPrefix,
                     String ministerName, String ministeredName,
                     Map<String, Household> map, KMLWriter.List container) throws IOException, ParseException {
-        JSONArray districtsJSON = client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId);
+        JSONArray districtsJSON = client.getAppPropertyEndpointList("ministering-companionships-endpoint", client.getUnitNumber(), auxiliaryId);
         List<District> districts = District.fromArray(districtsJSON);
         KMLWriter.Folder folder = new KMLWriter.Folder()
                                     .append(new KMLWriter.Name(auxiliaryName))
@@ -286,7 +286,8 @@ public final class MinisteringKML {
         final int thickLine = 8;
         final int thinLine = 2;
         KMLWriter.Document document = new KMLWriter.Document();
-        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
+        String unitNumber = client.getUnitNumber();
+        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", unitNumber);
         JSONArray households = (JSONArray) ward.get("households");
         List<Household> householdList = Household.fromArray(households);
         Map<String, Household> idToHousehold = client.leaderReportsAvailable() ? Household.mapIndividualIdsToHousehold(householdList) : null;
@@ -319,7 +320,7 @@ public final class MinisteringKML {
             List<String> priesthood = new ArrayList<String>();
             List<String> reliefsociety = new ArrayList<String>();
 
-            MinistryHelpers.getAuxiliaries(client, priesthood, reliefsociety);
+            MinistryHelpers.getAuxiliaries(client, unitNumber, priesthood, reliefsociety);
 
             for (String aux : priesthood) {
                 mapCompanionships(client, relocations, routes, aux, "Priesthood",
