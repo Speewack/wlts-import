@@ -29,7 +29,7 @@ Create or edit ~/.m2/toolchains.xml
 </toolchains>
 ```
 
-To find the value for <jdkHome> you can run on the command line: echo $(/usr/libexec/java_home)
+To find the value for &lt;jdkHome&gt; you can run on the command line: echo $(/usr/libexec/java_home)
 
 ## Build
 
@@ -39,11 +39,13 @@ To build run:
 
 The documentation is at: `target/site/apidocs/index.html`
 
-## Test
+## Usage
+
+You can get the full usage by passing `--help`
+
+`java -jar target/lds-tools-export-1.1.jar --help`
 
 If you have admin access on LDS Tools:
-
-`java -jar target/lds-tools-export-1.1.jar output.csv`
 
 `java -jar target/lds-tools-export-1.1.jar --wlts output.csv`
 
@@ -51,17 +53,19 @@ The following require leader access:
 
 `java -jar target/lds-tools-export-1.1s.jar --routes map.kml`
 
-`java -jar target/lds-tools-export-1.1s.jar --ministers map.kml`
+`java -jar target/lds-tools-export-1.1s.jar --ministers ministers.kml`
+
+`java -jar target/lds-tools-export-1.1s.jar --ministered ministered.csv`
 
 The following do not require special access:
 
 `java -jar target/lds-tools-export-1.1s.jar --map map.kml`
 
-You can combine `--routes`, `--map`, and `--ministers` into one command:
+You can combine `--routes`, `--map`, `--minisetered`, `--wlts` and `--ministers` into one command:
 
 `java -jar target/lds-tools-export-1.1s.jar --map map.kml --routes map.kml --ministers map.kml`
 
-For `--routes`, `--ministers` and `--map` you can override location of households
+For `--routes`, `--ministers`, `--ministered` and `--map` you can override location of households
 	(which may not have latitude/longitude, or may have incorrect location) by passing `--relocate`
 	and then the path to a JSON file of the format:
 
