@@ -42,25 +42,25 @@ class TestAddress {
             // ministering members parsing
 
             assertEquals(addresses.get(1).getStreetAddress(), "1234 Soney cir");
-            //assertEquals(addresses.get(1).get("streetAddress2"), "Apt 110"); this is in ministering members
+            assertEquals(addresses.get(1).get("streetAddress2"), "Apt 110");
             assertEquals(addresses.get(1).getPostalCode(), "93555");
             assertEquals(addresses.get(1).getState(), "CA");
             assertEquals(addresses.get(1).getCity(), "Ridgecrest");
 
             assertEquals(addresses.get(2).getStreetAddress(), "4321 W Charney Pkwy");
-            //assertEquals(addresses.get(2).get("streetAddress2"), "Apt 110"); this is in ministering members
+            assertEquals(addresses.get(2).get("streetAddress2"), "Trlr 803");
             assertEquals(addresses.get(2).getPostalCode(), "78754");
             assertEquals(addresses.get(2).getState(), "Texas");
             assertEquals(addresses.get(2).getCity(), "AUSTIN");
 
             assertEquals(addresses.get(3).getStreetAddress(), "9876 American Robin Path");
-            //assertNull(addresses.get(3).get("streetAddress2")); this is in ministering members
+            assertNull(addresses.get(3).get("streetAddress2"));
             assertEquals(addresses.get(3).getPostalCode(), "93555-1436");
             assertEquals(addresses.get(3).getState(), "California");
             assertEquals(addresses.get(3).getCity(), "Ridgecrest");
 
             assertNull(addresses.get(4).getStreetAddress());
-            //assertNull(addresses.get(4).get("streetAddress2")); this is in ministering members
+            assertNull(addresses.get(4).get("streetAddress2"));
             assertNull(addresses.get(4).getPostalCode());
             assertNull(addresses.get(4).getState());
             assertNull(addresses.get(4).getCity());
