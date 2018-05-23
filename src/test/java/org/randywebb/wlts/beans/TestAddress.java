@@ -141,7 +141,6 @@ class TestAddress {
         assertEquals(newStreetAddress, a.getStreetAddress(), "Street Address Setter");
         a.setState(newState);
         assertEquals(newState, a.getState(), "State Setter");
-        assertTrue(true);
     }
 
 }
