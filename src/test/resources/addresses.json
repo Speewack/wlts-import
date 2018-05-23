@@ -3,9 +3,28 @@
 		"latitude": 30.446545,
 		"longitude":-97.622255,
 		"postalCode": 78660,
-		"state": "TX",
-
+		"state": "TX"
 	},
 	{
+		"streetAddress": "1234 Soney cir",
+		"streetAddress2": "Apt 110",
+		"postal": "93555",
+		"state": "CA",
+		"city": "Ridgecrest"
 	},
+	{
+		"streetAddress": "4321 W Charney Pkwy",
+		"streetAddress2": "Trlr 803",
+		"postal": "78754",
+		"state": "Texas",
+		"city": "AUSTIN"
+	},
+	{
+		"streetAddress": "9876 American Robin Path",
+		"streetAddress2": null,
+		"postal": "93555-1436",
+		"state": "California",
+		"city": "Ridgecrest"
+	},
+	{"streetAddress":null,"streetAddress2":null,"city":null,"state":null,"postal":null}
 ]
