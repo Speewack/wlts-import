@@ -32,7 +32,35 @@ class TestAddress {
         try {
             Object obj = new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("addresses.json")));
             List<Address> addresses = Address.fromArray( (JSONArray) obj );
-            assertEquals(addresses.size(),2);
+            assertEquals(addresses.size(),5);
+            assertEquals(addresses.get(0).getDouble("latitude").doubleValue(), 30.446545);
+            assertEquals(addresses.get(0).getDouble("longitude").doubleValue(), -97.622255);
+            assertEquals(addresses.get(0).getInteger("postalCode").intValue(), 78660);
+            assertEquals(addresses.get(0).get("state"), "TX");
+
+            //assertEquals(addresses.get(1).getStreetAddress(), "1234 Soney cir"); this is in ministering members
+            //assertEquals(addresses.get(1).get("streetAddress2"), "Apt 110"); this is in ministering members
+            //assertEquals(addresses.get(1).getPostalCode(), "93555"); this is in ministering members (not postalCode)
+            assertEquals(addresses.get(1).getState(), "CA");
+            //assertEquals(addresses.get(1).getCity(), "Ridgecrest"); this is in ministering members
+
+            //assertEquals(addresses.get(2).getStreetAddress(), "4321 W Charney Pkwy"); this is in ministering members
+            //assertEquals(addresses.get(2).get("streetAddress2"), "Apt 110"); this is in ministering members
+            //assertEquals(addresses.get(2).getPostalCode(), "78754"); this is in ministering members (not postalCode)
+            assertEquals(addresses.get(2).getState(), "Texas");
+            //assertEquals(addresses.get(2).getCity(), "AUSTIN"); this is in ministering members
+
+            //assertEquals(addresses.get(3).getStreetAddress(), "9876 American Robin Path"); this is in ministering members
+            //assertNull(addresses.get(3).get("streetAddress2")); this is in ministering members
+            //assertEquals(addresses.get(3).getPostalCode(), "93555-1436"); this is in ministering members (not postalCode)
+            assertEquals(addresses.get(3).getState(), "California");
+            //assertEquals(addresses.get(3).getCity(), "Ridgecrest"); this is in ministering members
+
+            //assertNull(addresses.get(4).getStreetAddress()); this is in ministering members
+            //assertNull(addresses.get(4).get("streetAddress2")); this is in ministering members
+            //assertNull(addresses.get(4).getPostalCode()); this is in ministering members (not postalCode)
+            assertNull(addresses.get(4).getState());
+            //assertNull(addresses.get(4).getCity()); this is in ministering members
         } catch(IOException | ParseException e) {
             e.printStackTrace();
             fail("Exception parsing Address JSON: " + e.getMessage());
