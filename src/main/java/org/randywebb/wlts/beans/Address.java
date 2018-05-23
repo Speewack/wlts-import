@@ -30,14 +30,18 @@ public class Address extends AbstractBean {
     }
 
     /** Convert an address JSON Object to an Address.
+        TODO: parse city out of desc3 (or desc2 if no desc3) for unit members and callings v2
+        TODO: unify streetAdderess(2), desc(1,2,3) and city, state and postalCode (maybe have get apartment/address qualifier)
+        TODO: Do we really want street address to be desc1 + desc2 or do we want desc1 + desc2 + (if ! NULL desc3)
         @param definition A JSON address Object
     */
     public Address(JSONObject definition) {
-        update(definition, "streetAddress", "latitude", "longitude", "postalCode", "postal", "city", "state", "desc1", "desc2", "desc3", "includeLatLong");
+        update(definition, "streetAddress", "streetAddress2", "latitude", "longitude", "postalCode", "postal", "city", "state", "desc1", "desc2", "desc3", "includeLatLong");
 
         if (!containsKey("streetAddress") || (null != get("desc1")) && (null != get("desc2"))) {
             setStreetAddress(get("desc1") + ", " + get("desc2"));
         }
+
         if (containsKey("postal") && (null == get("postalCode"))) {
             setPostalCode(get("postal"));
         }
