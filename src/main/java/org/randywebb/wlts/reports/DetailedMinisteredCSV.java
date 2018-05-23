@@ -43,22 +43,23 @@ public final class DetailedMinisteredCSV {
         @throws ParseException When the JSON is not as we expected
     */
     public static void generateMiniseteredReport(LdsToolsClient client, String filePath, JSONObject relocations) throws IOException, ParseException {
-        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", client.getUnitNumber());
+        String unitNumber = client.getUnitNumber();
+        JSONObject ward = client.getEndpointInfo("unit-members-and-callings-v2", unitNumber);
         List<Household> householdList = Household.fromArray((JSONArray) ward.get("households"));
         List<String> priesthood = new ArrayList<String>();
         List<String> reliefsociety = new ArrayList<String>();
         List<DetailedMinistered> ministered = new ArrayList<DetailedMinistered>();
 
-        MinistryHelpers.getAuxiliaries(client, priesthood, reliefsociety);
+        MinistryHelpers.getAuxiliaries(client, unitNumber, priesthood, reliefsociety);
 
         for (String auxiliaryId : priesthood) {
-            List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId));
+            List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", unitNumber, auxiliaryId));
 
             ministered.addAll(DetailedMinistered.fromDistricts(districts, householdList, relocations));
         }
 
         for (String auxiliaryId : reliefsociety) {
-            List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", auxiliaryId));
+            List<District> districts = District.fromArray(client.getAppPropertyEndpointList("ministering-companionships-endpoint", unitNumber, auxiliaryId));
 
             ministered.addAll(DetailedMinistered.fromDistricts(districts, householdList, relocations));
         }
