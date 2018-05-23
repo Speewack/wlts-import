@@ -209,6 +209,7 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
+      
       <!-- Perform a static analysis on the code for common coding errors -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -228,12 +229,14 @@
           </rulesets>
         </configuration>
       </plugin>
+      
       <!-- JXR Plugin generates cross-reference page of the project's source 
         code which can be linked to javadoc -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
       </plugin>
+      
       <!-- Generates javadoc for the project -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -243,6 +246,13 @@
           <source>${sourceJDK}</source>
           <show>package</show>
           <aggregate>true</aggregate>
+          <tags>
+            <tag>
+              <name>todo</name>
+              <placement>a</placement>
+              <head>To do something:</head>
+            </tag>
+          </tags>
         </configuration>
       </plugin>
     </plugins>
