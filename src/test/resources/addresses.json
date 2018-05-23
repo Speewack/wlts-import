@@ -26,5 +26,30 @@
 		"state": "California",
 		"city": "Ridgecrest"
 	},
-	{"streetAddress":null,"streetAddress2":null,"city":null,"state":null,"postal":null}
+	{"streetAddress":null,"streetAddress2":null,"city":null,"state":null,"postal":null},
+	{
+		"includeLatLong": false,
+		"desc1": "1234 Stoney Cir",
+		"desc2": "Pflugerville, Texas 78660-4432",
+		"state": "Texas",
+		"postalCode": "78660-4432"
+	},
+	{
+		"includeLatLong": false,
+		"desc1": "1234 Stoney Cir",
+		"desc2": "Apt 456",
+		"desc3": "Pflugerville, Texas 78660-4432",
+		"state": "Texas",
+		"postalCode": "78660-4432"
+	},
+	{
+		"includeLatLong": true,
+		"desc1": "1234 Stoney Cir",
+		"desc2": "Apt 456",
+		"desc3": "Pflugerville, Texas 78660-4432",
+		"state": "Texas",
+		"postalCode": "78660-4432",
+		"latitude": 30.446545,
+		"longitude":-97.622255
+	},
 ]

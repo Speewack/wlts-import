@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -32,11 +34,13 @@ class TestAddress {
         try {
             Object obj = new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("addresses.json")));
             List<Address> addresses = Address.fromArray( (JSONArray) obj );
-            assertEquals(addresses.size(),5);
+            assertEquals(addresses.size(),8);
             assertEquals(addresses.get(0).getDouble("latitude").doubleValue(), 30.446545);
             assertEquals(addresses.get(0).getDouble("longitude").doubleValue(), -97.622255);
             assertEquals(addresses.get(0).getInteger("postalCode").intValue(), 78660);
             assertEquals(addresses.get(0).get("state"), "TX");
+
+            // ministering members parsing
 
             assertEquals(addresses.get(1).getStreetAddress(), "1234 Soney cir");
             //assertEquals(addresses.get(1).get("streetAddress2"), "Apt 110"); this is in ministering members
@@ -61,6 +65,37 @@ class TestAddress {
             assertNull(addresses.get(4).getPostalCode());
             assertNull(addresses.get(4).getState());
             assertNull(addresses.get(4).getCity());
+
+            // unit members and callings v2
+
+            assertFalse(addresses.get(5).isIncludeLatLong());
+            assertEquals(addresses.get(5).get("desc1"), "1234 Stoney Cir");
+            assertEquals(addresses.get(5).get("desc2"), "Pflugerville, Texas 78660-4432");
+            assertEquals(addresses.get(5).getStreetAddress(), "1234 Stoney Cir, Pflugerville, Texas 78660-4432");
+            assertEquals(addresses.get(5).getState(), "Texas");
+            assertEquals(addresses.get(5).getPostalCode(), "78660-4432");
+            //assertEquals(addresses.get(5).getCity(), "Pflugerville"); we should be able to parse city out of desc2/3
+
+            assertFalse(addresses.get(6).isIncludeLatLong());
+            assertEquals(addresses.get(6).get("desc1"), "1234 Stoney Cir");
+            assertEquals(addresses.get(6).get("desc2"), "Apt 456");
+            assertEquals(addresses.get(6).get("desc3"), "Pflugerville, Texas 78660-4432");
+            assertEquals(addresses.get(6).getStreetAddress(), "1234 Stoney Cir, Apt 456"); // Is this intentional behavior?
+            assertEquals(addresses.get(6).getState(), "Texas");
+            assertEquals(addresses.get(6).getPostalCode(), "78660-4432");
+            //assertEquals(addresses.get(6).getCity(), "Pflugerville"); we should be able to parse city out of desc2/3
+
+            assertTrue(addresses.get(7).isIncludeLatLong());
+            assertEquals(addresses.get(7).get("desc1"), "1234 Stoney Cir");
+            assertEquals(addresses.get(7).get("desc2"), "Apt 456");
+            assertEquals(addresses.get(7).get("desc3"), "Pflugerville, Texas 78660-4432");
+            assertEquals(addresses.get(7).getStreetAddress(), "1234 Stoney Cir, Apt 456"); // Is this intentional behavior?
+            assertEquals(addresses.get(7).getState(), "Texas");
+            assertEquals(addresses.get(7).getPostalCode(), "78660-4432");
+            assertEquals(addresses.get(7).getLatitudeValue().doubleValue(), 30.446545);
+            assertEquals(addresses.get(7).getLongitudeValue().doubleValue(), -97.622255);
+            //assertEquals(addresses.get(7).getCity(), "Pflugerville"); we should be able to parse city out of desc2/3
+
         } catch(IOException | ParseException e) {
             e.printStackTrace();
             fail("Exception parsing Address JSON: " + e.getMessage());
