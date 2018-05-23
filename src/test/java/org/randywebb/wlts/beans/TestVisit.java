@@ -30,7 +30,7 @@ class TestVisit {
             assertEquals(visists.size(),13);
             int month = 5;
 
-            for (int i = 0; i < 12; i += 1) {
+            for (int i = 0; i < 13; i += 1) {
                 assertEquals(visists.get(i).getInteger("assignmentId").intValue(), 33465);
                 assertEquals(visists.get(i).getInteger("month").intValue(), month);
                 month = 12 == month ? 1 : month + 1;
@@ -40,7 +40,7 @@ class TestVisit {
                 assertEquals(visists.get(i).getInteger("year").intValue(), 2017);
             }
 
-            for (int i = 8; i < 12; i += 1) {
+            for (int i = 8; i < 13; i += 1) {
                 assertEquals(visists.get(i).getInteger("year").intValue(), 2018);
             }
 
