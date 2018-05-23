@@ -191,6 +191,22 @@ public abstract class AbstractBean extends HashMap<String, String> {
     }
 
     /**
+        @param name The name of the field to interpret as an long integer
+        @return The long integer value of the field, or null if the field does not exist or is null
+    */
+    public Long getLong(String name) {
+        return toLong(get(name));
+    }
+
+    /**
+        @param name The name of the field to set
+        @param value The integer value for the field
+    */
+    public void put(String name, Long value) {
+        put(name, toString(value));
+    }
+
+    /**
         @param name The name of the field to interpret as a double
         @return The integer value of the field, or null if the field does not exist or is null
     */
@@ -293,11 +309,27 @@ public abstract class AbstractBean extends HashMap<String, String> {
         return (null == value) ? null : Integer.valueOf(value);
     }
 
+    /** Helper method to convert String values to Long.
+        @param value Long string
+        @return Long value of string or null if string is null
+    */
+    protected Long toLong(String value) {
+        return (null == value) ? null : Long.valueOf(value);
+    }
+
     /** Helper method to convert Integer to String.
         @param value Integer
         @return value as a String or null if value is null
     */
     protected String toString(Integer value) {
+        return (null == value) ? null : value.toString();
+    }
+
+    /** Helper method to convert Long to String.
+        @param value Long
+        @return value as a String or null if value is null
+    */
+    protected String toString(Long value) {
         return (null == value) ? null : value.toString();
     }
 
