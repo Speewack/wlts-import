@@ -88,6 +88,7 @@ class TestCompanionship {
             assertEquals(companionships.get(7).getTeachers().get(1).getLong("companionshipId").longValue(), 9960418L);
             assertEquals(companionships.get(7).getTeachers().get(1).getLong("individualId").longValue(), 9917406968L);
             assertEquals(companionships.get(7).getAssignments().size(), 2);
+            // assignments are tested separately
 
         } catch(IOException | ParseException e) {
             e.printStackTrace();
