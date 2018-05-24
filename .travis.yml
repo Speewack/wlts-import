@@ -8,4 +8,5 @@ install: true
 #  directories:
 #  - $HOME/.m2
  
-script: ./mvnw clean install -DskipToolchains=true -B 
+script: 
+  - ./mvnw clean install -DskipToolchains=true -B 
