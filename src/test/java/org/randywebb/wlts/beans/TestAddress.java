@@ -42,25 +42,25 @@ class TestAddress {
             // ministering members parsing
 
             assertEquals(addresses.get(1).getStreetAddress(), "1234 Soney cir");
-            assertEquals(addresses.get(1).get("streetAddress2"), "Apt 110");
+            assertEquals(addresses.get(1).getUnitNumber(), "Apt 110");
             assertEquals(addresses.get(1).getPostalCode(), "93555");
             assertEquals(addresses.get(1).getState(), "CA");
             assertEquals(addresses.get(1).getCity(), "Ridgecrest");
 
             assertEquals(addresses.get(2).getStreetAddress(), "4321 W Charney Pkwy");
-            assertEquals(addresses.get(2).get("streetAddress2"), "Trlr 803");
+            assertEquals(addresses.get(2).getUnitNumber(), "Trlr 803");
             assertEquals(addresses.get(2).getPostalCode(), "78754");
             assertEquals(addresses.get(2).getState(), "Texas");
             assertEquals(addresses.get(2).getCity(), "AUSTIN");
 
             assertEquals(addresses.get(3).getStreetAddress(), "9876 American Robin Path");
-            assertNull(addresses.get(3).get("streetAddress2"));
+            assertNull(addresses.get(3).getUnitNumber());
             assertEquals(addresses.get(3).getPostalCode(), "93555-1436");
             assertEquals(addresses.get(3).getState(), "California");
             assertEquals(addresses.get(3).getCity(), "Ridgecrest");
 
             assertNull(addresses.get(4).getStreetAddress());
-            assertNull(addresses.get(4).get("streetAddress2"));
+            assertNull(addresses.get(4).getUnitNumber());
             assertNull(addresses.get(4).getPostalCode());
             assertNull(addresses.get(4).getState());
             assertNull(addresses.get(4).getCity());
@@ -68,32 +68,27 @@ class TestAddress {
             // unit members and callings v2
 
             assertFalse(addresses.get(5).isIncludeLatLong());
-            assertEquals(addresses.get(5).get("desc1"), "1234 Stoney Cir");
-            assertEquals(addresses.get(5).get("desc2"), "Pflugerville, Texas 78660-4432");
-            assertEquals(addresses.get(5).getStreetAddress(), "1234 Stoney Cir, Pflugerville, Texas 78660-4432");
+            assertEquals(addresses.get(5).getStreetAddress(), "1234 Stoney Cir");
+            assertNull(addresses.get(3).getUnitNumber());
             assertEquals(addresses.get(5).getState(), "Texas");
             assertEquals(addresses.get(5).getPostalCode(), "78660-4432");
-            //assertEquals(addresses.get(5).getCity(), "Pflugerville"); we should be able to parse city out of desc2/3
+            assertEquals(addresses.get(5).getCity(), "Pflugerville");
 
             assertFalse(addresses.get(6).isIncludeLatLong());
-            assertEquals(addresses.get(6).get("desc1"), "1234 Stoney Cir");
-            assertEquals(addresses.get(6).get("desc2"), "Apt 456");
-            assertEquals(addresses.get(6).get("desc3"), "Pflugerville, Texas 78660-4432");
-            assertEquals(addresses.get(6).getStreetAddress(), "1234 Stoney Cir, Apt 456"); // Is this intentional behavior?
+            assertEquals(addresses.get(6).getUnitNumber(), "Apt 456");
+            assertEquals(addresses.get(6).getStreetAddress(), "1234 Stoney Cir");
             assertEquals(addresses.get(6).getState(), "Texas");
             assertEquals(addresses.get(6).getPostalCode(), "78660-4432");
-            //assertEquals(addresses.get(6).getCity(), "Pflugerville"); we should be able to parse city out of desc2/3
+            assertEquals(addresses.get(6).getCity(), "Pflugerville");
 
             assertTrue(addresses.get(7).isIncludeLatLong());
-            assertEquals(addresses.get(7).get("desc1"), "1234 Stoney Cir");
-            assertEquals(addresses.get(7).get("desc2"), "Apt 456");
-            assertEquals(addresses.get(7).get("desc3"), "Pflugerville, Texas 78660-4432");
-            assertEquals(addresses.get(7).getStreetAddress(), "1234 Stoney Cir, Apt 456"); // Is this intentional behavior?
+            assertEquals(addresses.get(7).getUnitNumber(), "Apt 456");
+            assertEquals(addresses.get(7).getStreetAddress(), "1234 Stoney Cir");
             assertEquals(addresses.get(7).getState(), "Texas");
             assertEquals(addresses.get(7).getPostalCode(), "78660-4432");
             assertEquals(addresses.get(7).getLatitudeValue().doubleValue(), 30.446545);
             assertEquals(addresses.get(7).getLongitudeValue().doubleValue(), -97.622255);
-            //assertEquals(addresses.get(7).getCity(), "Pflugerville"); we should be able to parse city out of desc2/3
+            assertEquals(addresses.get(7).getCity(), "Pflugerville");
 
         } catch(IOException | ParseException e) {
             e.printStackTrace();
