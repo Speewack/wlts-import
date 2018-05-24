@@ -37,9 +37,9 @@ class TestTeacher {
             assertEquals(ids.length, individualIds.length);
 
             for (int i = 0; i < ids.length; i += 1) {
-                assertEquals(teachers.get(i).getInteger("id").intValue(), ids[i]);
-                assertEquals(teachers.get(i).getInteger("companionshipId").intValue(), companionshipIds[i]);
-                assertEquals(teachers.get(i).getLong("individualId").longValue(), individualIds[i]);
+                assertEquals(teachers.get(i).getId(), "" + ids[i]);
+                assertEquals(teachers.get(i).getCompanionshipId(), "" + companionshipIds[i]);
+                assertEquals(teachers.get(i).getIndividualId(), "" + individualIds[i]);
             }
 
         } catch(IOException | ParseException e) {

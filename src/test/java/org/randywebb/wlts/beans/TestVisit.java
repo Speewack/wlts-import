@@ -31,32 +31,32 @@ class TestVisit {
             int month = 5;
 
             for (int i = 0; i < 13; i += 1) {
-                assertEquals(visists.get(i).getInteger("assignmentId").intValue(), 33465);
-                assertEquals(visists.get(i).getInteger("month").intValue(), month);
+                assertEquals(visists.get(i).getAssignmentId(), "33465");
+                assertEquals(visists.get(i).getMonth(), "" + month);
                 month = 12 == month ? 1 : month + 1;
             }
 
             for (int i = 0; i < 8; i += 1) {
-                assertEquals(visists.get(i).getInteger("year").intValue(), 2017);
+                assertEquals(visists.get(i).getYear(), "2017");
             }
 
             for (int i = 8; i < 13; i += 1) {
-                assertEquals(visists.get(i).getInteger("year").intValue(), 2018);
+                assertEquals(visists.get(i).getYear(), "2018");
             }
 
-            assertEquals(visists.get(0).getInteger("id").intValue(), 81159);
-            assertEquals(visists.get(1).getInteger("id").intValue(), 83780);
-            assertEquals(visists.get(2).getInteger("id").intValue(), 87179);
-            assertEquals(visists.get(3).getInteger("id").intValue(), 89183);
-            assertEquals(visists.get(4).getInteger("id").intValue(), 92259);
-            assertEquals(visists.get(5).getInteger("id").intValue(), 95402);
-            assertEquals(visists.get(6).getInteger("id").intValue(), 96727);
-            assertEquals(visists.get(7).getInteger("id").intValue(), 99384);
-            assertEquals(visists.get(8).getInteger("id").intValue(), 103675);
-            assertEquals(visists.get(9).getInteger("id").intValue(), 106625);
-            assertNull(visists.get(10).getInteger("id"));
-            assertNull(visists.get(11).getInteger("id"));
-            assertNull(visists.get(12).getInteger("id"));
+            assertEquals(visists.get(0).getId(), "81159");
+            assertEquals(visists.get(1).getId(), "83780");
+            assertEquals(visists.get(2).getId(), "87179");
+            assertEquals(visists.get(3).getId(), "89183");
+            assertEquals(visists.get(4).getId(), "92259");
+            assertEquals(visists.get(5).getId(), "95402");
+            assertEquals(visists.get(6).getId(), "96727");
+            assertEquals(visists.get(7).getId(), "99384");
+            assertEquals(visists.get(8).getId(), "103675");
+            assertEquals(visists.get(9).getId(), "106625");
+            assertNull(visists.get(10).getId());
+            assertNull(visists.get(11).getId());
+            assertNull(visists.get(12).getId());
 
             assertTrue(visists.get(0).getBoolean("visited"));
             assertTrue(visists.get(1).getBoolean("visited"));
@@ -68,9 +68,9 @@ class TestVisit {
             assertTrue(visists.get(7).getBoolean("visited"));
             assertTrue(visists.get(8).getBoolean("visited"));
             assertTrue(visists.get(9).getBoolean("visited"));
-            assertNull(visists.get(10).getBoolean("visited"));
-            assertNull(visists.get(11).getBoolean("visited"));
-            assertNull(visists.get(12).getBoolean("visited"));
+            assertNull(visists.get(10).getVisited());
+            assertNull(visists.get(11).getVisited());
+            assertNull(visists.get(12).getVisited());
 
         } catch(IOException | ParseException e) {
             e.printStackTrace();
