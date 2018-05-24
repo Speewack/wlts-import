@@ -45,7 +45,16 @@
     <!-- Specify the vendor for the JDK you are using (needed for toolchains 
       plugin) -->
     <targetJDK.vendor>sun</targetJDK.vendor>
+<<<<<<< HEAD
     <junit.version>5.2.0</junit.version>
+=======
+
+    <!-- Report plugin versions as they are used in both build and report 
+      sections -->
+    <checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
+    <pmd.plugin.version>3.9.0</pmd.plugin.version>
+    <javadoc.plugin.version>3.0.0</javadoc.plugin.version>
+>>>>>>> master
   </properties>
 
   <build>
@@ -79,7 +88,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${checkstyle.plugin.version}</version>
         <configuration>
           <configLocation>${project.basedir}/pluginconfig/checkstyle.xml</configLocation>
           <encoding>UTF-8</encoding>
@@ -100,7 +109,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.9.0</version>
+        <version>${pmd.plugin.version}</version>
         <configuration>
           <rulesets>
             <!-- A rule set, that comes bundled with PMD -->
@@ -128,7 +137,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${javadoc.plugin.version}</version>
         <configuration>
           <source>${sourceJDK}</source>
           <doctitle>My API for ${project.name} ${project.version}</doctitle>
@@ -143,6 +152,27 @@
             </tag>
           </tags>
         </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadoc</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>attach-source</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -189,6 +219,66 @@
       </plugin>
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.plugin.version}</version>
+        <configuration>
+          <configLocation>${project.basedir}/pluginconfig/checkstyle.xml</configLocation>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      
+      <!-- Perform a static analysis on the code for common coding errors -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.plugin.version}</version>
+        <configuration>
+          <rulesets>
+            <!-- A rule set, that comes bundled with PMD -->
+            <ruleset>${project.basedir}/pluginconfig/pmd.xml</ruleset>
+            <ruleset>/category/java/security.xml</ruleset>
+            <!-- <ruleset>/category/java/performance.xml</ruleset> -->
+            <!-- <ruleset>/category/java/codestyle.xml</ruleset> -->
+            <!-- <ruleset>/category/java/design.xml</ruleset> -->
+            <!-- <ruleset>/category/java/documentation.xml</ruleset> -->
+            <!-- <ruleset>/category/java/errorprone.xml</ruleset> -->
+            <!-- <ruleset>/category/java/multithreading.xml</ruleset> -->
+          </rulesets>
+        </configuration>
+      </plugin>
+      
+      <!-- JXR Plugin generates cross-reference page of the project's source 
+        code which can be linked to javadoc -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+      
+      <!-- Generates javadoc for the project -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${javadoc.plugin.version}</version>
+        <configuration>
+          <source>${sourceJDK}</source>
+          <show>package</show>
+          <aggregate>true</aggregate>
+          <tags>
+            <tag>
+              <name>todo</name>
+              <placement>a</placement>
+              <head>To do something:</head>
+            </tag>
+          </tags>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 
   <dependencies>
     <!-- Logback Classic for Logging via SLF4J -->
