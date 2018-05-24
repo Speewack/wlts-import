@@ -35,7 +35,7 @@
     <developerConnection>scm:git:https//github.com/Speewack/wlts-import</developerConnection>
     <url>https//github.com/Speewack/wlts-import</url>
   </scm>
-  
+
   <ciManagement>
     <url>https://travis-ci.org/Speewack/wlts-import</url>
     <system>Travis-CI</system>
@@ -200,11 +200,12 @@
 
   <profiles>
     <profile>
-      <!-- Use Toolchains Plugin unless the environment variable TRAVIS is 
-        set. This allows us to build without toolchains on the travis-ci.org -->
+      <!-- Use Toolchains Plugin unless the skipToolChains property is set. 
+        Thus mvn -DskipToolchains package allows us to build without toolchains when 
+        necessary such as on the travis-ci.org -->
       <activation>
         <property>
-          <name>!env.TRAVIS</name>
+          <name>!skipToolchains</name>
         </property>
       </activation>
       <build>
