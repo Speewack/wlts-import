@@ -35,6 +35,11 @@
     <developerConnection>scm:git:https//github.com/Speewack/wlts-import</developerConnection>
     <url>https//github.com/Speewack/wlts-import</url>
   </scm>
+  
+  <ciManagement>
+    <url>https://travis-ci.org/Speewack/wlts-import</url>
+    <system>Travis-CI</system>
+  </ciManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
