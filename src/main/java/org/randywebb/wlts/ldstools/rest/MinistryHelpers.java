@@ -17,13 +17,14 @@ public final class MinistryHelpers {
     /** Get the list of ministering brothers and sisters lists.
         Get the contents of the app property ministering-members-endpoint.
         @param client The LDS client to use
+        @param unitId The unit to get the auxiliaries from. This may just be client.getUnitNumber().
         @param htIds List of htAuxiliaries from the endpoint.
         @param vtIds List of vtAuxiliaries from the endpoint.
         @throws IOException on io error
         @throws ParseException on JSON error
     */
-    public static void getAuxiliaries(LdsToolsClient client, List<String> htIds, List<String> vtIds) throws IOException, ParseException {
-        JSONObject members = client.getAppPropertyEndpointInfo("ministering-members-endpoint");
+    public static void getAuxiliaries(LdsToolsClient client, String unitId, List<String> htIds, List<String> vtIds) throws IOException, ParseException {
+        JSONObject members = client.getAppPropertyEndpointInfo("ministering-members-endpoint", unitId);
         JSONArray families = (JSONArray) members.get("families");
 
         for (Object familyObject : families) {
