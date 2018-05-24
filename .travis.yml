@@ -5,7 +5,7 @@ jdk:
 install: true
 
 script: 
-  - mvn clean package -DskipToolchains=true -Dmaven.javadoc.skip=true -B 
+  - mvn clean package -DskipToolchains=true -B 
 
 cache:
   directories:
