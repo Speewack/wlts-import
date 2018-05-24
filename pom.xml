@@ -44,7 +44,7 @@
     <sourceJDK>${targetJDK}</sourceJDK>
     <!-- Specify the vendor for the JDK you are using (needed for toolchains 
       plugin) -->
-    <targetJDK.vendor>sun</targetJDK.vendor>
+    <targetJDK.vendor>oracle</targetJDK.vendor>
 
     <!-- Report plugin versions as they are used in both build and report 
       sections -->
