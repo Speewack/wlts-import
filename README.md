@@ -1,5 +1,12 @@
-# wlts-import
+# LDS Tools Export (aka wlts_import)
 WLTS Import from LDS Tools API
+
+## Project Resources
+Source Repository: https://github.com/Speewack/wlts-import
+
+Continuous Integration: https://travis-ci.org/Speewack/wlts-import/
+
+Releases and Distributions: https://github.com/Speewack/wlts-import/releases
 
 # Setup - Mac
 
