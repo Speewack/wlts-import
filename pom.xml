@@ -44,7 +44,7 @@
     <sourceJDK>${targetJDK}</sourceJDK>
     <!-- Specify the vendor for the JDK you are using (needed for toolchains 
       plugin) -->
-    <targetJDK.vendor>oracle</targetJDK.vendor>
+    <targetJDK.vendor>sun</targetJDK.vendor>
 
     <!-- Report plugin versions as they are used in both build and report 
       sections -->
@@ -55,30 +55,6 @@
 
   <build>
     <plugins>
-      <!-- Maven Toolchains Plugin selects the correct JDK to use for build 
-        and Javadoc as well as other plugins that support plugins. Configure to use 
-        the ${targetJDK} to compile the project independently of the JDK used to 
-        run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-toolchains-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>toolchain</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <toolchains>
-            <jdk>
-              <version>8</version>
-              <vendor>${targetJDK.vendor}</vendor>
-            </jdk>
-          </toolchains>
-        </configuration>
-      </plugin>
       <!-- Configure maven-compiler plugin to use a specific java syntax 
         and to generate a binary for a specific jave version. -->
       <plugin>
@@ -198,6 +174,47 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <!-- Use Toolchains Plugin unless the environment variable TRAVIS is 
+        set. This allows us to build without toolchains on the travis-ci.org -->
+      <activation>
+        <property>
+          <name>!env.TRAVIS</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Maven Toolchains Plugin selects the correct JDK to use for 
+            build and Javadoc as well as other plugins that support plugins. Configure 
+            to use the ${targetJDK} to compile the project independently of the JDK used 
+            to run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-toolchains-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>toolchain</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <toolchains>
+                <jdk>
+                  <version>1.8</version>
+                  <vendor>${targetJDK.vendor}</vendor>
+                </jdk>
+              </toolchains>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+
+    </profile>
+  </profiles>
+
   <reporting>
     <plugins>
       <plugin>
@@ -209,7 +226,7 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-      
+
       <!-- Perform a static analysis on the code for common coding errors -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -229,14 +246,14 @@
           </rulesets>
         </configuration>
       </plugin>
-      
+
       <!-- JXR Plugin generates cross-reference page of the project's source 
         code which can be linked to javadoc -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
       </plugin>
-      
+
       <!-- Generates javadoc for the project -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
