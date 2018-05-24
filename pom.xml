@@ -35,6 +35,11 @@
     <developerConnection>scm:git:https//github.com/Speewack/wlts-import</developerConnection>
     <url>https//github.com/Speewack/wlts-import</url>
   </scm>
+  
+  <ciManagement>
+    <url>https://travis-ci.org/Speewack/wlts-import</url>
+    <system>Travis-CI</system>
+  </ciManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -55,30 +60,6 @@
 
   <build>
     <plugins>
-      <!-- Maven Toolchains Plugin selects the correct JDK to use for build 
-        and Javadoc as well as other plugins that support plugins. Configure to use 
-        the ${targetJDK} to compile the project independently of the JDK used to 
-        run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-toolchains-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>toolchain</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <toolchains>
-            <jdk>
-              <version>${targetJDK}</version>
-              <vendor>${targetJDK.vendor}</vendor>
-            </jdk>
-          </toolchains>
-        </configuration>
-      </plugin>
       <!-- Configure maven-compiler plugin to use a specific java syntax 
         and to generate a binary for a specific jave version. -->
       <plugin>
@@ -198,6 +179,47 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <!-- Use Toolchains Plugin unless the environment variable TRAVIS is 
+        set. This allows us to build without toolchains on the travis-ci.org -->
+      <activation>
+        <property>
+          <name>!env.TRAVIS</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Maven Toolchains Plugin selects the correct JDK to use for 
+            build and Javadoc as well as other plugins that support plugins. Configure 
+            to use the ${targetJDK} to compile the project independently of the JDK used 
+            to run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-toolchains-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>toolchain</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <toolchains>
+                <jdk>
+                  <version>1.8</version>
+                  <vendor>${targetJDK.vendor}</vendor>
+                </jdk>
+              </toolchains>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+
+    </profile>
+  </profiles>
+
   <reporting>
     <plugins>
       <plugin>
@@ -209,7 +231,7 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-      
+
       <!-- Perform a static analysis on the code for common coding errors -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -229,14 +251,14 @@
           </rulesets>
         </configuration>
       </plugin>
-      
+
       <!-- JXR Plugin generates cross-reference page of the project's source 
         code which can be linked to javadoc -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
       </plugin>
-      
+
       <!-- Generates javadoc for the project -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
