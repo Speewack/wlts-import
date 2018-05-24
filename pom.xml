@@ -73,7 +73,7 @@
         <configuration>
           <toolchains>
             <jdk>
-              <version>${targetJDK}</version>
+              <version>8</version>
               <vendor>${targetJDK.vendor}</vendor>
             </jdk>
           </toolchains>
