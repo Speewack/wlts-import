@@ -34,10 +34,10 @@ class TestAddress {
             Object obj = new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("addresses.json")));
             List<Address> addresses = Address.fromArray( (JSONArray) obj );
             assertEquals(addresses.size(),8);
-            assertEquals(addresses.get(0).getDouble("latitude").doubleValue(), 30.446545);
-            assertEquals(addresses.get(0).getDouble("longitude").doubleValue(), -97.622255);
-            assertEquals(addresses.get(0).getInteger("postalCode").intValue(), 78660);
-            assertEquals(addresses.get(0).get("state"), "TX");
+            assertEquals(addresses.get(0).getLatitudeValue().doubleValue(), 30.446545);
+            assertEquals(addresses.get(0).getLongitudeValue().doubleValue(), -97.622255);
+            assertEquals(addresses.get(0).getPostalCode(), "78660");
+            assertEquals(addresses.get(0).getState(), "TX");
 
             // ministering members parsing
 

@@ -36,57 +36,57 @@ class TestCompanionship {
             assertEquals(startDates.length, ids.length);
 
             for (int i = 0; i < ids.length; i += 1) {
-                assertEquals(companionships.get(i).getLong("id").longValue(), ids[i]);
-                assertEquals(companionships.get(i).getLong("districtId").longValue(), districtIds[i]);
-                assertEquals(companionships.get(i).getLong("startDate").longValue(), startDates[i]);
+                assertEquals(companionships.get(i).getId(), "" + ids[i]);
+                assertEquals(companionships.get(i).getDistrictId(), "" + districtIds[i]);
+                assertEquals(companionships.get(i).getStartDate(), "" + startDates[i]);
             }
 
             assertEquals(companionships.get(0).getTeachers().size(), 0);
             assertEquals(companionships.get(0).getAssignments().size(), 0);
 
             assertEquals(companionships.get(1).getTeachers().size(), 1);
-            assertEquals(companionships.get(1).getTeachers().get(0).getLong("id").longValue(), 9936118L);
-            assertEquals(companionships.get(1).getTeachers().get(0).getLong("companionshipId").longValue(), 9955937L);
-            assertEquals(companionships.get(1).getTeachers().get(0).getLong("individualId").longValue(), 99908767812L);
+            assertEquals(companionships.get(1).getTeachers().get(0).getId(), "9936118");
+            assertEquals(companionships.get(1).getTeachers().get(0).getCompanionshipId(), "9955937");
+            assertEquals(companionships.get(1).getTeachers().get(0).getIndividualId(), "99908767812");
             assertEquals(companionships.get(1).getAssignments().size(), 0);
 
             assertEquals(companionships.get(2).getTeachers().size(), 1);
-            assertEquals(companionships.get(2).getTeachers().get(0).getLong("id").longValue(), 9970925L);
-            assertEquals(companionships.get(2).getTeachers().get(0).getLong("companionshipId").longValue(), 9962044L);
-            assertEquals(companionships.get(2).getTeachers().get(0).getLong("individualId").longValue(), 99058187748L);
+            assertEquals(companionships.get(2).getTeachers().get(0).getId(), "9970925");
+            assertEquals(companionships.get(2).getTeachers().get(0).getCompanionshipId(), "9962044");
+            assertEquals(companionships.get(2).getTeachers().get(0).getIndividualId(), "99058187748");
             assertEquals(companionships.get(2).getAssignments().size(), 0);
 
             assertEquals(companionships.get(3).getTeachers().size(), 1);
-            assertEquals(companionships.get(3).getTeachers().get(0).getLong("id").longValue(), 9957519L);
-            assertEquals(companionships.get(3).getTeachers().get(0).getLong("companionshipId").longValue(), 9962108L);
-            assertEquals(companionships.get(3).getTeachers().get(0).getLong("individualId").longValue(), 99069973910L);
+            assertEquals(companionships.get(3).getTeachers().get(0).getId(), "9957519");
+            assertEquals(companionships.get(3).getTeachers().get(0).getCompanionshipId(), "9962108");
+            assertEquals(companionships.get(3).getTeachers().get(0).getIndividualId(), "99069973910");
             assertEquals(companionships.get(3).getAssignments().size(), 0);
 
             assertEquals(companionships.get(4).getTeachers().size(), 1);
-            assertEquals(companionships.get(4).getTeachers().get(0).getLong("id").longValue(), 9970926L);
-            assertEquals(companionships.get(4).getTeachers().get(0).getLong("companionshipId").longValue(), 9997163L);
-            assertEquals(companionships.get(4).getTeachers().get(0).getLong("individualId").longValue(), 9995783329L);
+            assertEquals(companionships.get(4).getTeachers().get(0).getId(), "9970926");
+            assertEquals(companionships.get(4).getTeachers().get(0).getCompanionshipId(), "9997163");
+            assertEquals(companionships.get(4).getTeachers().get(0).getIndividualId(), "9995783329");
             assertEquals(companionships.get(4).getAssignments().size(), 0);
 
             assertEquals(companionships.get(5).getTeachers().size(), 1);
-            assertEquals(companionships.get(5).getTeachers().get(0).getLong("id").longValue(), 9970917L);
-            assertEquals(companionships.get(5).getTeachers().get(0).getLong("companionshipId").longValue(), 9997171L);
-            assertEquals(companionships.get(5).getTeachers().get(0).getLong("individualId").longValue(), 996253258L);
+            assertEquals(companionships.get(5).getTeachers().get(0).getId(), "9970917");
+            assertEquals(companionships.get(5).getTeachers().get(0).getCompanionshipId(), "9997171");
+            assertEquals(companionships.get(5).getTeachers().get(0).getIndividualId(), "996253258");
             assertEquals(companionships.get(5).getAssignments().size(), 0);
 
             assertEquals(companionships.get(6).getTeachers().size(), 1);
-            assertEquals(companionships.get(6).getTeachers().get(0).getLong("id").longValue(), 9934585L);
-            assertEquals(companionships.get(6).getTeachers().get(0).getLong("companionshipId").longValue(), 9973146L);
-            assertEquals(companionships.get(6).getTeachers().get(0).getLong("individualId").longValue(), 9931140464L);
+            assertEquals(companionships.get(6).getTeachers().get(0).getId(), "9934585");
+            assertEquals(companionships.get(6).getTeachers().get(0).getCompanionshipId(), "9973146");
+            assertEquals(companionships.get(6).getTeachers().get(0).getIndividualId(), "9931140464");
             assertEquals(companionships.get(6).getAssignments().size(), 0);
 
             assertEquals(companionships.get(7).getTeachers().size(), 2);
-            assertEquals(companionships.get(7).getTeachers().get(0).getLong("id").longValue(), 9985403L);
-            assertEquals(companionships.get(7).getTeachers().get(0).getLong("companionshipId").longValue(), 9960418L);
-            assertEquals(companionships.get(7).getTeachers().get(0).getLong("individualId").longValue(), 9932901812L);
-            assertEquals(companionships.get(7).getTeachers().get(1).getLong("id").longValue(), 9985404L);
-            assertEquals(companionships.get(7).getTeachers().get(1).getLong("companionshipId").longValue(), 9960418L);
-            assertEquals(companionships.get(7).getTeachers().get(1).getLong("individualId").longValue(), 9917406968L);
+            assertEquals(companionships.get(7).getTeachers().get(0).getId(), "9985403");
+            assertEquals(companionships.get(7).getTeachers().get(0).getCompanionshipId(), "9960418");
+            assertEquals(companionships.get(7).getTeachers().get(0).getIndividualId(), "9932901812");
+            assertEquals(companionships.get(7).getTeachers().get(1).getId(), "9985404");
+            assertEquals(companionships.get(7).getTeachers().get(1).getCompanionshipId(), "9960418");
+            assertEquals(companionships.get(7).getTeachers().get(1).getIndividualId(), "9917406968");
             assertEquals(companionships.get(7).getAssignments().size(), 2);
             // assignments are tested separately
 
