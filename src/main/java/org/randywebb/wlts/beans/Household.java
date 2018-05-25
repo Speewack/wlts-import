@@ -69,7 +69,7 @@ public class Household extends AbstractBean {
         @param definition A JSON household Object
     */
     public Household(JSONObject definition) {
-        update(definition, "householdName", "headOfHouse", "spouse", "children", "phone", "emailAddress", "coupleName", "headOfHouseholdIndividualID");
+        update(definition, "householdName", "headOfHouse", "spouse", "children", "phone", "emailAddress", "coupleName", "headOfHouseIndividualId");
         householdAddress = new Address(definition);
     }
 
@@ -398,17 +398,17 @@ public class Household extends AbstractBean {
     }
 
     /**
-     * @return the headOfHouseholdIndividualID
+     * @return the headOfHouseIndividualId
      */
     public String getHeadOfHouseholdIndividualID() {
-        return get("headOfHouseholdIndividualID");
+        return get("headOfHouseIndividualId");
     }
 
     /**
-     * @param headOfHouseholdIndividualID the headOfHouseholdIndividualID to set
+     * @param headOfHouseholdIndividualID the headOfHouseIndividualId to set
      */
     public void setHeadOfHouseholdIndividualID(String headOfHouseholdIndividualID) {
-        put("headOfHouseholdIndividualID", headOfHouseholdIndividualID);
+        put("headOfHouseIndividualId", headOfHouseholdIndividualID);
     }
 
 }
