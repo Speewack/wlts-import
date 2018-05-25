@@ -46,6 +46,12 @@ To build run:
 
 The documentation is at: `target/site/apidocs/index.html`
 
+To determine code coverage of the tests:
+
+`mvn jacoco:instrument test jacoco:report`
+
+The code coverage report is at: `target/site/jacoco/index.html`
+
 ## Usage
 
 You can get the full usage by passing `--help`
