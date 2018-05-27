@@ -105,4 +105,35 @@
       "postalCode": "78664",
       "state": "Texas"
 	},
+	{
+		"coupleName": "AppleSeed, Sam & Jane",
+		"desc1": "3421 Toyville Trl",
+		"desc2": "Round Rock, Texas 78664",
+		"emailAddress": "Sam_Appleseed@gmail.com",
+		"headOfHouse":	{
+			"email": "Sam_Appleseed@gmail.com",
+			"fullName": "AppleSeed, Sam",
+			"givenName": "Sam",
+			"individualId": 99520561444,
+			"preferredName": "AppleSeed, Sam",
+			"surname": "AppleSeed"
+		},
+      "headOfHouseIndividualId": 99520561444,
+      "householdName": "AppleSeed",
+      "includeLatLong": true,
+      "latitude": 30.4835949,
+      "longitude": -97.6463979,
+      "phone": "423-867-5309",
+      "postalCode": "78664",
+		"spouse": 	{
+				"email": "JaneAppleseed@gmail.com",
+				"fullName": "AppleSeed, Jane",
+				"givenName": "Jane",
+				"individualId": 99520562427,
+				"phone": "512-867-5309",
+				"preferredName": "AppleSeed, Jane",
+				"surname": "AppleSeed"
+		},
+      "state": "Texas"
+	}
 ]

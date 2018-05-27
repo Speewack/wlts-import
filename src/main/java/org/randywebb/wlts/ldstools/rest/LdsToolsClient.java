@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 /** Maintains the credentials for a connection to LDS sites.
  * @author randyw
- *
+ * TODO: We should cache contents of URLs. If we get the same URL multiple times, we should only fetch the contents once.
  */
 public class LdsToolsClient {
 

@@ -154,7 +154,7 @@ public class Address extends AbstractBean {
     */
     public void setLongitude(String longitude) {
         put("longitude", null == longitude ? null : longitude.trim());
-        setIncludeLatLong( (null != getLatitude()) && (null != getLongitude()) );
+        setIncludeLatLong((null != getLatitude()) && (null != getLongitude()));
     }
 
     /**
@@ -184,7 +184,7 @@ public class Address extends AbstractBean {
     */
     public void setLattitude(String latitude) {
         setLatitude(latitude);
-        setIncludeLatLong( (null != getLatitude()) && (null != getLongitude()) );
+        setIncludeLatLong((null != getLatitude()) && (null != getLongitude()));
     }
 
     /**
