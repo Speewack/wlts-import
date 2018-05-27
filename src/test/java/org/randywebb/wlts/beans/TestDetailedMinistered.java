@@ -41,6 +41,8 @@ class TestDetailedMinistered {
             String coupleNames[] = {"AppleSeed, Sam & Sally", "AppleSeed, Sam", "AppleSeed, Sam & Sally", "AppleSeed, Sam"};
 
             assertEquals(ministered.size(), individualIds.length);
+            assertEquals(fullNames.length, individualIds.length);
+            assertEquals(coupleNames.length, individualIds.length);
 
             for (int i = 0; i < individualIds.length; i += 1) {
                 assertEquals(ministered.get(i).get("individualId"), individualIds[i]);
