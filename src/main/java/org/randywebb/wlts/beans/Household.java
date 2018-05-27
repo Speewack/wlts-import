@@ -156,17 +156,28 @@ public class Household extends AbstractBean {
         Address previous = getHouseholdAddress();
 
         if (null != relocatable) {
-            Address address = new Address();
+            Address address = new Address(relocatable);
 
-            address.setLattitude((null == relocatable.get("latitude")) ? previous.getLattitude() : relocatable.get("latitude").toString());
-            address.setLongitude((null == relocatable.get("longitude")) ? previous.getLongitude() : relocatable.get("longitude").toString());
-            address.setPostalCode((null == relocatable.get("postalCode")) ? previous.getPostalCode() : relocatable.get("postalCode").toString());
-            address.setState((null == relocatable.get("state")) ? previous.getState() : relocatable.get("state").toString());
-            if (null == relocatable.get("address")) {
-                address.setStreetAddress((null == relocatable.get("desc1")) || (null == relocatable.get("desc2"))
-                                            ? previous.getLattitude() : relocatable.get("desc1").toString() + ", " + relocatable.get("desc2").toString());
-            } else {
-                address.setStreetAddress(relocatable.get("address").toString());
+            if (null == address.getStreetAddress()) {
+                address.setStreetAddress(previous.getStreetAddress());
+            }
+            if (null == address.getUnitNumber()) {
+                address.setUnitNumber(previous.getUnitNumber());
+            }
+            if (null == address.getCity()) {
+                address.setCity(previous.getCity());
+            }
+            if (null == address.getState()) {
+                address.setState(previous.getState());
+            }
+            if (null == address.getPostalCode()) {
+                address.setPostalCode(previous.getPostalCode());
+            }
+            if (null == address.getLongitude()) {
+                address.setLongitude(previous.getLongitude());
+            }
+            if (null == address.getLatitude()) {
+                address.setLatitude(previous.getLatitude());
             }
 
             return address;
