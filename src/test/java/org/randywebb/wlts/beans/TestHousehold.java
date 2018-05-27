@@ -38,7 +38,7 @@ class TestHousehold {
             assertNull(households.get(2).getSpouse());
             assertEquals(households.get(3).getSpouse().getIndividualId(), "99520562427");
 
-            for (int i = 0; i < 4; i += 1) {
+            for (int i = 0; i < childrenCounts.length; i += 1) {
                 assertEquals(households.get(i).getChildren().size(), childrenCounts[i]);
                 assertEquals(households.get(i).getCoupleName(), coupleNames[i]);
                 assertEquals(households.get(i).getHeadOfHouseholdIndividualID(), "99520561444");
