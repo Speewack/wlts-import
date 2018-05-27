@@ -77,6 +77,7 @@ public class DetailedMinistered extends AbstractBean {
                     DetailedMinistered ministered = new DetailedMinistered();
                     String individualId = assignment.get("individualId");
                     Household household = idToHousehold.get(individualId);
+                    Household nearest = household.nearest(households, relocation);
                     HouseholdMember member = household.getMember(individualId);
                     Address address = household.relocate(relocation);
 
@@ -116,8 +117,7 @@ public class DetailedMinistered extends AbstractBean {
                     ministered.put("ministers", companionshipName);
                     ministered.put("districtLeaderName",
                         null == districtLeader ? null : districtLeader.getPreferredName());
-                    ministered.put("nearestHouseholdName",
-                        household.nearest(households, relocation).get("householdName"));
+                    ministered.put("nearestHouseholdName", null == nearest ? null : nearest.get("householdName"));
 
                     results.add(ministered);
 
