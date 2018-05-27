@@ -27,18 +27,11 @@ class TestHousehold {
         try {
             Object obj = new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("households.json")));
             List<Household> households = Household.fromArray( (JSONArray) obj );
+            String coupleNames[] = {"AppleSeed, Sam & Sally", "AppleSeed, Sam", "AppleSeed, Sam", "AppleSeed, Sam & Jane"};
+            int childrenCounts[] = {2, 1, 0, 0};
 
-            assertEquals(households.size(), 4);
-
-            assertEquals(households.get(0).getChildren().size(), 2);
-            assertEquals(households.get(1).getChildren().size(), 1);
-            assertEquals(households.get(2).getChildren().size(), 0);
-            assertEquals(households.get(3).getChildren().size(), 0);
-
-            assertEquals(households.get(0).getCoupleName(), "AppleSeed, Sam & Sally");
-            assertEquals(households.get(1).getCoupleName(), "AppleSeed, Sam");
-            assertEquals(households.get(2).getCoupleName(), "AppleSeed, Sam");
-            assertEquals(households.get(3).getCoupleName(), "AppleSeed, Sam & Jane");
+            assertEquals(households.size(), coupleNames.length);
+            assertEquals(childrenCounts.length, coupleNames.length);
 
             assertEquals(households.get(0).getSpouse().getIndividualId(), "99293166028");
             assertNull(households.get(1).getSpouse());
@@ -46,6 +39,8 @@ class TestHousehold {
             assertEquals(households.get(3).getSpouse().getIndividualId(), "99520562427");
 
             for (int i = 0; i < 4; i += 1) {
+                assertEquals(households.get(i).getChildren().size(), childrenCounts[i]);
+                assertEquals(households.get(i).getCoupleName(), coupleNames[i]);
                 assertEquals(households.get(i).getHeadOfHouseholdIndividualID(), "99520561444");
                 assertEquals(households.get(i).getHouseholdName(), "AppleSeed");
                 assertEquals(households.get(i).getHouseholdAddress().getStreetAddress(), "3421 Toyville Trl");
