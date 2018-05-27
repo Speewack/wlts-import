@@ -23,7 +23,7 @@ class TestDistrict {
 
     @Test
     @DisplayName("Test JSON Parsing")
-    void testAddressJSON() {
+    void testJSON() {
         try {
             Object obj = new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("districts.json")));
             List<District> districts = District.fromArray( (JSONArray) obj );

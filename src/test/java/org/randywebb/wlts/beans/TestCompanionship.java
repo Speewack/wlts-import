@@ -23,7 +23,7 @@ class TestCompanionship {
 
     @Test
     @DisplayName("Test JSON Parsing")
-    void testAddressJSON() {
+    void testJSON() {
         try {
             Object obj = new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("companionships.json")));
             List<Companionship> companionships = Companionship.fromArray( (JSONArray) obj );

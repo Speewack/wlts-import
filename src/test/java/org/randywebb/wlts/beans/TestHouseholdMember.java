@@ -23,7 +23,7 @@ class TestHouseholdMember {
 
     @Test
     @DisplayName("Test JSON Parsing")
-    void testAddressJSON() {
+    void testJSON() {
         try {
             Object obj = new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("householdMembers.json")));
             List<HouseholdMember> members = HouseholdMember.fromArray( (JSONArray) obj );
