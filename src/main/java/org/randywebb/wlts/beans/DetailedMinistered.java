@@ -85,10 +85,10 @@ public class DetailedMinistered extends AbstractBean {
                     copy(assignment, "assignmentType", ministered);
                     copy(assignment, "companionshipId", ministered, "ministeringCompanionshipId");
 
-                    copy(companionship, "auxiliaryId", ministered);
-                    copy(companionship, "districtLeaderId", ministered);
-                    copy(companionship, "districtLeaderIndividualId", ministered);
-                    copy(companionship, "name", ministered, "districtName");
+                    copy(district, "auxiliaryId", ministered);
+                    copy(district, "districtLeaderId", ministered);
+                    copy(district, "districtLeaderIndividualId", ministered);
+                    copy(district, "name", ministered, "districtName");
 
                     copy(companionship, "districtId", ministered);
                     copy(companionship, "startDate", ministered, "ministerStartDate");
