@@ -2,6 +2,8 @@ package org.randywebb.wlts.beans;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +33,9 @@ class TestAssignment {
         assignment.setIndividualId("iid");
         assignment.setAssignmentType("at");
 
-        assertEquals(assignment.toString(), "Assignment [assignmentType = at, companionshipId = cid, id = id, individualId = iid, visits = [] ]");
+        assignment.setVisits(new ArrayList<Visit>(Arrays.asList(new Visit(), new Visit())));
+
+        assertEquals(assignment.toString(), "Assignment [assignmentType = at, companionshipId = cid, id = id, individualId = iid, visits = [Visit [], Visit []] ]");
     }
 
     @Test

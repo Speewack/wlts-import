@@ -86,6 +86,7 @@ class TestHousehold {
             Household furthest1 = households.get(0).furthest(households, relocations);
             Household furthest2 = households.get(1).furthest(households, relocations);
             Household furthest3 = households.get(3).furthest(households, relocations);
+            Household empty = new Household();
 
             assertEquals(households.get(0).getCoupleName(), "AppleSeed, Sam & Sally");
             assertEquals(nearest1.getCoupleName(), "AppleSeed, Sam & Jane");
@@ -98,6 +99,11 @@ class TestHousehold {
             assertEquals(households.get(3).getCoupleName(), "AppleSeed, Sam & Jane");
             assertEquals(nearest3.getCoupleName(), "AppleSeed, Sam & Sally");
             assertEquals(furthest3.getCoupleName(), "AppleSeed, Sam");
+
+            assertEquals(households.get(0).distance(households.get(0), null), 0.0);
+
+            empty.setHouseholdAddress(new Address());
+            assertEquals(households.get(0).distance(empty, null), 0.0);
 
         } catch(IOException | ParseException e) {
             e.printStackTrace();

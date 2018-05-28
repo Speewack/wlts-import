@@ -2,6 +2,8 @@ package org.randywebb.wlts.beans;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +34,9 @@ class TestDistrict {
         district.setDistrictLeaderIndividualId("dliid");
         district.setName("n");
 
-        assertEquals(district.toString(), "District [auxiliaryId = aid, districtLeaderId = dlid, districtLeaderIndividualId = dliid, id = id, name = n, companionships = [] ]");
+        district.setCompanionships(new ArrayList<Companionship>(Arrays.asList(new Companionship(), new Companionship())));
+
+        assertEquals(district.toString(), "District [auxiliaryId = aid, districtLeaderId = dlid, districtLeaderIndividualId = dliid, id = id, name = n, companionships = [Companionship [, teachers = [], assignments = [] ], Companionship [, teachers = [], assignments = [] ]] ]");
 
     }
 

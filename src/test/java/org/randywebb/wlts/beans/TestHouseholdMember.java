@@ -22,6 +22,25 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 class TestHouseholdMember {
 
     @Test
+    @DisplayName("Test toString")
+    void testToString() {
+        HouseholdMember person = new HouseholdMember();
+
+        person.setFullName("fn");
+        person.setPreferredName("pn");
+        person.setMemberId("mid");
+        person.setIndividualId("iid");
+        person.setSurname("sn");
+        person.setGivenName("gn");
+        person.setPhone("ph");
+        person.setEmail("em");
+
+        assertEquals(person.getPhone(), "ph");
+
+        assertEquals(person.toString(), "Member [email = em, fullName = fn, givenName = gn, individualId = iid, memberId = mid, phone = ph, preferredName = pn, surname = sn]");
+    }
+
+    @Test
     @DisplayName("Test JSON Parsing")
     void testJSON() {
         try {
