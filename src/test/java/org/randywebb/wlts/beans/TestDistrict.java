@@ -22,6 +22,21 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 class TestDistrict {
 
     @Test
+    @DisplayName("Test toString")
+    void testToString() {
+        District district = new District();
+
+        district.setId("id");
+        district.setAuxiliaryId("aid");
+        district.setDistrictLeaderId("dlid");
+        district.setDistrictLeaderIndividualId("dliid");
+        district.setName("n");
+
+        assertEquals(district.toString(), "District [auxiliaryId = aid, districtLeaderId = dlid, districtLeaderIndividualId = dliid, id = id, name = n, companionships = [] ]");
+
+    }
+
+    @Test
     @DisplayName("Test JSON Parsing")
     void testJSON() {
         try {

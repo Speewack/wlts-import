@@ -1,6 +1,7 @@
 package org.randywebb.wlts.reports;
 
 import java.io.FileWriter;
+import java.io.Writer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +69,21 @@ public final class DetailedMinisteredCSV {
         System.out.println("Export complete");
     }
 
+
     /** Given a list of members, writes them to a CSV file.
         @param csvFileName The path to the CSV file to create
         @param members The members, in order, to be written to the CSV file
+        @throws IOException If we cannot write to csvFileName
     */
-    private static void writeCSVFile(String csvFileName, List<DetailedMinistered> members) {
+    public static void writeCSVFile(String csvFileName, List<DetailedMinistered> members) throws IOException {
+        writeCSV(new FileWriter(csvFileName), members);
+    }
+
+    /** Given a list of members, writes them to a CSV file.
+        @param output The stream to write the CSV to
+        @param members The members, in order, to be written to the CSV file
+    */
+    public static void writeCSV(Writer output, List<DetailedMinistered> members) {
         ICsvMapWriter beanWriter = null;
         String[] header = {"individualId", "assignmentType", "ministeringCompanionshipId",
                 "auxiliaryId", "districtLeaderId", "districtLeaderIndividualId", "districtName",
@@ -84,7 +95,7 @@ public final class DetailedMinisteredCSV {
         CellProcessor[] processors = DetailedMinistered.csvProcessors(header, new ConvertNullTo(""));
 
         try {
-            beanWriter = new CsvMapWriter(new FileWriter(csvFileName), CsvPreference.STANDARD_PREFERENCE);
+            beanWriter = new CsvMapWriter(output, CsvPreference.STANDARD_PREFERENCE);
 
             beanWriter.writeHeader(header);
 

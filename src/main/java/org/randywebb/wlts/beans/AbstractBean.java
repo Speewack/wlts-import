@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -370,9 +371,11 @@ public abstract class AbstractBean extends HashMap<String, String> {
     @Override
     public String toString() {
         String value = "";
+        String[] keys = keySet().toArray(new String[0]);
 
-        for (HashMap.Entry<String, String> entry : entrySet()) {
-            value += (value.length() == 0 ? "" : ", ") + entry.getKey() + " = " + entry.getValue();
+        Arrays.sort(keys);
+        for (String key : keys) {
+            value += (value.length() == 0 ? "" : ", ") + key + " = " + get(key);
         }
 
         return value;

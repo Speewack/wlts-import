@@ -2,6 +2,8 @@ package org.randywebb.wlts.beans;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,6 +30,15 @@ class TestHousehold {
         Household household = new Household();
         HouseholdMember head = new HouseholdMember();
         HouseholdMember spouse = new HouseholdMember();
+        Address address = new Address();
+
+        address.setStreetAddress("sa");
+        address.setUnitNumber("un");
+        address.setCity("c");
+        address.setState("s");
+        address.setPostalCode("pc");
+        address.setLongitude("lon");
+        address.setLattitude("la");
 
         head.setFullName("head fn");
         head.setPreferredName("head pn");
@@ -50,8 +61,16 @@ class TestHousehold {
         household.setHouseholdName("hhn");
         household.setHeadOfHousehold(head);
         household.setSpouse(spouse);
+        household.setHouseholdAddress(address);
+        household.setPhone("ph");
+        household.setEmailAddress("em");
+        household.setCoupleName("cn");
+        household.setHeadOfHouseholdIndividualID("hhiid");
+        household.setChildren(new ArrayList<HouseholdMember>(Arrays.asList(new HouseholdMember(), new HouseholdMember())));
+        household.addChild(new HouseholdMember());
 
-        assertEquals(household.toString(), "Household [householdName = hhn, headOfHousehold = Member [phone = head ph, surname = head sn, givenName = head gn, fullName = head fn, preferredName = head pn, individualId = head ii, email = head em, memberId = head mi], spouse = Member [phone = spouse ph, surname = spouse sn, givenName = spouse gn, fullName = spouse fn, preferredName = spouse pn, individualId = spouse ii, email = spouse em, memberId = spouse mi], householdAddress = null, children = [] ]");
+        assertNull(household.getMember("john"));
+        assertEquals(household.toString(), "Household [coupleName = cn, emailAddress = em, headOfHouseIndividualId = hhiid, householdName = hhn, phone = ph, headOfHousehold = Member [email = head em, fullName = head fn, givenName = head gn, individualId = head ii, memberId = head mi, phone = head ph, preferredName = head pn, surname = head sn], spouse = Member [email = spouse em, fullName = spouse fn, givenName = spouse gn, individualId = spouse ii, memberId = spouse mi, phone = spouse ph, preferredName = spouse pn, surname = spouse sn], householdAddress = Address [city = c, includeLatLong = true, latitude = la, longitude = lon, postalCode = pc, state = s, streetAddress = sa, streetAddress2 = un], children = [Member [], Member [], Member []] ]");
     }
 
     @Test

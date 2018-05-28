@@ -2,6 +2,8 @@ package org.randywebb.wlts.beans;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +22,20 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 class TestCompanionship {
+
+    @Test
+    @DisplayName("Test toString")
+    void testToString() {
+        Companionship companionship = new Companionship();
+
+        companionship.setId("id");
+        companionship.setDistrictId("did");
+        companionship.setStartDate("sd");
+        companionship.setTeachers(new ArrayList<Teacher>(Arrays.asList(new Teacher(), new Teacher())));
+        companionship.setAssignments(new ArrayList<Assignment>(Arrays.asList(new Assignment(), new Assignment())));
+
+        assertEquals(companionship.toString(), "Companionship [districtId = did, id = id, startDate = sd, teachers = [Teacher [], Teacher []], assignments = [Assignment [, visits = [] ], Assignment [, visits = [] ]] ]");
+    }
 
     @Test
     @DisplayName("Test JSON Parsing")

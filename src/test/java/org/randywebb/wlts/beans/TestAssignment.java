@@ -22,6 +22,19 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 class TestAssignment {
 
     @Test
+    @DisplayName("Test toString")
+    void testToString() {
+        Assignment assignment = new Assignment();
+
+        assignment.setId("id");
+        assignment.setCompanionshipId("cid");
+        assignment.setIndividualId("iid");
+        assignment.setAssignmentType("at");
+
+        assertEquals(assignment.toString(), "Assignment [assignmentType = at, companionshipId = cid, id = id, individualId = iid, visits = [] ]");
+    }
+
+    @Test
     @DisplayName("Test JSON Parsing")
     void testJSON() {
         try {

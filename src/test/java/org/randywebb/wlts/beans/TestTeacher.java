@@ -22,6 +22,19 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 class TestTeacher {
 
     @Test
+    @DisplayName("Test toString")
+    void testToString() {
+        Teacher teacher = new Teacher();
+
+        teacher.setId("id");
+        teacher.setCompanionshipId("cid");
+        teacher.setIndividualId("iid");
+
+        assertEquals(teacher.toString(), "Teacher [companionshipId = cid, id = id, individualId = iid]");
+
+    }
+
+    @Test
     @DisplayName("Test JSON Parsing")
     void testJSON() {
         try {

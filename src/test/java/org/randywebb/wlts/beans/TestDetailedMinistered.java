@@ -3,6 +3,10 @@ package org.randywebb.wlts.beans;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Scanner;
+import java.io.StringWriter;
+
+import org.randywebb.wlts.reports.DetailedMinisteredCSV;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,6 +25,32 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 class TestDetailedMinistered {
+
+    @Test
+    @DisplayName("Test CSV Generation")
+    void testCSV() {
+        try {
+            JSONObject testData = (JSONObject) new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("detailedMinistered.json")));
+            List<District> districts = District.fromArray((JSONArray) testData.get("districts"));
+            List<Household> households = Household.fromArray((JSONArray) testData.get("households"));
+            List<DetailedMinistered> members;
+            StringWriter output = new StringWriter();
+            Scanner s = new Scanner(new InputStreamReader(ClassLoader.getSystemResourceAsStream("detailedMinistered.csv"))).useDelimiter("\\A");
+            String  expected = s.hasNext() ? s.next() : "";
+
+            assertTrue(null != districts);
+            assertTrue(null != households);
+
+            members = DetailedMinistered.fromDistricts(districts, households, null);
+            DetailedMinisteredCSV.writeCSV(output, members);
+
+            assertEquals(output.toString().replace("\r\n","\n"), expected.replace("\r\n","\n"));
+
+        } catch(IOException | ParseException e) {
+            e.printStackTrace();
+            fail("Exception parsing Address JSON: " + e.getMessage());
+        }
+    }
 
     @Test
     @DisplayName("Test JSON Parsing")
