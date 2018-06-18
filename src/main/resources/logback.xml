@@ -17,7 +17,7 @@
     </encoder>
   </appender>
 
-  <logger name="org.randywebb" level="trace">
+  <logger name="org.randywebb" level="debug">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </logger>
