@@ -2,13 +2,12 @@ package org.randywebb.wlts.beans;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Arrays;
 
-import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
-
+import org.json.simple.JSONObject;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 //import org.slf4j.Logger;
@@ -78,6 +77,13 @@ public class DetailedMember extends AbstractBean {
             "givenName", "coupleName", "householdId", "isHead", "isSpouse", "isAdult",
             "fullTimeMissionary", "formattedMRN", "setApart", "formattedBirthDateFull",
             "sustainedDate");
+
+        //Handle the Address if address attribute is present
+        String address = definition.get("address").toString();
+        if (address != null) {
+            this.setAddress(Address.toAddress(address));
+        }
+
     }
 
     /**
