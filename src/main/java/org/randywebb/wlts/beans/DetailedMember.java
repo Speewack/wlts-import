@@ -79,9 +79,9 @@ public class DetailedMember extends AbstractBean {
             "sustainedDate");
 
         //Handle the Address if address attribute is present
-        String address = definition.get("address").toString();
-        if (address != null) {
-            this.setAddress(Address.toAddress(address));
+        Object addrObj = definition.get("address");
+        if (addrObj != null) {
+            this.setAddress(Address.toAddress(addrObj.toString()));
         }
 
     }
