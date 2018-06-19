@@ -1,5 +1,12 @@
-# wlts-import
+# LDS Tools Export (aka wlts_import)
 WLTS Import from LDS Tools API
+
+## Project Resources
+Source Repository: https://github.com/Speewack/wlts-import
+
+Continuous Integration: https://travis-ci.org/Speewack/wlts-import/
+
+Releases and Distributions: https://github.com/Speewack/wlts-import/releases
 
 # Setup - Mac
 
@@ -38,6 +45,12 @@ To build run:
 `mvn clean package javadoc:javadoc pmd:pmd pmd:cpd`
 
 The documentation is at: `target/site/apidocs/index.html`
+
+To determine code coverage of the tests:
+
+`mvn jacoco:instrument test jacoco:report`
+
+The code coverage report is at: `target/site/jacoco/index.html`
 
 ## Usage
 
