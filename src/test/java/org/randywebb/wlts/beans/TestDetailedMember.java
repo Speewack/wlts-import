@@ -30,5 +30,8 @@ public class TestDetailedMember {
 	} catch (IOException | ParseException e) {
 	    fail("Failed to parse DetailedMember.json", e);
 	}
+	catch (NullPointerException e) {
+	    fail("Failed to parse DetailedMember.json", e);
+	}
     }
 }

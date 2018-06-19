@@ -91,8 +91,7 @@ class TestAddress {
             assertEquals(addresses.get(7).getCity(), "Pflugerville");
 
         } catch(IOException | ParseException e) {
-            e.printStackTrace();
-            fail("Exception parsing Address JSON: " + e.getMessage());
+            fail("Exception parsing Address JSON: " + e.getMessage(), e);
         }
     }
 
