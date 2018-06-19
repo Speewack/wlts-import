@@ -1,0 +1,16 @@
+[
+	{"id":81159,"assignmentId":33465,"visited":true,"year":2017,"month":5},
+	{"id":83780,"assignmentId":33465,"visited":true,"year":2017,"month":6},
+	{"id":87179,"assignmentId":33465,"visited":true,"year":2017,"month":7},
+	{"id":89183,"assignmentId":33465,"visited":true,"year":2017,"month":8},
+	{"id":92259,"assignmentId":33465,"visited":false,"year":2017,"month":9},
+	{"id":95402,"assignmentId":33465,"visited":false,"year":2017,"month":10},
+	{"id":96727,"assignmentId":33465,"visited":true,"year":2017,"month":11},
+	{"id":99384,"assignmentId":33465,"visited":true,"year":2017,"month":12},
+	{"id":103675,"assignmentId":33465,"visited":true,"year":2018,"month":1},
+	{"id":106625,"assignmentId":33465,"visited":true,"year":2018,"month":2},
+	{"id":null,"assignmentId":33465,"visited":null,"year":2018,"month":3},
+	{"id":null,"assignmentId":33465,"visited":null,"year":2018,"month":4},
+	{"id":null,"assignmentId":33465,"visited":null,"year":2018,"month":5}
+
+]

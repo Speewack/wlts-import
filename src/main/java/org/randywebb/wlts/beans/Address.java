@@ -1,11 +1,10 @@
 package org.randywebb.wlts.beans;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +30,32 @@ public class Address extends AbstractBean {
     }
 
     /** Convert an address JSON Object to an Address.
+        unit members and callings v2
+            desc1 is the street address
+            desc2 is the unit number if there is a desc3, otherwise it is the city, state, and zip
+            desc3, if present, is the city, state, and zip
+        ministering members
+            streetAddress is the street address
+            streetAddress2 is the unit number
         @param definition A JSON address Object
     */
     public Address(JSONObject definition) {
-        update(definition, "latitude", "longitude", "postalCode", "state", "desc1", "desc2", "desc3", "includeLatLong");
+        update(definition, "streetAddress", "streetAddress2", "latitude", "longitude", "postalCode", "postal", "city", "state", "desc1", "desc2", "desc3", "includeLatLong");
 
-        if (!containsKey("streetAddress") || (null != get("desc1")) && (null != get("desc2"))) {
-            setStreetAddress(get("desc1") + ", " + get("desc2"));
+        if ((null == get("streetAddress")) && (null != get("desc1")) && (null != get("desc2"))) {
+            setStreetAddress(get("desc1"));
+        }
+
+        if ((null == get("streetAddress2")) && (null != get("desc2")) && (null != get("desc3"))) {
+            setUnitNumber(get("desc2"));
+        }
+
+        if (containsKey("postal") && (null == get("postalCode"))) {
+            setPostalCode(get("postal"));
+        }
+
+        if ((null == get("city")) && (null != get("desc2"))) {
+            setCity((null == get("desc3") ? get("desc2") : get("desc3")).split(",")[0]);
         }
     }
 
@@ -54,6 +72,21 @@ public class Address extends AbstractBean {
     */
     public void setStreetAddress(String streetAddress) {
         put("streetAddress", null == streetAddress ? null : streetAddress.trim());
+    }
+
+    /**
+    * @return the unit number
+    */
+    public String getUnitNumber() {
+        return get("streetAddress2");
+    }
+
+    /**
+    * @param unitNumber
+    *          the unitNumber to set
+    */
+    public void setUnitNumber(String unitNumber) {
+        put("streetAddress2", null == unitNumber ? null : unitNumber.trim());
     }
 
     /**
@@ -121,6 +154,7 @@ public class Address extends AbstractBean {
     */
     public void setLongitude(String longitude) {
         put("longitude", null == longitude ? null : longitude.trim());
+        setIncludeLatLong((null != getLatitude()) && (null != getLongitude()));
     }
 
     /**
@@ -150,6 +184,7 @@ public class Address extends AbstractBean {
     */
     public void setLattitude(String latitude) {
         setLatitude(latitude);
+        setIncludeLatLong((null != getLatitude()) && (null != getLongitude()));
     }
 
     /**
@@ -234,14 +269,4 @@ public class Address extends AbstractBean {
         }
         return a;
     }
-
-    /** Test entry point.
-        @param args ignored
-    */
-    public static void main(String[] args) {
-        System.out.println(Address.toAddress("17413 Toyahville Trl<br />Round Rock, Texas 78664"));
-        System.out.println(Address.toAddress("16101 White River Blvd<br />"
-                        + "Apt 21101<br />Pflugerville, Texas 78660-0006"));
-    }
-
 }

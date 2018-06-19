@@ -35,7 +35,7 @@
     <developerConnection>scm:git:https//github.com/Speewack/wlts-import</developerConnection>
     <url>https//github.com/Speewack/wlts-import</url>
   </scm>
-  
+
   <ciManagement>
     <url>https://travis-ci.org/Speewack/wlts-import</url>
     <system>Travis-CI</system>
@@ -47,11 +47,12 @@
     <targetJDK>1.8</targetJDK>
     <!-- sourceJDK must be <= targetJDK -->
     <sourceJDK>${targetJDK}</sourceJDK>
-    <!-- Specify the vendor for the JDK you are using (needed for toolchains 
+    <!-- Specify the vendor for the JDK you are using (needed for toolchains
       plugin) -->
     <targetJDK.vendor>sun</targetJDK.vendor>
+    <junit.version>5.2.0</junit.version>
 
-    <!-- Report plugin versions as they are used in both build and report 
+    <!-- Report plugin versions as they are used in both build and report
       sections -->
     <checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
     <pmd.plugin.version>3.9.0</pmd.plugin.version>
@@ -60,7 +61,7 @@
 
   <build>
     <plugins>
-      <!-- Configure maven-compiler plugin to use a specific java syntax 
+      <!-- Configure maven-compiler plugin to use a specific java syntax
         and to generate a binary for a specific jave version. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -176,23 +177,83 @@
           </execution>
         </executions>
       </plugin>
+      <!-- Configure Maven Surefire Plugin to use Junit 5 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.1.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+         <groupId>org.jacoco</groupId>
+         <artifactId>jacoco-maven-plugin</artifactId>
+         <version>0.8.1</version>
+         <executions>
+            <execution>
+               <id>default-prepare-agent</id>
+               <goals>
+                  <goal>prepare-agent</goal>
+               </goals>
+            </execution>
+            <execution>
+               <id>default-report</id>
+               <goals>
+                  <goal>report</goal>
+               </goals>
+            </execution>
+            <execution>
+               <id>default-check</id>
+               <goals>
+                  <goal>check</goal>
+               </goals>
+               <configuration>
+                  <rules>
+                     <!--  implementation is needed only for Maven 2  -->
+                     <rule implementation="org.jacoco.maven.RuleConfiguration">
+                        <element>BUNDLE</element>
+                        <limits>
+                           <!--  implementation is needed only for Maven 2  -->
+                           <limit implementation="org.jacoco.report.check.Limit">
+                              <counter>COMPLEXITY</counter>
+                              <value>COVEREDRATIO</value>
+                              <minimum>0.60</minimum>
+                           </limit>
+                        </limits>
+                     </rule>
+                  </rules>
+               </configuration>
+            </execution>
+         </executions>
+      </plugin>
     </plugins>
   </build>
 
   <profiles>
     <profile>
-      <!-- Use Toolchains Plugin unless the environment variable TRAVIS is 
-        set. This allows us to build without toolchains on the travis-ci.org -->
+      <!-- Use Toolchains Plugin unless the skipToolChains property is set.
+        Thus mvn -DskipToolchains package allows us to build without toolchains when
+        necessary such as on the travis-ci.org -->
       <activation>
         <property>
-          <name>!env.TRAVIS</name>
+          <name>!skipToolchains</name>
         </property>
       </activation>
       <build>
         <plugins>
-          <!-- Maven Toolchains Plugin selects the correct JDK to use for 
-            build and Javadoc as well as other plugins that support plugins. Configure 
-            to use the ${targetJDK} to compile the project independently of the JDK used 
+          <!-- Maven Toolchains Plugin selects the correct JDK to use for
+            build and Javadoc as well as other plugins that support plugins. Configure
+            to use the ${targetJDK} to compile the project independently of the JDK used
             to run maven. Requires .m2/toolchains.xml to be configured on the build machine -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -208,7 +269,7 @@
             <configuration>
               <toolchains>
                 <jdk>
-                  <version>1.8</version>
+                  <version>${targetJDK}</version>
                   <vendor>${targetJDK.vendor}</vendor>
                 </jdk>
               </toolchains>
@@ -252,7 +313,7 @@
         </configuration>
       </plugin>
 
-      <!-- JXR Plugin generates cross-reference page of the project's source 
+      <!-- JXR Plugin generates cross-reference page of the project's source
         code which can be linked to javadoc -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -295,14 +356,14 @@
       <version>1.7.21</version>
     </dependency>
 
-    <!-- Pull in current version of apache http client (updated dependency 
+    <!-- Pull in current version of apache http client (updated dependency
       for Google API Client) -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.2</version>
       <exclusions>
-        <!-- Eclude commons-logging as we are using jcl-over-slf4j to provide 
+        <!-- Exlude commons-logging as we are using jcl-over-slf4j to provide
           the commons-logging implementation -->
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -330,5 +391,18 @@
       <version>2.2.0</version>
     </dependency>
 
+    <!-- Junit Test Suite -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
