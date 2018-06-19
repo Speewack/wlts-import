@@ -21,7 +21,8 @@ public class TestDetailedMember {
     void testJSON() {
 	// Just verify that the parser is working at a basic level
 	try {
-	    JSONArray testData = (JSONArray) new JSONParser().parse(new InputStreamReader(ClassLoader.getSystemResourceAsStream("detailedMember.json")));
+	    JSONArray testData = (JSONArray) new JSONParser().parse(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedMember.json")));
+
 	    List<DetailedMember> members = DetailedMember.fromArray(testData);
 	    assertFalse(null==members, "Members List is NULL");
 	    assertFalse(members.isEmpty(), "Members List is Empty");
