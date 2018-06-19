@@ -2,11 +2,9 @@ package org.randywebb.wlts.beans;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -23,10 +21,7 @@ public class TestDetailedMember {
     void testJSON() {
 	// Just verify that the parser is working at a basic level
 	try {
-	    InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedMember.json");
-	    assertNotNull(in, "Unable to read json file");
-	    InputStreamReader reader = new InputStreamReader(in);
-	    JSONArray testData = (JSONArray) new JSONParser().parse(reader);
+	    JSONArray testData = (JSONArray) new JSONParser().parse(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedMember.json")));
 
 	    List<DetailedMember> members = DetailedMember.fromArray(testData);
 	    assertFalse(null==members, "Members List is NULL");
