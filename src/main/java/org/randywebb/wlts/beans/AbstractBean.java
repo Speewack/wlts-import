@@ -13,11 +13,9 @@ import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import org.supercsv.cellprocessor.ift.CellProcessor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.supercsv.cellprocessor.ift.CellProcessor;
 
 /** Abstract class for generic objects.
     Each object is actually a map of string to string.
