@@ -22,7 +22,7 @@ public class TestDetailedMember {
     void testJSON() {
 	// Just verify that the parser is working at a basic level
 	try {
-	    InputStream in = ClassLoader.getSystemResourceAsStream("detailedMember.json");
+	    InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("detailedMember.json");
 	    InputStreamReader reader = new InputStreamReader(in);
 	    JSONArray testData = (JSONArray) new JSONParser().parse(reader);
 
