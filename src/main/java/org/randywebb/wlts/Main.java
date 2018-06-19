@@ -12,17 +12,14 @@ import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.http.auth.AuthenticationException;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.reports.DetailedMemberListCSV;
 import org.randywebb.wlts.reports.DetailedMinisteredCSV;
 import org.randywebb.wlts.reports.MinisteringKML;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

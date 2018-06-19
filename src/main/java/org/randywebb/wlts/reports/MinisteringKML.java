@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.randywebb.wlts.beans.Assignment;
 import org.randywebb.wlts.beans.Companionship;
 import org.randywebb.wlts.beans.District;
@@ -15,10 +18,6 @@ import org.randywebb.wlts.beans.Visit;
 import org.randywebb.wlts.ldstools.rest.LdsToolsClient;
 import org.randywebb.wlts.ldstools.rest.MinistryHelpers;
 import org.randywebb.wlts.util.KMLWriter;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
