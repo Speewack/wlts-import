@@ -1,12 +1,12 @@
+# Project moved to GitLab
+
 # LDS Tools Export (aka wlts_import)
 WLTS Import from LDS Tools API
 
 ## Project Resources
-Source Repository: https://github.com/Speewack/wlts-import
+[Source Repository](http://gitlab.com/randy.webb/lds-tools-export)
 
-Continuous Integration: https://travis-ci.org/Speewack/wlts-import/
-
-Releases and Distributions: https://github.com/Speewack/wlts-import/releases
+[Releases and Distributions](https://gitlab.com/randy.webb/lds-tools-export/tags)
 
 # Setup - Mac
 
