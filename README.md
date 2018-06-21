@@ -1,10 +1,10 @@
-# Project moved to GitLab
-
 # LDS Tools Export (aka wlts_import)
 WLTS Import from LDS Tools API
 
+## Note: This project has [moved to GitLab](https://gitlab.com/randy.webb/lds-tools-export) as of June, 2018
+
 ## Project Resources
-[Source Repository](http://gitlab.com/randy.webb/lds-tools-export)
+[Source Repository](https://gitlab.com/randy.webb/lds-tools-export)
 
 [Releases and Distributions](https://gitlab.com/randy.webb/lds-tools-export/tags)
 
